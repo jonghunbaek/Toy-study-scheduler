@@ -1,17 +1,19 @@
-package toyproject.studyscheduler.domain.lecture;
+package toyproject.studyscheduler.domain.study.reading;
+
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import toyproject.studyscheduler.domain.BaseEntity;
+import toyproject.studyscheduler.domain.study.Study;
 
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 @Getter
 @Entity
-public class Lecture {
+public class Reading extends BaseEntity implements Study {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,13 +21,11 @@ public class Lecture {
 
     private String title;
 
-    private int runtime;
+    private int completeTime;
 
-    private int completeRuntime;
+    private int planTimeInWeekDay;
 
-    private String progress;
+    private int planTimeInWeekend;
 
-    private int scheduledTimeInWeekDay;
 
-    private int scheduledTimeInWeekend;
 }
