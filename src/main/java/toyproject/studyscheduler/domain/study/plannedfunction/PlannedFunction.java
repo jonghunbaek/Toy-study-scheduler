@@ -1,5 +1,4 @@
-package toyproject.studyscheduler.domain.study.reading;
-
+package toyproject.studyscheduler.domain.study.plannedfunction;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -7,13 +6,11 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import toyproject.studyscheduler.domain.BaseEntity;
-import toyproject.studyscheduler.domain.study.Study;
 
-@NoArgsConstructor
 @Getter
+@NoArgsConstructor
 @Entity
-public class Reading extends BaseEntity implements Study {
+public class PlannedFunction {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,12 +20,9 @@ public class Reading extends BaseEntity implements Study {
 
     private String description;
 
-    private int completeTime;
-
     private int planTimeInWeekDay;
 
     private int planTimeInWeekend;
 
     private String progress;
-
 }

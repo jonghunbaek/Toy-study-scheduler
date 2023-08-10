@@ -22,16 +22,16 @@ public class Lecture extends BaseEntity implements Study {
 
     private String title;
 
+    private String description;
     private int runtime;
 
     private int completeRuntime;
-
-    private String progress;
 
     private int planTimeInWeekDay;
 
     private int planTimeInWeekend;
 
+    private String progress;
     @Builder
     public Lecture(String title, int runtime, int completeRuntime, String progress, int planTimeInWeekDay, int planTimeInWeekend) {
         this.title = title;
