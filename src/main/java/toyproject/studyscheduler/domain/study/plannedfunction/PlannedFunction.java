@@ -1,28 +1,18 @@
 package toyproject.studyscheduler.domain.study.plannedfunction;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import toyproject.studyscheduler.domain.study.Study;
+import toyproject.studyscheduler.domain.study.toyproject.ToyProject;
 
+@DiscriminatorValue("P")
 @Getter
 @NoArgsConstructor
 @Entity
-public class PlannedFunction {
+public class PlannedFunction extends Study {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    private String title;
-
-    private String description;
-
-    private int planTimeInWeekDay;
-
-    private int planTimeInWeekend;
-
-    private String progress;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "toyProject_id")
+    ToyProject toyProject;
 }

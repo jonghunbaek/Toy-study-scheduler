@@ -1,34 +1,19 @@
 package toyproject.studyscheduler.domain.study.reading;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import toyproject.studyscheduler.domain.BaseEntity;
 import toyproject.studyscheduler.domain.study.Study;
 
+@DiscriminatorValue("R")
 @NoArgsConstructor
 @Getter
 @Entity
-public class Reading extends BaseEntity implements Study {
+public class Reading extends Study {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String authorName;
 
-    private String title;
-
-    private String description;
-
-    private int completeTime;
-
-    private int planTimeInWeekDay;
-
-    private int planTimeInWeekend;
-
-    private String progress;
-
+    private int totalPage;
 }

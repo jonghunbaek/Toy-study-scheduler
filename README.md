@@ -47,10 +47,18 @@
 ---
 
 ### 10. 작업 중 고민, 문제 상황 및 해결책
-+ 도메인 설계 진행 중 ToyProject와 PlannedFunction의 관계에 대한 고민
++ 도메인 설계 진행 중 ToyProject와 PlannedFunction의 관계에 대한 고민1
 ```
 <PlannedFunction을 ToyProject의 inner class로 vs 새로운 Entity로?>
 이너 클래스로 생성할 경우 @Embeddable로 사용할 수 있는데 이렇게 되면 외부 클래스인 ToyProject에 새로 추가되는 데이터에 의존적일 수 밖에 없다. 
 즉, 1개의 ToyProject에 1개의 PlannedFunction만 생성되므로 이는 내가 설계하는 방향에 위반된다. 그렇기 때문에 새로운 Entity로 생성해 일대다관계를
 만들어야 한다. 
+```
++ 도메인 설계 진행 중 ToyProject와 PlannedFunction의 관계에 대한 고민2
+```
+<Study를 상속 받는 클래스는 둘 중 무엇이 되어야 할까?>
+상속 매핑 전략으로 싱글 테이블 전략을 취했다. 만약 두 엔티티 모두 Study를 상속받는다면 중복되는 필드로 셀프 조인을 하게 된다.
+처음 생각은 ToyProject가 Study를 상속받는 것이었다. 하지만 생각을 할수록 이상하다는 느낌이 들었고 결국 PlannedFunction이 Study를
+상속 받도록했다. 결국 ToyProject라는 객체는 PlannedFunction이 모여 이루어진 상위 개념이나 다를겍 없기 때문이다.
+즉, ToyProject는 다른 Lecture,Reading과는 다른 성질의 학습이다.
 ```

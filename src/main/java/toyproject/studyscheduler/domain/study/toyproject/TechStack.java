@@ -4,16 +4,11 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import toyproject.studyscheduler.domain.BaseEntity;
-import toyproject.studyscheduler.domain.study.Study;
-import toyproject.studyscheduler.domain.study.plannedfunction.PlannedFunction;
 
-import java.util.List;
-
-@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 @Entity
-public class ToyProject extends BaseEntity {
+public class TechStack {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,6 +16,8 @@ public class ToyProject extends BaseEntity {
 
     private String title;
 
-    private String description;
+    private String category;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    private ToyProject toyProject;
 }
