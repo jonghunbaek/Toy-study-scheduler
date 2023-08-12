@@ -23,12 +23,9 @@ public class User extends BaseEntity {
 
     private String password;
 
-    // todo : jpa 상속관계 공부 후 추가하자.
-    //private List<Study> studies;
-
     @Enumerated
     private AccountType accountType;
 
-    private String originImage;
-    private String storedImage;
+    private String originProfileImage;
+    private String storedProfileImage;
 }
