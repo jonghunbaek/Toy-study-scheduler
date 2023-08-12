@@ -1,4 +1,4 @@
-package toyproject.studyscheduler.domain.study.plannedfunction;
+package toyproject.studyscheduler.domain.study.functionrequirement;
 
 
 import lombok.AccessLevel;

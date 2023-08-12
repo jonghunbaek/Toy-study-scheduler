@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 import toyproject.studyscheduler.domain.BaseEntity;
 import toyproject.studyscheduler.domain.study.Study;
 
-@DiscriminatorValue("L")
+@DiscriminatorValue("Lecture")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity

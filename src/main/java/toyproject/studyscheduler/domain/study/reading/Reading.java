@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import toyproject.studyscheduler.domain.BaseEntity;
 import toyproject.studyscheduler.domain.study.Study;
 
-@DiscriminatorValue("R")
+@DiscriminatorValue("Reading")
 @NoArgsConstructor
 @Getter
 @Entity

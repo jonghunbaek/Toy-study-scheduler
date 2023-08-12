@@ -5,10 +5,6 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import toyproject.studyscheduler.domain.BaseEntity;
-import toyproject.studyscheduler.domain.study.Study;
-import toyproject.studyscheduler.domain.study.plannedfunction.PlannedFunction;
-
-import java.util.List;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
