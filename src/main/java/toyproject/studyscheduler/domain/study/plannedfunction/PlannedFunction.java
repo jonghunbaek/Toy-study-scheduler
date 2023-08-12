@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import toyproject.studyscheduler.domain.study.Study;
-import toyproject.studyscheduler.domain.study.toyproject.ToyProject;
+import toyproject.studyscheduler.domain.toyproject.ToyProject;
 
 @DiscriminatorValue("P")
 @Getter
@@ -16,6 +16,5 @@ public class PlannedFunction extends Study {
     private FunctionType functionType;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "toyProject_id")
     ToyProject toyProject;
 }
