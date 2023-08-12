@@ -16,4 +16,6 @@ public class Reading extends Study {
     private String authorName;
 
     private int totalPage;
+
+    private int readPagePerMin;
 }

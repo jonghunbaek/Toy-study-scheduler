@@ -12,6 +12,9 @@ import toyproject.studyscheduler.domain.study.toyproject.ToyProject;
 @Entity
 public class PlannedFunction extends Study {
 
+    @Enumerated
+    private FunctionType functionType;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "toyProject_id")
     ToyProject toyProject;

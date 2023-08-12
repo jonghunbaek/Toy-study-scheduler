@@ -4,9 +4,6 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import toyproject.studyscheduler.domain.BaseEntity;
-import toyproject.studyscheduler.domain.study.Study;
-
-import java.util.List;
 
 @NoArgsConstructor
 @Getter

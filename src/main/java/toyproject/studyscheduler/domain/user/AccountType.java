@@ -1,5 +1,11 @@
 package toyproject.studyscheduler.domain.user;
 
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 public enum AccountType {
 
     PAUSE("계정 휴면"),
@@ -9,6 +15,6 @@ public enum AccountType {
     private String description;
 
     AccountType(String description) {
-
+        this.description = description;
     }
 }
