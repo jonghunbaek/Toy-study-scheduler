@@ -1,4 +1,4 @@
-package toyproject.studyscheduler.domain.study.functionrequirement;
+package toyproject.studyscheduler.domain.study.requiredfunction;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -10,7 +10,7 @@ import toyproject.studyscheduler.domain.toyproject.ToyProject;
 @Getter
 @NoArgsConstructor
 @Entity
-public class FunctionRequirement extends Study {
+public class RequiredFunction extends Study {
 
     @Enumerated
     private FunctionType functionType;
