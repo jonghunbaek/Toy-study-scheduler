@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import toyproject.studyscheduler.domain.BaseEntity;
 import toyproject.studyscheduler.domain.user.User;
 
+import java.time.LocalDate;
+
 
 @NoArgsConstructor
 @Getter
@@ -29,6 +31,10 @@ public abstract class Study extends BaseEntity {
     private int planTimeInWeekDay;
 
     private int planTimeInWeekend;
+
+    private LocalDate startDate;
+
+    private LocalDate endDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;

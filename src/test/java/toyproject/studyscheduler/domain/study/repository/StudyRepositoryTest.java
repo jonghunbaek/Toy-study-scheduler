@@ -10,8 +10,10 @@ class StudyRepositoryTest {
 
     @Autowired
     StudyRepository studyRepository;
-    
-    @DisplayName("수강중인 강의 저장 테스트")
+
+
+
+    @DisplayName("주어진 기간에 속한 학습내용을 모두 조회 한다.")
     @Test
     void test() {
         // given

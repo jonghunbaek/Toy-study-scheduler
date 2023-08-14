@@ -14,10 +14,6 @@ import java.time.LocalDateTime;
 @EntityListeners(AuditingEntityListener.class)
 public abstract class BaseEntity {
 
-    private LocalDateTime startDate;
-
-    private LocalDateTime endDate;
-
     @CreatedDate
     private LocalDateTime createdDate;
 
