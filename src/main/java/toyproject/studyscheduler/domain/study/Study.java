@@ -26,8 +26,6 @@ public abstract class Study extends BaseEntity {
 
     private int totalExpectedTime;
 
-    private int completeTime;
-
     private int planTimeInWeekDay;
 
     private int planTimeInWeekend;
