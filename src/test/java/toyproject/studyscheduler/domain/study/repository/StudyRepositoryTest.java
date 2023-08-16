@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
+import toyproject.studyscheduler.domain.study.Study;
 import toyproject.studyscheduler.domain.study.lecture.Lecture;
 
 @ActiveProfiles("test")
@@ -18,9 +19,9 @@ class StudyRepositoryTest {
 
     @DisplayName("주어진 기간에 수행한 학습들을 모두 조회 한다.")
     @Test
-    void test() {
+    void getStudiesByMonth() {
         // given
-        Study lecture =
+        Study lecture = Lecture.builder().build();
 
 
         // when 
