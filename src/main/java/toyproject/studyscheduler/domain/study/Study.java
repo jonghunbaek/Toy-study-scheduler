@@ -3,12 +3,13 @@ package toyproject.studyscheduler.domain.study;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 import toyproject.studyscheduler.domain.BaseEntity;
 import toyproject.studyscheduler.domain.user.User;
 
 import java.time.LocalDate;
 
-
+@SuperBuilder
 @NoArgsConstructor
 @Getter
 @DiscriminatorColumn(name = "dtype")
