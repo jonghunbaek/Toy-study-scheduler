@@ -8,6 +8,8 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 import toyproject.studyscheduler.domain.study.Study;
 import toyproject.studyscheduler.domain.study.lecture.Lecture;
+import toyproject.studyscheduler.domain.user.AccountType;
+import toyproject.studyscheduler.domain.user.User;
 
 @ActiveProfiles("test")
 @Transactional
@@ -21,6 +23,7 @@ class StudyRepositoryTest {
     @Test
     void getStudiesByMonth() {
         // given
+        User user = createUser();
         Study lecture = Lecture.builder().build();
 
 
@@ -29,4 +32,15 @@ class StudyRepositoryTest {
         // then
         
      }
+
+    private static User createUser() {
+        return User.builder()
+                .email("hong@gmail.com")
+                .password("zxcv1234")
+                .name("hong")
+                .accountType(AccountType.ACTIVE)
+                .originProfileImage("1234")
+                .storedProfileImage("4151")
+                .build();
+    }
 }
