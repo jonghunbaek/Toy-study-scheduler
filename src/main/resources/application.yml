@@ -14,7 +14,6 @@ spring:
     username: studyscheduler
     password: zxcv1234
 
-# JPA ?? ??
   jpa:
     hibernate:
       ddl-auto: update
