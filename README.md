@@ -83,3 +83,14 @@
 
 해결 방안 : 
 ```
+
++ StudyRepository test 작성 중
+```
+루트 오류  
+Caused by: java.lang.IllegalStateException
+: Failed to replace DataSource with an embedded database for tests. 
+If you want an embedded database please put a supported one on the classpath or tune the replace attribute of @AutoConfigureTestDatabase.
+
+해결 : 
+@DataJpaTest의 경우 내장된 DB를 쓰는데 build.gradle에 h2 DB의 의존성이 없었기 때문이다.
+```
