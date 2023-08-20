@@ -12,9 +12,9 @@ import toyproject.studyscheduler.domain.study.requiredfunction.FunctionType;
 import toyproject.studyscheduler.domain.study.requiredfunction.RequiredFunction;
 import toyproject.studyscheduler.domain.toyproject.ToyProject;
 import toyproject.studyscheduler.domain.toyproject.repository.ToyProjectRepository;
-import toyproject.studyscheduler.domain.user.AccountType;
-import toyproject.studyscheduler.domain.user.User;
-import toyproject.studyscheduler.domain.user.repository.UserRepository;
+import toyproject.studyscheduler.domain.member.AccountType;
+import toyproject.studyscheduler.domain.member.Member;
+import toyproject.studyscheduler.domain.member.repository.MemberRepository;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -29,7 +29,7 @@ class StudyRepositoryTest {
     StudyRepository studyRepository;
 
     @Autowired
-    UserRepository userRepository;
+    MemberRepository memberRepository;
 
     @Autowired
     ToyProjectRepository toyProjectRepository;
@@ -41,15 +41,15 @@ class StudyRepositoryTest {
         LocalDate startDate = LocalDate.of(2023, 7, 1);
         LocalDate endDate = LocalDate.of(2023, 8, 3);
 
-        User user = createUser();
-        userRepository.save(user);
+        Member member = createUser();
+        memberRepository.save(member);
 
         ToyProject toyProject = createToyProject();
         toyProjectRepository.save(toyProject);
 
-        Study lecture = createLecture(startDate, endDate, user);
-        Study reading = createReading(startDate, endDate, user);
-        Study requiredFunction = createFunction(startDate, endDate, user, toyProject);
+        Study lecture = createLecture(startDate, endDate, member);
+        Study reading = createReading(startDate, endDate, member);
+        Study requiredFunction = createFunction(startDate, endDate, member, toyProject);
         studyRepository.saveAll(List.of(lecture, reading, requiredFunction));
 
         // when 
@@ -75,7 +75,7 @@ class StudyRepositoryTest {
                 .build();
     }
 
-    private RequiredFunction createFunction(LocalDate startDate, LocalDate endDate, User user, ToyProject toyProject) {
+    private RequiredFunction createFunction(LocalDate startDate, LocalDate endDate, Member member, ToyProject toyProject) {
         return RequiredFunction.builder()
                 .title("강의 조회")
                 .description("강의를 조회한다.")
@@ -85,12 +85,12 @@ class StudyRepositoryTest {
                 .planTimeInWeekend(120)
                 .startDate(startDate)
                 .endDate(endDate)
-                .user(user)
+                .member(member)
                 .toyProject(toyProject)
                 .build();
     }
 
-    private static Reading createReading(LocalDate startDate, LocalDate endDate, User user) {
+    private static Reading createReading(LocalDate startDate, LocalDate endDate, Member member) {
         return Reading.builder()
                 .title("클린 코드")
                 .authorName("로버트 c.마틴")
@@ -102,11 +102,11 @@ class StudyRepositoryTest {
                 .totalExpectedTime(250)
                 .startDate(startDate)
                 .endDate(endDate)
-                .user(user)
+                .member(member)
                 .build();
     }
 
-    private static Lecture createLecture(LocalDate startDate, LocalDate endDate, User user) {
+    private static Lecture createLecture(LocalDate startDate, LocalDate endDate, Member member) {
         return Lecture.builder()
                 .title("김영한의 스프링")
                 .description("스프링 핵심 강의")
@@ -116,12 +116,12 @@ class StudyRepositoryTest {
                 .planTimeInWeekend(100)
                 .startDate(startDate)
                 .endDate(endDate)
-                .user(user)
+                .member(member)
                 .build();
     }
 
-    private static User createUser() {
-        return User.builder()
+    private static Member createUser() {
+        return Member.builder()
                 .email("hong@gmail.com")
                 .password("zxcv1234")
                 .name("hong")

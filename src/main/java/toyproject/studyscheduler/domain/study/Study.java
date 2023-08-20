@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldNameConstants;
 import toyproject.studyscheduler.domain.BaseEntity;
-import toyproject.studyscheduler.domain.user.User;
+import toyproject.studyscheduler.domain.member.Member;
 
 import java.time.LocalDate;
 
@@ -36,9 +36,9 @@ public abstract class Study extends BaseEntity {
     private LocalDate endDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private User user;
+    private Member member;
 
-    protected Study(String title, String description, int totalExpectedTime, int planTimeInWeekDay, int planTimeInWeekend, LocalDate startDate, LocalDate endDate, User user) {
+    protected Study(String title, String description, int totalExpectedTime, int planTimeInWeekDay, int planTimeInWeekend, LocalDate startDate, LocalDate endDate, Member member) {
         this.title = title;
         this.description = description;
         this.totalExpectedTime = totalExpectedTime;
@@ -46,6 +46,6 @@ public abstract class Study extends BaseEntity {
         this.planTimeInWeekend = planTimeInWeekend;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.user = user;
+        this.member = member;
     }
 }

@@ -1,4 +1,4 @@
-package toyproject.studyscheduler.domain.user;
+package toyproject.studyscheduler.domain.member;
 
 import lombok.AccessLevel;
 import lombok.Getter;
