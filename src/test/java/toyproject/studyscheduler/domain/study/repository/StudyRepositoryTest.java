@@ -11,8 +11,10 @@ import toyproject.studyscheduler.domain.study.reading.Reading;
 import toyproject.studyscheduler.domain.study.requiredfunction.FunctionType;
 import toyproject.studyscheduler.domain.study.requiredfunction.RequiredFunction;
 import toyproject.studyscheduler.domain.toyproject.ToyProject;
+import toyproject.studyscheduler.domain.toyproject.repository.ToyProjectRepository;
 import toyproject.studyscheduler.domain.user.AccountType;
 import toyproject.studyscheduler.domain.user.User;
+import toyproject.studyscheduler.domain.user.repository.UserRepository;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -26,6 +28,12 @@ class StudyRepositoryTest {
     @Autowired
     StudyRepository studyRepository;
 
+    @Autowired
+    UserRepository userRepository;
+
+    @Autowired
+    ToyProjectRepository toyProjectRepository;
+
     @DisplayName("주어진 기간에 수행한 학습들을 모두 조회 한다.")
     @Test
     void getStudiesByPeriod() {
@@ -34,7 +42,11 @@ class StudyRepositoryTest {
         LocalDate endDate = LocalDate.of(2023, 8, 3);
 
         User user = createUser();
+        userRepository.save(user);
+
         ToyProject toyProject = createToyProject();
+        toyProjectRepository.save(toyProject);
+
         Study lecture = createLecture(startDate, endDate, user);
         Study reading = createReading(startDate, endDate, user);
         Study requiredFunction = createFunction(startDate, endDate, user, toyProject);
