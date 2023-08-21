@@ -2,6 +2,7 @@ package toyproject.studyscheduler.domain.study;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import toyproject.studyscheduler.domain.BaseEntity;
@@ -19,10 +20,22 @@ public class StudyTime extends BaseEntity {
 
     private int totalCompleteTime;
 
-    private int completeTimePerDay;
+    private int completeTimeToday;
 
-    private LocalDate date;
+    private LocalDate today;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Study study;
+
+    @Builder
+    private StudyTime(int totalCompleteTime, int completeTimeToday, LocalDate today, Study study) {
+        this.totalCompleteTime = totalCompleteTime;
+        this.completeTimeToday = completeTimeToday;
+        this.today = today;
+        this.study = study;
+    }
+
+    public double calculateLearningRate() {
+        return Math.round(((totalCompleteTime /study.getTotalExpectedTime())*100)*100)/100.0;
+    }
 }

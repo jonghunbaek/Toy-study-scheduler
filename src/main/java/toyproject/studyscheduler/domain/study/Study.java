@@ -1,15 +1,15 @@
 package toyproject.studyscheduler.domain.study;
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.experimental.FieldNameConstants;
 import toyproject.studyscheduler.domain.BaseEntity;
 import toyproject.studyscheduler.domain.member.Member;
 
 import java.time.LocalDate;
 
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @DiscriminatorColumn(name = "dtype")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -18,7 +18,6 @@ public abstract class Study extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @FieldNameConstants.Exclude
     private Long id;
 
     private String title;

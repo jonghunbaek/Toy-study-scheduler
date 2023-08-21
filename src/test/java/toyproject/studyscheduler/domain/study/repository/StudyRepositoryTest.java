@@ -36,7 +36,7 @@ class StudyRepositoryTest {
 
     @DisplayName("복수의 아이디로 학습들의 상세 내용을 조회한다.")
     @Test
-    void getStudyById() {
+    void getStudiesByIds() {
         // given
         LocalDate startDate = LocalDate.of(2023, 7, 1);
         LocalDate endDate = LocalDate.of(2023, 8, 3);
