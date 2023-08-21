@@ -34,6 +34,37 @@ class StudyRepositoryTest {
     @Autowired
     ToyProjectRepository toyProjectRepository;
 
+    @DisplayName("복수의 아이디로 학습들의 상세 내용을 조회한다.")
+    @Test
+    void getStudyById() {
+        // given
+        LocalDate startDate = LocalDate.of(2023, 7, 1);
+        LocalDate endDate = LocalDate.of(2023, 8, 3);
+
+        Member member = createMember();
+        memberRepository.save(member);
+
+        ToyProject toyProject = createToyProject();
+        toyProjectRepository.save(toyProject);
+
+        Lecture lecture = createLecture(startDate, endDate, member);
+        Reading reading = createReading(startDate, endDate, member);
+        RequiredFunction function = createFunction(startDate, endDate, member, toyProject);
+        studyRepository.saveAll(List.of(lecture, reading, function));
+
+        // when
+        List<Study> studies = studyRepository.findAllById(List.of(lecture.getId(), reading.getId(), function.getId()));
+
+        // then
+        assertThat(studies).hasSize(3)
+                .extracting("title", "description", "startDate")
+                .containsExactlyInAnyOrder(
+                        tuple("김영한의 스프링", "스프링 핵심 강의", startDate),
+                        tuple("클린 코드", "클린 코드를 배우기 위한 도서", startDate),
+                        tuple("강의 조회", "강의를 조회한다.", startDate)
+                );
+    }
+
     @DisplayName("주어진 기간에 수행한 학습들을 모두 조회 한다.")
     @Test
     void getStudiesByPeriod() {
@@ -41,7 +72,7 @@ class StudyRepositoryTest {
         LocalDate startDate = LocalDate.of(2023, 7, 1);
         LocalDate endDate = LocalDate.of(2023, 8, 3);
 
-        Member member = createUser();
+        Member member = createMember();
         memberRepository.save(member);
 
         ToyProject toyProject = createToyProject();
@@ -52,7 +83,7 @@ class StudyRepositoryTest {
         Study requiredFunction = createFunction(startDate, endDate, member, toyProject);
         studyRepository.saveAll(List.of(lecture, reading, requiredFunction));
 
-        // when 
+        // when
         LocalDate checkStartDate = LocalDate.of(2023, 7, 1);
         LocalDate checkEndDate = LocalDate.of(2023, 7, 31);
 
@@ -66,7 +97,18 @@ class StudyRepositoryTest {
                         tuple("클린 코드", "클린 코드를 배우기 위한 도서", startDate),
                         tuple("강의 조회", "강의를 조회한다.", startDate)
                 );
-     }
+    }
+
+    private static Member createMember() {
+        return Member.builder()
+                .email("hong@gmail.com")
+                .password("zxcv1234")
+                .name("hong")
+                .accountType(AccountType.ACTIVE)
+                .originProfileImage("1234")
+                .storedProfileImage("4151")
+                .build();
+    }
 
     private ToyProject createToyProject() {
         return ToyProject.builder()
@@ -117,17 +159,6 @@ class StudyRepositoryTest {
                 .startDate(startDate)
                 .endDate(endDate)
                 .member(member)
-                .build();
-    }
-
-    private static Member createUser() {
-        return Member.builder()
-                .email("hong@gmail.com")
-                .password("zxcv1234")
-                .name("hong")
-                .accountType(AccountType.ACTIVE)
-                .originProfileImage("1234")
-                .storedProfileImage("4151")
                 .build();
     }
 }
