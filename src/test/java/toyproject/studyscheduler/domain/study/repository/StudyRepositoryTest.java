@@ -65,7 +65,7 @@ class StudyRepositoryTest {
                 );
     }
 
-    @DisplayName("주어진 기간에 수행한 학습들을 모두 조회 한다.")
+    @DisplayName("특정기간에 수행한 학습들을 모두 조회 한다.")
     @Test
     void getStudiesByPeriod() {
         // given
