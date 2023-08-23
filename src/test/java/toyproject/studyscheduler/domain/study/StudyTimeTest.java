@@ -30,9 +30,8 @@ class StudyTimeTest {
         double learningRate = studyTime.calculateLearningRate();
 
         // then
-        assertThat(learningRate).isEqualTo(13.34);
-
-     }
+        assertThat(learningRate).isEqualTo(13.33);
+    }
 
     private static Member createMember() {
         return Member.builder()
