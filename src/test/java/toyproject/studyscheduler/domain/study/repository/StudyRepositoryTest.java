@@ -34,7 +34,7 @@ class StudyRepositoryTest {
     @Autowired
     ToyProjectRepository toyProjectRepository;
 
-    @DisplayName("복수의 아이디로 학습들의 상세 내용을 조회한다.")
+    @DisplayName("주어진 여러개의 아이디로 여러개의 학습 상세내용을 조회한다.")
     @Test
     void getStudiesByIds() {
         // given

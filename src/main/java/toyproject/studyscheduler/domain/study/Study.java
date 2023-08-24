@@ -37,7 +37,8 @@ public abstract class Study extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private Member member;
 
-    protected Study(String title, String description, int totalExpectedTime, int planTimeInWeekDay, int planTimeInWeekend, LocalDate startDate, LocalDate endDate, Member member) {
+    protected Study(String title, String description, int totalExpectedTime, int planTimeInWeekDay, int planTimeInWeekend,
+                    LocalDate startDate, LocalDate endDate, Member member) {
         this.title = title;
         this.description = description;
         this.totalExpectedTime = totalExpectedTime;

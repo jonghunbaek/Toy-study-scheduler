@@ -13,24 +13,52 @@ import static org.assertj.core.api.Assertions.*;
 
 class StudyTimeTest {
 
-    @DisplayName("총 예상 시간과 총 학습 시간을 계산해 현재 학습율을 구한다.")
+    @DisplayName("StudyTime 생성 시, 총 학습량 = 총 학습량 + 오늘 학습량 계산을 한다.")
+    @Test
+    void calculateTotalCompleteTime() {
+        // given
+        LocalDate yesterday = LocalDate.of(2023, 8, 7);
+        Member member = createMember();
+        Study lecture = createLecture(member);
+        int totalCompleteTime = 200;
+        int completeTimeYesterDay = 80;
+        StudyTime studyTimeYesterday = createStudyTime(lecture, yesterday, completeTimeYesterDay, totalCompleteTime);
+
+        // when
+        LocalDate today = LocalDate.of(2023, 8, 10);
+        int completeTimeToday = 100;
+        StudyTime studyTimeToday = createStudyTime(lecture, today, completeTimeToday, totalCompleteTime + completeTimeToday);
+
+        // then
+        assertThat(studyTimeToday.getTotalCompleteTime()).isEqualTo(studyTimeYesterday.getTotalCompleteTime() + completeTimeToday);
+
+    }
+
+    @DisplayName("총 예상 시간과 총 학습 시간을 나눠 현재 학습율을 구한다.")
     @Test
     void calculateLearningRate() {
         // given
+        LocalDate yesterday = LocalDate.of(2023, 8, 7);
         Member member = createMember();
         Study lecture = createLecture(member);
-        StudyTime studyTime = StudyTime.builder()
-            .totalCompleteTime(80)
-            .today(LocalDate.of(2023, 8, 21))
-            .completeTimeToday(30)
-            .study(lecture)
-            .build();
+        int totalCompleteTime = 80;
+        int completeTimeToday = 80;
+        StudyTime studyTime = createStudyTime(lecture, yesterday, completeTimeToday, totalCompleteTime);
 
         // when
         double learningRate = studyTime.calculateLearningRate();
 
         // then
         assertThat(learningRate).isEqualTo(13.33);
+    }
+
+    private StudyTime createStudyTime(Study lecture, LocalDate today, int completeTimeToday, int totalCompleteTime) {
+        return StudyTime.builder()
+                .totalCompleteTime(totalCompleteTime)
+                .today(today)
+                .completeTimeToday(completeTimeToday)
+                .study(lecture)
+                .build();
     }
 
     private static Member createMember() {
