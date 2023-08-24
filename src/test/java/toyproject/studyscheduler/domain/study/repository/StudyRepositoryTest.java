@@ -87,7 +87,7 @@ class StudyRepositoryTest {
         LocalDate checkStartDate = LocalDate.of(2023, 7, 1);
         LocalDate checkEndDate = LocalDate.of(2023, 7, 31);
 
-        List<Study> studies = studyRepository.findAllByPeriodIn(checkStartDate, checkEndDate);
+        List<Study> studies = studyRepository.findAllByPeriod(checkStartDate, checkEndDate);
 
         // then
         assertThat(studies).hasSize(3)

@@ -1,5 +1,6 @@
 package toyproject.studyscheduler.domain.study.repository;
 
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,10 @@ import toyproject.studyscheduler.domain.study.requiredfunction.RequiredFunction;
 import toyproject.studyscheduler.domain.toyproject.ToyProject;
 
 import java.time.LocalDate;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.tuple;
 
 
 @ActiveProfiles("test")
@@ -45,21 +50,49 @@ class StudyTimeRepositoryTest {
         Study lecture = createLecture(startDate, endDate, member);
         studyRepository.save(lecture);
 
+        LocalDate firstDay = LocalDate.of(2023, 8, 3);
+        int completeTimeFirst = 30;
+        int totalCompleteTime = 30;
+        StudyTime studyTimeFirst = createStudyTime(lecture, firstDay, totalCompleteTime, completeTimeFirst);
 
+        LocalDate secondDay = LocalDate.of(2023, 8, 8);
+        int completeTimeSecond = 40;
+        totalCompleteTime += completeTimeSecond;
+        StudyTime studyTimeSecond = createStudyTime(lecture, secondDay, totalCompleteTime, completeTimeSecond);
+
+        LocalDate thirdDay = LocalDate.of(2023, 8, 14);
+        int completeTimeThird = 25;
+        totalCompleteTime += completeTimeThird;
+        StudyTime studyTimeThird = createStudyTime(lecture, thirdDay, totalCompleteTime, completeTimeThird);
+
+        LocalDate fourthDay = LocalDate.of(2023, 8, 20);
+        int completeTimeFourth = 23;
+        totalCompleteTime += completeTimeFourth;
+        StudyTime studyTimeFourth = createStudyTime(lecture, fourthDay, totalCompleteTime, completeTimeFourth);
+
+        studyTimeRepository.saveAll(List.of(studyTimeFirst, studyTimeSecond, studyTimeThird, studyTimeFourth));
 
         // when
+        List<StudyTime> allByPeriod = studyTimeRepository.findAllByPeriod(startDate, endDate);
 
         // then
-
+        assertThat(allByPeriod).hasSize(4)
+                .extracting("totalCompleteTime", "completeTimeToday")
+                .containsExactlyInAnyOrder(
+                        tuple(30, 30),
+                        tuple(70, 40),
+                        tuple(95, 25),
+                        tuple(118, 23)
+                );
     }
 
-    private StudyTime createStudyTime(Study lecture, LocalDate today) {
+    private StudyTime createStudyTime(Study study, LocalDate today, int totalCompleteTime, int completeTimeToday) {
         return StudyTime.builder()
+                .totalCompleteTime(totalCompleteTime)
                 .today(today)
-                .completeTimeToday(30)
-                .study(lecture)
+                .completeTimeToday(completeTimeToday)
+                .study(study)
                 .build();
-
     }
 
     private Member createMember() {
