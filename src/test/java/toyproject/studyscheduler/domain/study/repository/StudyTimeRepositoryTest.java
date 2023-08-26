@@ -18,7 +18,9 @@ import toyproject.studyscheduler.domain.study.requiredfunction.RequiredFunction;
 import toyproject.studyscheduler.domain.toyproject.ToyProject;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.tuple;
@@ -50,27 +52,15 @@ class StudyTimeRepositoryTest {
         Study lecture = createLecture(startDate, endDate, member);
         studyRepository.save(lecture);
 
-        LocalDate firstDay = LocalDate.of(2023, 8, 3);
-        int completeTimeFirst = 30;
-        int totalCompleteTime = 30;
-        StudyTime studyTimeFirst = createStudyTime(lecture, firstDay, totalCompleteTime, completeTimeFirst);
+        List<LocalDate> dates = List.of(LocalDate.of(2023, 8, 3),
+            LocalDate.of(2023, 8, 8),
+            LocalDate.of(2023, 8, 14),
+            LocalDate.of(2023, 8, 20)
+        );
+        List<Integer> totalCompleteTimes = List.of(30, 70, 95, 118);
+        List<Integer> completeTimeTodays = List.of(30, 40, 25, 23);
 
-        LocalDate secondDay = LocalDate.of(2023, 8, 8);
-        int completeTimeSecond = 40;
-        totalCompleteTime += completeTimeSecond;
-        StudyTime studyTimeSecond = createStudyTime(lecture, secondDay, totalCompleteTime, completeTimeSecond);
-
-        LocalDate thirdDay = LocalDate.of(2023, 8, 14);
-        int completeTimeThird = 25;
-        totalCompleteTime += completeTimeThird;
-        StudyTime studyTimeThird = createStudyTime(lecture, thirdDay, totalCompleteTime, completeTimeThird);
-
-        LocalDate fourthDay = LocalDate.of(2023, 8, 20);
-        int completeTimeFourth = 23;
-        totalCompleteTime += completeTimeFourth;
-        StudyTime studyTimeFourth = createStudyTime(lecture, fourthDay, totalCompleteTime, completeTimeFourth);
-
-        studyTimeRepository.saveAll(List.of(studyTimeFirst, studyTimeSecond, studyTimeThird, studyTimeFourth));
+        studyTimeRepository.saveAll(createStudies(dates.size(), lecture, dates, totalCompleteTimes, completeTimeTodays));
 
         // when
         List<StudyTime> allByPeriod = studyTimeRepository.findAllByPeriod(startDate, endDate);
@@ -84,6 +74,15 @@ class StudyTimeRepositoryTest {
                         tuple(95, 25),
                         tuple(118, 23)
                 );
+    }
+
+    private List<StudyTime> createStudies(int size, Study study, List<LocalDate> dates, List<Integer> totalCompleteTimes, List<Integer> completeTimeTodays) {
+        List<StudyTime> studyTimes = new ArrayList<>(size);
+        for (int i=0; i<size; i++) {
+            studyTimes.add(createStudyTime(study, dates.get(i), totalCompleteTimes.get(i), completeTimeTodays.get(i)));
+        }
+
+        return studyTimes;
     }
 
     private StudyTime createStudyTime(Study study, LocalDate today, int totalCompleteTime, int completeTimeToday) {
