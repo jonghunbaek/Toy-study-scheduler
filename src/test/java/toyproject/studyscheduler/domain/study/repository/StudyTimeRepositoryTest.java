@@ -20,7 +20,6 @@ import toyproject.studyscheduler.domain.toyproject.ToyProject;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.tuple;
@@ -102,44 +101,6 @@ class StudyTimeRepositoryTest {
                 .accountType(AccountType.ACTIVE)
                 .originProfileImage("1234")
                 .storedProfileImage("4151")
-                .build();
-    }
-
-    private ToyProject createToyProject() {
-        return ToyProject.builder()
-                .title("스터디 스케쥴러")
-                .description("개인의 학습의 진도율을 관리")
-                .build();
-    }
-
-    private RequiredFunction createFunction(LocalDate startDate, LocalDate endDate, Member member, ToyProject toyProject) {
-        return RequiredFunction.builder()
-                .title("강의 조회")
-                .description("강의를 조회한다.")
-                .functionType(FunctionType.READ)
-                .totalExpectedTime(300)
-                .planTimeInWeekDay(60)
-                .planTimeInWeekend(120)
-                .startDate(startDate)
-                .endDate(endDate)
-                .member(member)
-                .toyProject(toyProject)
-                .build();
-    }
-
-    private static Reading createReading(LocalDate startDate, LocalDate endDate, Member member) {
-        return Reading.builder()
-                .title("클린 코드")
-                .authorName("로버트 c.마틴")
-                .description("클린 코드를 배우기 위한 도서")
-                .totalPage(500)
-                .planTimeInWeekDay(30)
-                .planTimeInWeekend(30)
-                .readPagePerMin(2)
-                .totalExpectedTime(250)
-                .startDate(startDate)
-                .endDate(endDate)
-                .member(member)
                 .build();
     }
 
