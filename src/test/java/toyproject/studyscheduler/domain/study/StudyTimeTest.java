@@ -27,7 +27,11 @@ class StudyTimeTest {
         // when
         LocalDate today = LocalDate.of(2023, 8, 10);
         int completeTimeToday = 100;
-        StudyTime studyTimeToday = createStudyTime(lecture, today, completeTimeToday, totalCompleteTime + completeTimeToday);
+        StudyTime studyTimeToday = createStudyTime(
+            lecture,
+            today,
+            completeTimeToday,
+            studyTimeYesterday.calculateTotalCompleteTime(completeTimeToday));
 
         // then
         assertThat(studyTimeToday.getTotalCompleteTime()).isEqualTo(studyTimeYesterday.getTotalCompleteTime() + completeTimeToday);
@@ -55,7 +59,7 @@ class StudyTimeTest {
     private StudyTime createStudyTime(Study lecture, LocalDate today, int completeTimeToday, int totalCompleteTime) {
         return StudyTime.builder()
                 .totalCompleteTime(totalCompleteTime)
-                .today(today)
+                .date(today)
                 .completeTimeToday(completeTimeToday)
                 .study(lecture)
                 .build();

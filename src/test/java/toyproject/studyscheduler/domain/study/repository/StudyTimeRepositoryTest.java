@@ -75,6 +75,54 @@ class StudyTimeRepositoryTest {
                 );
     }
 
+    @DisplayName("특정기간에 수행한 누적 학습량을 모두 조회 한다.")
+    @Test
+    void getTotalCompleteTimePerDay() {
+        // given
+        LocalDate startDate = LocalDate.of(2023, 8, 1);
+        LocalDate endDate = LocalDate.of(2023, 8, 23);
+
+        Member member = createMember();
+        memberRepository.save(member);
+
+        Study lecture = createLecture(startDate, endDate, member);
+        studyRepository.save(lecture);
+
+        List<LocalDate> dates = List.of(LocalDate.of(2023, 8, 3),
+            LocalDate.of(2023, 8, 8),
+            LocalDate.of(2023, 8, 14),
+            LocalDate.of(2023, 8, 20)
+        );
+        List<Integer> totalCompleteTimes = List.of(30, 70, 95, 118);
+        List<Integer> completeTimeTodays = List.of(30, 40, 25, 23);
+
+        studyTimeRepository.saveAll(createStudies(dates.size(), lecture, dates, totalCompleteTimes, completeTimeTodays));
+
+
+        // when
+        StudyTime studyTime = studyTimeRepository.findFirstByStudyOrderByDateDesc(lecture);
+        int completeTimeToday = 40;
+        studyTimeRepository.save(createStudyTime(
+            lecture,
+            LocalDate.of(2023, 8, 23),
+            studyTime.calculateTotalCompleteTime(completeTimeToday),
+            completeTimeToday
+        ));
+
+        List<StudyTime> allByPeriod = studyTimeRepository.findAllByPeriod(startDate, endDate);
+
+        // then
+        assertThat(allByPeriod).hasSize(5)
+            .extracting("totalCompleteTime", "completeTimeToday")
+            .containsExactlyInAnyOrder(
+                tuple(30, 30),
+                tuple(70, 40),
+                tuple(95, 25),
+                tuple(118, 23),
+                tuple(158, 40)
+            );
+    }
+
     private List<StudyTime> createStudies(int size, Study study, List<LocalDate> dates, List<Integer> totalCompleteTimes, List<Integer> completeTimeTodays) {
         List<StudyTime> studyTimes = new ArrayList<>(size);
         for (int i=0; i<size; i++) {
@@ -87,7 +135,7 @@ class StudyTimeRepositoryTest {
     private StudyTime createStudyTime(Study study, LocalDate today, int totalCompleteTime, int completeTimeToday) {
         return StudyTime.builder()
                 .totalCompleteTime(totalCompleteTime)
-                .today(today)
+                .date(today)
                 .completeTimeToday(completeTimeToday)
                 .study(study)
                 .build();
