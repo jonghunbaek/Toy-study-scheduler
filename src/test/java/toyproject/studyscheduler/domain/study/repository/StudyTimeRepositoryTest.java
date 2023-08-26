@@ -12,10 +12,6 @@ import toyproject.studyscheduler.domain.member.repository.MemberRepository;
 import toyproject.studyscheduler.domain.study.Study;
 import toyproject.studyscheduler.domain.study.StudyTime;
 import toyproject.studyscheduler.domain.study.lecture.Lecture;
-import toyproject.studyscheduler.domain.study.reading.Reading;
-import toyproject.studyscheduler.domain.study.requiredfunction.FunctionType;
-import toyproject.studyscheduler.domain.study.requiredfunction.RequiredFunction;
-import toyproject.studyscheduler.domain.toyproject.ToyProject;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
