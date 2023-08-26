@@ -22,16 +22,16 @@ public class StudyTime extends BaseEntity {
 
     private int completeTimeToday;
 
-    private LocalDate today;
+    private LocalDate date;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Study study;
 
     @Builder
-    private StudyTime(int totalCompleteTime, int completeTimeToday, LocalDate today, Study study) {
+    private StudyTime(int totalCompleteTime, int completeTimeToday, LocalDate date, Study study) {
         this.totalCompleteTime = totalCompleteTime;
         this.completeTimeToday = completeTimeToday;
-        this.today = today;
+        this.date = date;
         this.study = study;
     }
 
