@@ -17,13 +17,14 @@ public class TechStack {
 
     private String title;
 
-    private String category;
+    @Enumerated(EnumType.STRING)
+    private Category category;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private ToyProject toyProject;
 
     @Builder
-    private TechStack(String title, String category, ToyProject toyProject) {
+    private TechStack(String title, Category category, ToyProject toyProject) {
         this.title = title;
         this.category = category;
         this.toyProject = toyProject;
