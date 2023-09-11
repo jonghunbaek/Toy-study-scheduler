@@ -1,10 +1,11 @@
-package toyproject.studyscheduler.domain.toyproject;
+package toyproject.studyscheduler.domain.study.toyproject.TechStack;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import toyproject.studyscheduler.domain.study.toyproject.ToyProject;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter

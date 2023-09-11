@@ -7,15 +7,13 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
 import toyproject.studyscheduler.domain.member.AccountType;
 import toyproject.studyscheduler.domain.member.Member;
-import toyproject.studyscheduler.domain.study.requiredfunction.FunctionType;
-import toyproject.studyscheduler.domain.study.requiredfunction.RequiredFunction;
-import toyproject.studyscheduler.domain.toyproject.Category;
-import toyproject.studyscheduler.domain.toyproject.TechStack;
-import toyproject.studyscheduler.domain.toyproject.ToyProject;
+import toyproject.studyscheduler.domain.study.toyproject.requiredfunction.FunctionType;
+import toyproject.studyscheduler.domain.study.toyproject.requiredfunction.RequiredFunction;
+import toyproject.studyscheduler.domain.study.toyproject.TechStack.Category;
+import toyproject.studyscheduler.domain.study.toyproject.TechStack.TechStack;
+import toyproject.studyscheduler.domain.study.toyproject.repository.ToyProjectRepository;
 
 import java.time.LocalDate;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @ActiveProfiles("test")
 @DataJpaTest
@@ -28,9 +26,10 @@ class ToyProjectRepositoryTest {
     @Test
     void findToyProjectById() {
         // given
+        Member member = createMember();
+
         TechStack language = createTechStack("Java", Category.LANGUAGE);
         TechStack framework = createTechStack("SpringBoot", Category.FRAMEWORK);
-        Member member = createMember();
 
         RequiredFunction function1 = createFunction("회원가입", "신규 회원 가입",
             LocalDate.of(2023, 8, 10), LocalDate.of(2023, 8, 12),
@@ -38,6 +37,7 @@ class ToyProjectRepositoryTest {
         RequiredFunction function2 = createFunction("로그인", "가입된 회원 로그인",
             LocalDate.of(2023, 8, 13), LocalDate.of(2023, 8, 15),
             member);
+
         // when
 
         // then

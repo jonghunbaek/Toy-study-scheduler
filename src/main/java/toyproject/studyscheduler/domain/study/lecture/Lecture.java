@@ -19,7 +19,7 @@ public class Lecture extends Study {
     private String teacherName;
 
     @Builder
-    public Lecture(String title, String description, int totalExpectedTime, int planTimeInWeekDay, int planTimeInWeekend,
+    private Lecture(String title, String description, int totalExpectedTime, int planTimeInWeekDay, int planTimeInWeekend,
                    LocalDate startDate, LocalDate endDate, Member member, String teacherName) {
         super(title, description, totalExpectedTime, planTimeInWeekDay, planTimeInWeekend, startDate, endDate, member);
         this.teacherName = teacherName;
