@@ -8,6 +8,8 @@ import org.springframework.test.context.ActiveProfiles;
 import toyproject.studyscheduler.domain.study.Study;
 import toyproject.studyscheduler.domain.study.lecture.Lecture;
 import toyproject.studyscheduler.domain.study.reading.Reading;
+import toyproject.studyscheduler.domain.study.toyproject.TechStack.TechCategory;
+import toyproject.studyscheduler.domain.study.toyproject.TechStack.TechStack;
 import toyproject.studyscheduler.domain.study.toyproject.requiredfunction.FunctionType;
 import toyproject.studyscheduler.domain.study.toyproject.requiredfunction.RequiredFunction;
 import toyproject.studyscheduler.domain.study.toyproject.ToyProject;
@@ -20,6 +22,8 @@ import java.time.LocalDate;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
+import static toyproject.studyscheduler.domain.study.toyproject.TechStack.TechCategory.*;
+import static toyproject.studyscheduler.domain.study.toyproject.requiredfunction.FunctionType.*;
 
 @ActiveProfiles("test")
 @DataJpaTest
@@ -44,16 +48,21 @@ class StudyRepositoryTest {
         Member member = createMember();
         memberRepository.save(member);
 
-        ToyProject toyProject = createToyProject();
+        RequiredFunction function1 = createFunction(CREATE);
+        RequiredFunction function2 = createFunction(READ);
+
+        TechStack stack1 = createTechStack("Java", LANGUAGE);
+        TechStack stack2 = createTechStack("Spring", FRAMEWORK);
+
+        ToyProject toyProject = createToyProject(startDate, endDate, member, List.of(function1, function2), List.of(stack1, stack2));
         toyProjectRepository.save(toyProject);
 
         Lecture lecture = createLecture(startDate, endDate, member);
         Reading reading = createReading(startDate, endDate, member);
-        RequiredFunction function = createFunction(startDate, endDate, member, toyProject);
-        studyRepository.saveAll(List.of(lecture, reading, function));
+        studyRepository.saveAll(List.of(lecture, reading, toyProject));
 
         // when
-        List<Study> studies = studyRepository.findAllById(List.of(lecture.getId(), reading.getId(), function.getId()));
+        List<Study> studies = studyRepository.findAllById(List.of(lecture.getId(), reading.getId(), toyProject.getId()));
 
         // then
         assertThat(studies).hasSize(3)
@@ -110,25 +119,31 @@ class StudyRepositoryTest {
                 .build();
     }
 
-    private ToyProject createToyProject() {
+    private ToyProject createToyProject(LocalDate startDate, LocalDate endDate, Member member, List<RequiredFunction> functions, List<TechStack> stacks) {
         return ToyProject.builder()
                 .title("스터디 스케쥴러")
                 .description("개인의 학습의 진도율을 관리")
-                .build();
-    }
-
-    private RequiredFunction createFunction(LocalDate startDate, LocalDate endDate, Member member, ToyProject toyProject) {
-        return RequiredFunction.builder()
-                .title("강의 조회")
-                .description("강의를 조회한다.")
-                .functionType(FunctionType.READ)
                 .totalExpectedTime(300)
                 .planTimeInWeekDay(60)
                 .planTimeInWeekend(120)
                 .startDate(startDate)
                 .endDate(endDate)
                 .member(member)
-                .toyProject(toyProject)
+                .functions(functions)
+                .stacks(stacks)
+                .build();
+    }
+
+    private TechStack createTechStack(String title, TechCategory techCategory) {
+        return TechStack.builder()
+            .title(title)
+            .techCategory(techCategory)
+            .build();
+    }
+
+    private RequiredFunction createFunction(FunctionType functionType) {
+        return RequiredFunction.builder()
+                .functionType(READ)
                 .build();
     }
 

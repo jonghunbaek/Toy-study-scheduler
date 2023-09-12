@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-public enum Category {
+public enum TechCategory {
 
     IDE("개발 환경"),
     LANGUAGE("언어"),

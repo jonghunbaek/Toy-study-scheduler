@@ -24,14 +24,26 @@ public class ToyProject extends Study {
     List<RequiredFunction> functions = new ArrayList<>();
 
     @OneToMany(mappedBy = "toyProject", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    List<TechStack> stack = new ArrayList<>();
+    List<TechStack> stacks = new ArrayList<>();
 
     @Builder
     private ToyProject(String title, String description, int totalExpectedTime, int planTimeInWeekDay, int planTimeInWeekend,
-                   LocalDate startDate, LocalDate endDate, Member member, List<RequiredFunction> functions, List<TechStack> stack) {
+                   LocalDate startDate, LocalDate endDate, Member member, List<RequiredFunction> functions, List<TechStack> stacks) {
 
         super(title, description, totalExpectedTime, planTimeInWeekDay, planTimeInWeekend, startDate, endDate, member);
-        this.functions = functions;
-        this.stack = stack;
+        this.functions = functions.stream()
+            .map(function -> RequiredFunction.builder()
+                .toyProject(this)
+                .functionType(function.getFunctionType())
+                .build())
+            .toList();
+
+        this.stacks = stacks.stream()
+            .map(stack -> TechStack.builder()
+                .toyProject(this)
+                .title(stack.getTitle())
+                .techCategory(stack.getTechCategory())
+                .build())
+            .toList();
     }
 }

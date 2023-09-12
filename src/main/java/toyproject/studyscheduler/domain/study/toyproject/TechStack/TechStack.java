@@ -19,15 +19,15 @@ public class TechStack {
     private String title;
 
     @Enumerated(EnumType.STRING)
-    private Category category;
+    private TechCategory techCategory;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private ToyProject toyProject;
 
     @Builder
-    private TechStack(String title, Category category, ToyProject toyProject) {
+    private TechStack(String title, TechCategory techCategory, ToyProject toyProject) {
         this.title = title;
-        this.category = category;
+        this.techCategory = techCategory;
         this.toyProject = toyProject;
     }
 }
