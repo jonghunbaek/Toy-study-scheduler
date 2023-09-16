@@ -13,7 +13,6 @@ import toyproject.studyscheduler.domain.study.toyproject.TechStack.TechStack;
 import toyproject.studyscheduler.domain.study.toyproject.requiredfunction.FunctionType;
 import toyproject.studyscheduler.domain.study.toyproject.requiredfunction.RequiredFunction;
 import toyproject.studyscheduler.domain.study.toyproject.ToyProject;
-import toyproject.studyscheduler.domain.study.toyproject.repository.ToyProjectRepository;
 import toyproject.studyscheduler.domain.member.AccountType;
 import toyproject.studyscheduler.domain.member.Member;
 import toyproject.studyscheduler.domain.member.repository.MemberRepository;
@@ -35,9 +34,6 @@ class StudyRepositoryTest {
     @Autowired
     MemberRepository memberRepository;
 
-    @Autowired
-    ToyProjectRepository toyProjectRepository;
-
     @DisplayName("주어진 여러개의 아이디로 여러개의 학습 상세내용을 조회한다.")
     @Test
     void getStudiesByIds() {
@@ -54,11 +50,9 @@ class StudyRepositoryTest {
         TechStack stack1 = createTechStack("Java", LANGUAGE);
         TechStack stack2 = createTechStack("Spring", FRAMEWORK);
 
-        ToyProject toyProject = createToyProject(startDate, endDate, member, List.of(function1, function2), List.of(stack1, stack2));
-        toyProjectRepository.save(toyProject);
-
         Lecture lecture = createLecture(startDate, endDate, member);
         Reading reading = createReading(startDate, endDate, member);
+        ToyProject toyProject = createToyProject(startDate, endDate, member, List.of(function1, function2), List.of(stack1, stack2));
         studyRepository.saveAll(List.of(lecture, reading, toyProject));
 
         // when
@@ -70,7 +64,7 @@ class StudyRepositoryTest {
                 .containsExactlyInAnyOrder(
                         tuple("김영한의 스프링", "스프링 핵심 강의", startDate),
                         tuple("클린 코드", "클린 코드를 배우기 위한 도서", startDate),
-                        tuple("강의 조회", "강의를 조회한다.", startDate)
+                        tuple("스터디 스케쥴러", "개인의 학습의 진도율을 관리", startDate)
                 );
     }
 
@@ -84,13 +78,16 @@ class StudyRepositoryTest {
         Member member = createMember();
         memberRepository.save(member);
 
-        ToyProject toyProject = createToyProject();
-        toyProjectRepository.save(toyProject);
+        RequiredFunction function1 = createFunction(CREATE);
+        RequiredFunction function2 = createFunction(READ);
 
-        Study lecture = createLecture(startDate, endDate, member);
-        Study reading = createReading(startDate, endDate, member);
-        Study requiredFunction = createFunction(startDate, endDate, member, toyProject);
-        studyRepository.saveAll(List.of(lecture, reading, requiredFunction));
+        TechStack stack1 = createTechStack("Java", LANGUAGE);
+        TechStack stack2 = createTechStack("Spring", FRAMEWORK);
+
+        Lecture lecture = createLecture(startDate, endDate, member);
+        Reading reading = createReading(startDate, endDate, member);
+        ToyProject toyProject = createToyProject(startDate, endDate, member, List.of(function1, function2), List.of(stack1, stack2));
+        studyRepository.saveAll(List.of(lecture, reading, toyProject));
 
         // when
         LocalDate checkStartDate = LocalDate.of(2023, 7, 1);
@@ -104,7 +101,7 @@ class StudyRepositoryTest {
                 .containsExactlyInAnyOrder(
                         tuple("김영한의 스프링", "스프링 핵심 강의", startDate),
                         tuple("클린 코드", "클린 코드를 배우기 위한 도서", startDate),
-                        tuple("강의 조회", "강의를 조회한다.", startDate)
+                        tuple("스터디 스케쥴러", "개인의 학습의 진도율을 관리", startDate)
                 );
     }
 
