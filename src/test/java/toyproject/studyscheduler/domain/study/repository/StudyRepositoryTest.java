@@ -8,10 +8,10 @@ import org.springframework.test.context.ActiveProfiles;
 import toyproject.studyscheduler.domain.study.Study;
 import toyproject.studyscheduler.domain.study.lecture.Lecture;
 import toyproject.studyscheduler.domain.study.reading.Reading;
-import toyproject.studyscheduler.domain.study.toyproject.TechStack.TechCategory;
-import toyproject.studyscheduler.domain.study.toyproject.TechStack.TechStack;
-import toyproject.studyscheduler.domain.study.toyproject.requiredfunction.FunctionType;
-import toyproject.studyscheduler.domain.study.toyproject.requiredfunction.RequiredFunction;
+import toyproject.studyscheduler.domain.techstack.TechCategory;
+import toyproject.studyscheduler.domain.techstack.TechStack;
+import toyproject.studyscheduler.domain.function.FunctionType;
+import toyproject.studyscheduler.domain.function.RequiredFunction;
 import toyproject.studyscheduler.domain.study.toyproject.ToyProject;
 import toyproject.studyscheduler.domain.member.AccountType;
 import toyproject.studyscheduler.domain.member.Member;
@@ -21,8 +21,8 @@ import java.time.LocalDate;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
-import static toyproject.studyscheduler.domain.study.toyproject.TechStack.TechCategory.*;
-import static toyproject.studyscheduler.domain.study.toyproject.requiredfunction.FunctionType.*;
+import static toyproject.studyscheduler.domain.techstack.TechCategory.*;
+import static toyproject.studyscheduler.domain.function.FunctionType.*;
 
 @ActiveProfiles("test")
 @DataJpaTest

@@ -1,4 +1,4 @@
-package toyproject.studyscheduler.domain.study.toyproject.TechStack;
+package toyproject.studyscheduler.domain.techstack;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;

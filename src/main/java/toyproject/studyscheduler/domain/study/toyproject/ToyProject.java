@@ -7,8 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import toyproject.studyscheduler.domain.member.Member;
 import toyproject.studyscheduler.domain.study.Study;
-import toyproject.studyscheduler.domain.study.toyproject.requiredfunction.RequiredFunction;
-import toyproject.studyscheduler.domain.study.toyproject.TechStack.TechStack;
+import toyproject.studyscheduler.domain.function.RequiredFunction;
+import toyproject.studyscheduler.domain.techstack.TechStack;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
