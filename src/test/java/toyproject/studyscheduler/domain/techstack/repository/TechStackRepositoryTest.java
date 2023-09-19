@@ -1,13 +1,15 @@
 package toyproject.studyscheduler.domain.techstack.repository;
 
+import org.assertj.core.api.Assertions;
+import org.assertj.core.groups.Tuple;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
-import toyproject.studyscheduler.domain.function.RequiredFunction;
 import toyproject.studyscheduler.domain.member.AccountType;
 import toyproject.studyscheduler.domain.member.Member;
+import toyproject.studyscheduler.domain.study.repository.StudyRepository;
 import toyproject.studyscheduler.domain.study.toyproject.ToyProject;
 import toyproject.studyscheduler.domain.techstack.TechCategory;
 import toyproject.studyscheduler.domain.techstack.TechStack;
@@ -15,6 +17,7 @@ import toyproject.studyscheduler.domain.techstack.TechStack;
 import java.time.LocalDate;
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static toyproject.studyscheduler.domain.techstack.TechCategory.*;
 
@@ -24,6 +27,8 @@ class TechStackRepositoryTest {
 
     @Autowired
     TechStackRepository techStackRepository;
+    @Autowired
+    StudyRepository studyRepository;
 
     @DisplayName("토이프로젝트에 저장된 TechStack을 모두 가져온다.")
     @Test
@@ -44,13 +49,22 @@ class TechStackRepositoryTest {
 
         ToyProject toyProject = createToyProject(startDate, endDate, member, List.of(language, framework, ide, db, os, build, cloud));
 
-        techStackRepository.saveAll(List.of(language, framework, ide, db, os, build, cloud));
-
-
         // when
+        ToyProject savedToyProject = studyRepository.save(toyProject);
+        List<TechStack> techStack = techStackRepository.saveAll(List.of(language, framework, ide, db, os, build, cloud));
 
         // then
-
+        assertThat(savedToyProject.getStacks()).hasSize(7)
+            .extracting("title", "techCategory")
+            .containsExactlyInAnyOrder(
+                tuple("Java", LANGUAGE),
+                tuple("Spring", FRAMEWORK),
+                tuple("IntelliJ", IDE),
+                tuple("MySQL", DATABASE),
+                tuple("window11", OS),
+                tuple("gradle", BUILD),
+                tuple("aws", CLOUD)
+            );
     }
 
     private static Member createMember() {
