@@ -31,19 +31,31 @@ public class ToyProject extends Study {
                    LocalDate startDate, LocalDate endDate, Member member, List<RequiredFunction> functions, List<TechStack> stacks) {
 
         super(title, description, totalExpectedTime, planTimeInWeekDay, planTimeInWeekend, startDate, endDate, member);
-        this.functions = functions.stream()
-            .map(function -> RequiredFunction.builder()
-                .toyProject(this)
-                .functionType(function.getFunctionType())
-                .build())
-            .toList();
+        if (functions != null) {
+            this.functions = functions.stream()
+                .map(function -> RequiredFunction.builder()
+                    .toyProject(this)
+                    .functionType(function.getFunctionType())
+                    .build())
+                .toList();
+        }
 
-        this.stacks = stacks.stream()
-            .map(stack -> TechStack.builder()
-                .toyProject(this)
-                .title(stack.getTitle())
-                .techCategory(stack.getTechCategory())
-                .build())
-            .toList();
+        if (stacks != null) {
+            this.stacks = stacks.stream()
+                .map(stack -> TechStack.builder()
+                    .toyProject(this)
+                    .title(stack.getTitle())
+                    .techCategory(stack.getTechCategory())
+                    .build())
+                .toList();
+        }
+    }
+
+    public void addTechStack(TechStack techStack) {
+        stacks.add(techStack);
+    }
+
+    public void addRequiredFunction(RequiredFunction function) {
+        functions.add(function);
     }
 }

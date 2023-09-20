@@ -17,6 +17,10 @@ public class RequiredFunction {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String title;
+
+    private String description;
+
     @Enumerated
     private FunctionType functionType;
 
@@ -24,8 +28,11 @@ public class RequiredFunction {
     ToyProject toyProject;
 
     @Builder
-    private RequiredFunction(FunctionType functionType, ToyProject toyProject) {
+    private RequiredFunction(String title, String description, FunctionType functionType, ToyProject toyProject) {
+        this.title = title;
+        this.description = description;
         this.functionType = functionType;
         this.toyProject = toyProject;
+        this.toyProject.addRequiredFunction(this);
     }
 }

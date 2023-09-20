@@ -29,5 +29,6 @@ public class TechStack {
         this.title = title;
         this.techCategory = techCategory;
         this.toyProject = toyProject;
+        this.toyProject.addTechStack(this);
     }
 }
