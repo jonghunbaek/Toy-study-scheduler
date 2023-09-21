@@ -34,7 +34,7 @@ class StudyRepositoryTest {
     @Autowired
     MemberRepository memberRepository;
 
-    @DisplayName("주어진 여러개의 아이디로 여러개의 학습 상세내용을 조회한다.")
+    @DisplayName("01_주어진 여러개의 아이디로 여러개의 학습 상세내용을 조회한다.")
     @Test
     void getStudiesByIds() {
         // given
@@ -44,19 +44,61 @@ class StudyRepositoryTest {
         Member member = createMember();
         memberRepository.save(member);
 
-        RequiredFunction function1 = createFunction(CREATE);
-        RequiredFunction function2 = createFunction(READ);
+        ToyProject toyProject = createToyProject(startDate, endDate, member);
 
-        TechStack stack1 = createTechStack("Java", LANGUAGE);
-        TechStack stack2 = createTechStack("Spring", FRAMEWORK);
+        RequiredFunction function1 = createFunction(CREATE, toyProject);
+        RequiredFunction function2 = createFunction(READ, toyProject);
+
+        TechStack stack1 = createTechStack("Java", LANGUAGE, toyProject);
+        TechStack stack2 = createTechStack("Spring", FRAMEWORK, toyProject);
 
         Lecture lecture = createLecture(startDate, endDate, member);
         Reading reading = createReading(startDate, endDate, member);
-        ToyProject toyProject = createToyProject(startDate, endDate, member, List.of(function1, function2), List.of(stack1, stack2));
         studyRepository.saveAll(List.of(lecture, reading, toyProject));
 
         // when
         List<Study> studies = studyRepository.findAllById(List.of(lecture.getId(), reading.getId(), toyProject.getId()));
+
+        // TODO : 반환 값 수정 후 Studyrepo 새로운 메서드 테스트하기
+        Study savedToyProject = studyRepository.findById(toyProject.getId()).orElseThrow(() -> new IllegalArgumentException("없다."));
+        // then
+        assertThat(studies).hasSize(3)
+                .extracting("title", "description", "startDate")
+                .containsExactlyInAnyOrder(
+                        tuple("김영한의 스프링", "스프링 핵심 강의", startDate),
+                        tuple("클린 코드", "클린 코드를 배우기 위한 도서", startDate),
+                        tuple("스터디 스케쥴러", "개인의 학습의 진도율을 관리", startDate)
+                );
+
+    }
+
+    @DisplayName("02_특정기간에 수행한 학습들을 모두 조회 한다.")
+    @Test
+    void getStudiesByPeriod() {
+        // given
+        LocalDate startDate = LocalDate.of(2023, 7, 1);
+        LocalDate endDate = LocalDate.of(2023, 8, 3);
+
+        Member member = createMember();
+        memberRepository.save(member);
+
+        ToyProject toyProject = createToyProject(startDate, endDate, member);
+
+        RequiredFunction function1 = createFunction(CREATE, toyProject);
+        RequiredFunction function2 = createFunction(READ, toyProject);
+
+        TechStack stack1 = createTechStack("Java", LANGUAGE, toyProject);
+        TechStack stack2 = createTechStack("Spring", FRAMEWORK, toyProject);
+
+        Lecture lecture = createLecture(startDate, endDate, member);
+        Reading reading = createReading(startDate, endDate, member);
+        studyRepository.saveAll(List.of(lecture, reading, toyProject));
+
+        // when
+        LocalDate checkStartDate = LocalDate.of(2023, 7, 1);
+        LocalDate checkEndDate = LocalDate.of(2023, 7, 31);
+
+        List<Study> studies = studyRepository.findAllByCreatedDateAfterAndEndDateBefore(checkStartDate, checkEndDate);
 
         // then
         assertThat(studies).hasSize(3)
@@ -68,9 +110,9 @@ class StudyRepositoryTest {
                 );
     }
 
-    @DisplayName("특정기간에 수행한 학습들을 모두 조회 한다.")
+    @DisplayName("토이프로젝트 및 토이프로젝트와 연관관계를 가지는 엔티티들을 모두 조회한다.")
     @Test
-    void getStudiesByPeriod() {
+    void findStudyToyProjectAndRelatedThings() {
         // given
         LocalDate startDate = LocalDate.of(2023, 7, 1);
         LocalDate endDate = LocalDate.of(2023, 8, 3);
@@ -78,31 +120,22 @@ class StudyRepositoryTest {
         Member member = createMember();
         memberRepository.save(member);
 
-        RequiredFunction function1 = createFunction(CREATE);
-        RequiredFunction function2 = createFunction(READ);
+        ToyProject toyProject = createToyProject(startDate, endDate, member);
 
-        TechStack stack1 = createTechStack("Java", LANGUAGE);
-        TechStack stack2 = createTechStack("Spring", FRAMEWORK);
+        RequiredFunction function1 = createFunction(CREATE, toyProject);
+        RequiredFunction function2 = createFunction(READ, toyProject);
+
+        TechStack stack1 = createTechStack("Java", LANGUAGE, toyProject);
+        TechStack stack2 = createTechStack("Spring", FRAMEWORK, toyProject);
 
         Lecture lecture = createLecture(startDate, endDate, member);
         Reading reading = createReading(startDate, endDate, member);
-        ToyProject toyProject = createToyProject(startDate, endDate, member, List.of(function1, function2), List.of(stack1, stack2));
-        studyRepository.saveAll(List.of(lecture, reading, toyProject));
+
 
         // when
-        LocalDate checkStartDate = LocalDate.of(2023, 7, 1);
-        LocalDate checkEndDate = LocalDate.of(2023, 7, 31);
-
-        List<Study> studies = studyRepository.findAllByPeriod(checkStartDate, checkEndDate);
 
         // then
-        assertThat(studies).hasSize(3)
-                .extracting("title", "description", "startDate")
-                .containsExactlyInAnyOrder(
-                        tuple("김영한의 스프링", "스프링 핵심 강의", startDate),
-                        tuple("클린 코드", "클린 코드를 배우기 위한 도서", startDate),
-                        tuple("스터디 스케쥴러", "개인의 학습의 진도율을 관리", startDate)
-                );
+
     }
 
     private static Member createMember() {
@@ -116,7 +149,7 @@ class StudyRepositoryTest {
                 .build();
     }
 
-    private ToyProject createToyProject(LocalDate startDate, LocalDate endDate, Member member, List<RequiredFunction> functions, List<TechStack> stacks) {
+    private ToyProject createToyProject(LocalDate startDate, LocalDate endDate, Member member) {
         return ToyProject.builder()
                 .title("스터디 스케쥴러")
                 .description("개인의 학습의 진도율을 관리")
@@ -126,21 +159,21 @@ class StudyRepositoryTest {
                 .startDate(startDate)
                 .endDate(endDate)
                 .member(member)
-                .functions(functions)
-                .stacks(stacks)
                 .build();
     }
 
-    private TechStack createTechStack(String title, TechCategory techCategory) {
+    private TechStack createTechStack(String title, TechCategory techCategory, ToyProject toyProject) {
         return TechStack.builder()
-            .title(title)
-            .techCategory(techCategory)
-            .build();
+                .title(title)
+                .techCategory(techCategory)
+                .toyProject(toyProject)
+                .build();
     }
 
-    private RequiredFunction createFunction(FunctionType functionType) {
+    private RequiredFunction createFunction(FunctionType functionType, ToyProject toyProject) {
         return RequiredFunction.builder()
                 .functionType(READ)
+                .toyProject(toyProject)
                 .build();
     }
 
