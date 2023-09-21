@@ -20,7 +20,7 @@ import static toyproject.studyscheduler.domain.techstack.TechCategory.*;
 
 class ToyProjectTest {
 
-    @DisplayName("01_기술 스택을 추가하는 테스트")
+    @DisplayName("01_기술 스택을 추가한다.")
     @Test
     void addStack() {
         // given
@@ -31,7 +31,7 @@ class ToyProjectTest {
         TechStack framework = createTechStack("Spring", FRAMEWORK, toyProject);
 
         // then
-        assertThat(toyProject.getStacks()).hasSize(2)
+        assertThat(toyProject.getTechStacks()).hasSize(2)
             .extracting("title", "techCategory")
             .containsExactlyInAnyOrder(
                 tuple("Java", LANGUAGE),
@@ -39,7 +39,7 @@ class ToyProjectTest {
             );
     }
 
-    @DisplayName("02_기능 요구사항을 추가하는 테스트")
+    @DisplayName("02_기능 요구사항을 추가한다.")
     @Test
     void addRequiredFunction() {
         // given
@@ -50,7 +50,7 @@ class ToyProjectTest {
         RequiredFunction login = createRequiredFunction("로그인", "회원 등록 여부를 확인해 로그인을 결정", READ, toyProject);
 
         // then
-        assertThat(toyProject.getFunctions()).hasSize(2)
+        assertThat(toyProject.getRequiredFunctions()).hasSize(2)
             .extracting("title", "description", "functionType")
             .containsExactlyInAnyOrder(
                 tuple("회원가입", "신규 회원을 등록한다.", CREATE),

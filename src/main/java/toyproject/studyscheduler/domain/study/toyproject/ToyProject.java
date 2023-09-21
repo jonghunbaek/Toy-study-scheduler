@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @DiscriminatorValue("ToyProject")
-@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class ToyProject extends Study {
@@ -26,11 +25,20 @@ public class ToyProject extends Study {
     @OneToMany(mappedBy = "toyProject", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     List<TechStack> stacks = new ArrayList<>();
 
+    public List<RequiredFunction> getRequiredFunctions() {
+        return functions.stream().toList();
+    }
+    
+    public List<TechStack> getTechStacks() {
+        return stacks.stream().toList();
+    }
+
     @Builder
     private ToyProject(String title, String description, int totalExpectedTime, int planTimeInWeekDay, int planTimeInWeekend,
                    LocalDate startDate, LocalDate endDate, Member member, List<RequiredFunction> functions, List<TechStack> stacks) {
 
         super(title, description, totalExpectedTime, planTimeInWeekDay, planTimeInWeekend, startDate, endDate, member);
+
         if (functions != null) {
             this.functions = functions.stream()
                 .map(function -> RequiredFunction.builder()

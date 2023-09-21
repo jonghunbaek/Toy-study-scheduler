@@ -54,7 +54,7 @@ class TechStackRepositoryTest {
         List<TechStack> techStack = techStackRepository.saveAll(List.of(language, framework, ide, db, os, build, cloud));
 
         // then
-        assertThat(savedToyProject.getStacks()).hasSize(7)
+        assertThat(savedToyProject.getTechStacks()).hasSize(7)
             .extracting("title", "techCategory")
             .containsExactlyInAnyOrder(
                 tuple("Java", LANGUAGE),
