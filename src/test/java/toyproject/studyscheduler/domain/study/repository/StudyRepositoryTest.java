@@ -8,6 +8,7 @@ import org.springframework.test.context.ActiveProfiles;
 import toyproject.studyscheduler.domain.study.Study;
 import toyproject.studyscheduler.domain.study.lecture.Lecture;
 import toyproject.studyscheduler.domain.study.reading.Reading;
+import toyproject.studyscheduler.domain.study.toyproject.ToyProjectRepository;
 import toyproject.studyscheduler.domain.techstack.TechCategory;
 import toyproject.studyscheduler.domain.techstack.TechStack;
 import toyproject.studyscheduler.domain.function.FunctionType;
@@ -34,6 +35,9 @@ class StudyRepositoryTest {
     @Autowired
     MemberRepository memberRepository;
 
+    @Autowired
+    ToyProjectRepository toyProjectRepository;
+
     @DisplayName("01_주어진 여러개의 아이디로 여러개의 학습 상세내용을 조회한다.")
     @Test
     void getStudiesByIds() {
@@ -55,12 +59,14 @@ class StudyRepositoryTest {
         Lecture lecture = createLecture(startDate, endDate, member);
         Reading reading = createReading(startDate, endDate, member);
         studyRepository.saveAll(List.of(lecture, reading, toyProject));
-
+        toyProjectRepository.save(toyProject);
         // when
         List<Study> studies = studyRepository.findAllById(List.of(lecture.getId(), reading.getId(), toyProject.getId()));
 
         // TODO : 반환 값 수정 후 Studyrepo 새로운 메서드 테스트하기
         Study savedToyProject = studyRepository.findById(toyProject.getId()).orElseThrow(() -> new IllegalArgumentException("없다."));
+        toyProjectRepository.findById(toyProject.getId()).orElseThrow(() -> new IllegalArgumentException("없다."))
+
         // then
         assertThat(studies).hasSize(3)
                 .extracting("title", "description", "startDate")
