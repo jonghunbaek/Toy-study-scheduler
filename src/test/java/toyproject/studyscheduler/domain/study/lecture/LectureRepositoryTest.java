@@ -61,7 +61,7 @@ class LectureRepositoryTest {
         memberRepository.save(member);
 
         Lecture lecture1 = createLecture("김영한의 스프링", "스프링 핵심 강의", startDate1, endDate1, member, "김영한");
-        Lecture lecture2 = createLecture("백기선의 JPA", "JPA 핵심 강의", startDate1, endDate1, member, "백기선");
+        Lecture lecture2 = createLecture("백기선의 JPA", "JPA 핵심 강의", startDate2, endDate2, member, "백기선");
         lectureRepository.saveAll(List.of(lecture1, lecture2));
 
         // when
@@ -74,8 +74,8 @@ class LectureRepositoryTest {
         assertThat(lectures).hasSize(2)
             .extracting("title", "description", "startDate", "teacherName")
             .containsExactlyInAnyOrder(
-                tuple("김영한의 스프링", "스프링 핵심 강의", startDate, "김영한"),
-                tuple("백기선의 JPA", "JPA 핵심 강의", startDate, "백기선")
+                tuple("김영한의 스프링", "스프링 핵심 강의", startDate1, "김영한"),
+                tuple("백기선의 JPA", "JPA 핵심 강의", startDate2, "백기선")
             );
     }
 
