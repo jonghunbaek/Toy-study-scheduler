@@ -10,10 +10,6 @@ import toyproject.studyscheduler.domain.function.RequiredFunction;
 import toyproject.studyscheduler.domain.member.AccountType;
 import toyproject.studyscheduler.domain.member.Member;
 import toyproject.studyscheduler.domain.member.repository.MemberRepository;
-import toyproject.studyscheduler.domain.study.Study;
-import toyproject.studyscheduler.domain.study.lecture.Lecture;
-import toyproject.studyscheduler.domain.study.reading.Reading;
-import toyproject.studyscheduler.domain.study.repository.StudyRepository;
 import toyproject.studyscheduler.domain.techstack.TechCategory;
 import toyproject.studyscheduler.domain.techstack.TechStack;
 
@@ -37,7 +33,7 @@ class ToyProjectRepositoryTest {
     @Autowired
     ToyProjectRepository toyProjectRepository;
 
-    @DisplayName("01_주어진 아이디로 토이프로젝트의 상세내용을 조회한다.")
+    @DisplayName("01_주어진 아이디로 토이프로젝트 학습의 상세내용을 조회한다.")
     @Test
     void findToyProjectById() {
         // given
@@ -78,14 +74,14 @@ class ToyProjectRepositoryTest {
             );
     }
 
-    @DisplayName("02_특정기간(경계값)에 수행한 토이 프로젝트들을 모두 조회 한다.")
+    @DisplayName("02_특정기간(기간 경계값 안에 포함)에 수행한 토이 프로젝트들을 모두 조회 한다.")
     @Test
-    void findAllByPeriodWithBoundaryVal() {
+    void findToyProjectsByPeriod() {
         // given
-        LocalDate startDate1 = LocalDate.of(2023, 6, 1);
-        LocalDate endDate1 = LocalDate.of(2023, 7, 1);
-        LocalDate startDate2 = LocalDate.of(2023, 7, 31);
-        LocalDate endDate2 = LocalDate.of(2023, 8, 16);
+        LocalDate startDate1 = LocalDate.of(2023, 7, 1);
+        LocalDate endDate1 = LocalDate.of(2023, 7, 21);
+        LocalDate startDate2 = LocalDate.of(2023, 7, 11);
+        LocalDate endDate2 = LocalDate.of(2023, 7, 31);
 
         Member member = createMember();
         memberRepository.save(member);
@@ -146,14 +142,14 @@ class ToyProjectRepositoryTest {
             );
     }
 
-    @DisplayName("03_특정기간(기간 경계값 안에 포함)에 수행한 토이 프로젝트들을 모두 조회 한다.")
+    @DisplayName("03_특정기간(경계값)에 수행한 토이 프로젝트들을 모두 조회 한다.")
     @Test
-    void findToyProjectsByPeriod() {
+    void findAllByPeriodWithBoundaryVal() {
         // given
-        LocalDate startDate1 = LocalDate.of(2023, 7, 1);
-        LocalDate endDate1 = LocalDate.of(2023, 7, 21);
-        LocalDate startDate2 = LocalDate.of(2023, 7, 11);
-        LocalDate endDate2 = LocalDate.of(2023, 7, 31);
+        LocalDate startDate1 = LocalDate.of(2023, 6, 1);
+        LocalDate endDate1 = LocalDate.of(2023, 7, 1);
+        LocalDate startDate2 = LocalDate.of(2023, 7, 31);
+        LocalDate endDate2 = LocalDate.of(2023, 8, 16);
 
         Member member = createMember();
         memberRepository.save(member);
