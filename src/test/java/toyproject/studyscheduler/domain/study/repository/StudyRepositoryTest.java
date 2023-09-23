@@ -8,7 +8,6 @@ import org.springframework.test.context.ActiveProfiles;
 import toyproject.studyscheduler.domain.study.Study;
 import toyproject.studyscheduler.domain.study.lecture.Lecture;
 import toyproject.studyscheduler.domain.study.reading.Reading;
-import toyproject.studyscheduler.domain.study.toyproject.ToyProjectRepository;
 import toyproject.studyscheduler.domain.techstack.TechCategory;
 import toyproject.studyscheduler.domain.techstack.TechStack;
 import toyproject.studyscheduler.domain.function.FunctionType;
@@ -35,9 +34,6 @@ class StudyRepositoryTest {
     @Autowired
     MemberRepository memberRepository;
 
-    @Autowired
-    ToyProjectRepository toyProjectRepository;
-
     @DisplayName("01_주어진 여러개의 아이디로 여러개의 학습 상세내용을 조회한다.")
     @Test
     void getStudiesByIds() {
@@ -49,22 +45,18 @@ class StudyRepositoryTest {
         memberRepository.save(member);
 
         ToyProject toyProject = createToyProject(startDate, endDate, member);
-
         RequiredFunction function1 = createFunction(CREATE, toyProject);
         RequiredFunction function2 = createFunction(READ, toyProject);
-
         TechStack stack1 = createTechStack("Java", LANGUAGE, toyProject);
         TechStack stack2 = createTechStack("Spring", FRAMEWORK, toyProject);
 
         Lecture lecture = createLecture(startDate, endDate, member);
         Reading reading = createReading(startDate, endDate, member);
+
         studyRepository.saveAll(List.of(lecture, reading, toyProject));
-        toyProjectRepository.save(toyProject);
+
         // when
         List<Study> studies = studyRepository.findAllById(List.of(lecture.getId(), reading.getId(), toyProject.getId()));
-
-        // TODO : 반환 값 수정 후 Studyrepo 새로운 메서드 테스트하기
-        Study savedToyProject = studyRepository.findById(toyProject.getId()).orElseThrow(() -> new IllegalArgumentException("없다."));
 
         // then
         assertThat(studies).hasSize(3)
@@ -81,66 +73,40 @@ class StudyRepositoryTest {
     @Test
     void getStudiesByPeriod() {
         // given
-        LocalDate startDate = LocalDate.of(2023, 7, 1);
-        LocalDate endDate = LocalDate.of(2023, 8, 3);
+        LocalDate startDate1 = LocalDate.of(2023, 7, 1);
+        LocalDate endDate1 = LocalDate.of(2023, 8, 3);
+        LocalDate startDate2 = LocalDate.of(2023, 7, 8);
+        LocalDate endDate2 = LocalDate.of(2023, 7, 16);
+        LocalDate startDate3 = LocalDate.of(2023, 7, 31);
+        LocalDate endDate3 = LocalDate.of(2023, 8, 30);
 
         Member member = createMember();
         memberRepository.save(member);
 
-        ToyProject toyProject = createToyProject(startDate, endDate, member);
-
+        ToyProject toyProject = createToyProject(startDate1, endDate1, member);
         RequiredFunction function1 = createFunction(CREATE, toyProject);
         RequiredFunction function2 = createFunction(READ, toyProject);
-
         TechStack stack1 = createTechStack("Java", LANGUAGE, toyProject);
         TechStack stack2 = createTechStack("Spring", FRAMEWORK, toyProject);
 
-        Lecture lecture = createLecture(startDate, endDate, member);
-        Reading reading = createReading(startDate, endDate, member);
-        studyRepository.saveAll(List.of(lecture, reading, toyProject));
+        Lecture lecture = createLecture(startDate2, endDate2, member);
+        Reading reading = createReading(startDate3, endDate3, member);
+        List<Study> studies1 = studyRepository.saveAll(List.of(lecture, reading, toyProject));
 
         // when
-        LocalDate checkStartDate = LocalDate.of(2023, 7, 1);
-        LocalDate checkEndDate = LocalDate.of(2023, 7, 31);
+        LocalDate startDate = LocalDate.of(2023, 7, 1);
+        LocalDate endDate = LocalDate.of(2023, 7, 31);
 
-        List<Study> studies = studyRepository.findAllByPeriod(checkStartDate, checkEndDate);
+        List<Study> studies = studyRepository.findAllByPeriod(startDate, endDate);
 
         // then
         assertThat(studies).hasSize(3)
                 .extracting("title", "description", "startDate")
                 .containsExactlyInAnyOrder(
-                        tuple("김영한의 스프링", "스프링 핵심 강의", startDate),
-                        tuple("클린 코드", "클린 코드를 배우기 위한 도서", startDate),
-                        tuple("스터디 스케쥴러", "개인의 학습의 진도율을 관리", startDate)
+                        tuple("스터디 스케쥴러", "개인의 학습의 진도율을 관리", startDate1),
+                        tuple("김영한의 스프링", "스프링 핵심 강의", startDate2),
+                        tuple("클린 코드", "클린 코드를 배우기 위한 도서", startDate3)
                 );
-    }
-
-    @DisplayName("03_토이프로젝트 및 토이프로젝트와 연관관계를 가지는 엔티티들을 모두 조회한다.")
-    @Test
-    void findStudyToyProjectAndRelatedThings() {
-        // given
-        LocalDate startDate = LocalDate.of(2023, 7, 1);
-        LocalDate endDate = LocalDate.of(2023, 8, 3);
-
-        Member member = createMember();
-        memberRepository.save(member);
-
-        ToyProject toyProject = createToyProject(startDate, endDate, member);
-
-        RequiredFunction function1 = createFunction(CREATE, toyProject);
-        RequiredFunction function2 = createFunction(READ, toyProject);
-
-        TechStack stack1 = createTechStack("Java", LANGUAGE, toyProject);
-        TechStack stack2 = createTechStack("Spring", FRAMEWORK, toyProject);
-
-        Lecture lecture = createLecture(startDate, endDate, member);
-        Reading reading = createReading(startDate, endDate, member);
-
-
-        // when
-
-        // then
-
     }
 
     private static Member createMember() {
