@@ -1,7 +1,5 @@
 package toyproject.studyscheduler.domain.techstack.repository;
 
-import org.assertj.core.api.Assertions;
-import org.assertj.core.groups.Tuple;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,12 +11,12 @@ import toyproject.studyscheduler.domain.study.repository.StudyRepository;
 import toyproject.studyscheduler.domain.study.toyproject.ToyProject;
 import toyproject.studyscheduler.domain.techstack.TechCategory;
 import toyproject.studyscheduler.domain.techstack.TechStack;
+import toyproject.studyscheduler.domain.techstack.TechStackRepository;
 
 import java.time.LocalDate;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 import static toyproject.studyscheduler.domain.techstack.TechCategory.*;
 
 @ActiveProfiles("test")

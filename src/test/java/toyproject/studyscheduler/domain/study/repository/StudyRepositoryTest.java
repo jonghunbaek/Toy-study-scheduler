@@ -65,7 +65,6 @@ class StudyRepositoryTest {
 
         // TODO : 반환 값 수정 후 Studyrepo 새로운 메서드 테스트하기
         Study savedToyProject = studyRepository.findById(toyProject.getId()).orElseThrow(() -> new IllegalArgumentException("없다."));
-        toyProjectRepository.findById(toyProject.getId()).orElseThrow(() -> new IllegalArgumentException("없다."))
 
         // then
         assertThat(studies).hasSize(3)
@@ -104,7 +103,7 @@ class StudyRepositoryTest {
         LocalDate checkStartDate = LocalDate.of(2023, 7, 1);
         LocalDate checkEndDate = LocalDate.of(2023, 7, 31);
 
-        List<Study> studies = studyRepository.findAllByCreatedDateAfterAndEndDateBefore(checkStartDate, checkEndDate);
+        List<Study> studies = studyRepository.findAllByPeriod(checkStartDate, checkEndDate);
 
         // then
         assertThat(studies).hasSize(3)
@@ -116,7 +115,7 @@ class StudyRepositoryTest {
                 );
     }
 
-    @DisplayName("토이프로젝트 및 토이프로젝트와 연관관계를 가지는 엔티티들을 모두 조회한다.")
+    @DisplayName("03_토이프로젝트 및 토이프로젝트와 연관관계를 가지는 엔티티들을 모두 조회한다.")
     @Test
     void findStudyToyProjectAndRelatedThings() {
         // given

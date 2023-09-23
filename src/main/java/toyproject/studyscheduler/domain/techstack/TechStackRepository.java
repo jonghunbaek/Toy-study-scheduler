@@ -1,4 +1,4 @@
-package toyproject.studyscheduler.domain.techstack.repository;
+package toyproject.studyscheduler.domain.techstack;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import toyproject.studyscheduler.domain.techstack.TechStack;
