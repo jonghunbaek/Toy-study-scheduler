@@ -7,8 +7,10 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
 import toyproject.studyscheduler.domain.member.AccountType;
 import toyproject.studyscheduler.domain.member.Member;
+import toyproject.studyscheduler.domain.member.repository.MemberRepository;
 import toyproject.studyscheduler.domain.study.repository.StudyRepository;
 import toyproject.studyscheduler.domain.study.toyproject.ToyProject;
+import toyproject.studyscheduler.domain.study.toyproject.ToyProjectRepository;
 import toyproject.studyscheduler.domain.techstack.TechCategory;
 import toyproject.studyscheduler.domain.techstack.TechStack;
 import toyproject.studyscheduler.domain.techstack.TechStackRepository;
@@ -26,33 +28,37 @@ class TechStackRepositoryTest {
     @Autowired
     TechStackRepository techStackRepository;
     @Autowired
-    StudyRepository studyRepository;
+    ToyProjectRepository toyProjectRepository;
+    @Autowired
+    MemberRepository memberRepository;
 
-    @DisplayName("토이프로젝트에 저장된 TechStack을 모두 가져온다.")
+    @DisplayName("01_저장된 TechStack을 모두 조회한다.")
     @Test
-    void findAllByToyProject() {
+    void findAll() {
         // given
         LocalDate startDate = LocalDate.of(2023, 9, 10);
         LocalDate endDate = LocalDate.of(2023, 9, 29);
 
-
         Member member = createMember();
-        TechStack language = createTechStack("Java", LANGUAGE);
-        TechStack framework = createTechStack("Spring", FRAMEWORK);
-        TechStack ide = createTechStack("IntelliJ", IDE);
-        TechStack db = createTechStack("MySQL", DATABASE);
-        TechStack os = createTechStack("window11", OS);
-        TechStack build = createTechStack("gradle", BUILD);
-        TechStack cloud = createTechStack("aws", CLOUD);
+        ToyProject toyProject = createToyProject(startDate, endDate, member);
 
-        ToyProject toyProject = createToyProject(startDate, endDate, member, List.of(language, framework, ide, db, os, build, cloud));
+        TechStack language = createTechStack("Java", LANGUAGE, toyProject);
+        TechStack framework = createTechStack("Spring", FRAMEWORK, toyProject);
+        TechStack ide = createTechStack("IntelliJ", IDE, toyProject);
+        TechStack db = createTechStack("MySQL", DATABASE, toyProject);
+        TechStack os = createTechStack("window11", OS, toyProject);
+        TechStack build = createTechStack("gradle", BUILD, toyProject);
+        TechStack cloud = createTechStack("aws", CLOUD, toyProject);
+
+        memberRepository.save(member);
+        toyProjectRepository.save(toyProject);
+        techStackRepository.saveAll(List.of(language,framework,ide,db,os,build,cloud));
 
         // when
-        ToyProject savedToyProject = studyRepository.save(toyProject);
-        List<TechStack> techStack = techStackRepository.saveAll(List.of(language, framework, ide, db, os, build, cloud));
+        List<TechStack> techStacks = techStackRepository.findAll();
 
         // then
-        assertThat(savedToyProject.getTechStacks()).hasSize(7)
+        assertThat(techStacks).hasSize(7)
             .extracting("title", "techCategory")
             .containsExactlyInAnyOrder(
                 tuple("Java", LANGUAGE),
@@ -76,7 +82,7 @@ class TechStackRepositoryTest {
             .build();
     }
 
-    private ToyProject createToyProject(LocalDate startDate, LocalDate endDate, Member member, List<TechStack> stacks) {
+    private ToyProject createToyProject(LocalDate startDate, LocalDate endDate, Member member) {
         return ToyProject.builder()
             .title("스터디 스케쥴러")
             .description("개인의 학습의 진도율을 관리")
@@ -86,14 +92,14 @@ class TechStackRepositoryTest {
             .startDate(startDate)
             .endDate(endDate)
             .member(member)
-            .stacks(stacks)
             .build();
     }
 
-     TechStack createTechStack(String title, TechCategory techCategory) {
+     TechStack createTechStack(String title, TechCategory techCategory, ToyProject toyProject) {
         return TechStack.builder()
             .title(title)
             .techCategory(techCategory)
+            .toyProject(toyProject)
             .build();
      }
 }
