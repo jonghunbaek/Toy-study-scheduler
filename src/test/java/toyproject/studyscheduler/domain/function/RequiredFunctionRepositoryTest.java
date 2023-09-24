@@ -10,9 +10,6 @@ import toyproject.studyscheduler.domain.member.Member;
 import toyproject.studyscheduler.domain.member.repository.MemberRepository;
 import toyproject.studyscheduler.domain.study.toyproject.ToyProject;
 import toyproject.studyscheduler.domain.study.toyproject.ToyProjectRepository;
-import toyproject.studyscheduler.domain.techstack.TechCategory;
-import toyproject.studyscheduler.domain.techstack.TechStack;
-import toyproject.studyscheduler.domain.techstack.TechStackRepository;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -21,8 +18,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.tuple;
 import static org.junit.jupiter.api.Assertions.*;
 import static toyproject.studyscheduler.domain.function.FunctionType.*;
-import static toyproject.studyscheduler.domain.techstack.TechCategory.*;
-import static toyproject.studyscheduler.domain.techstack.TechCategory.CLOUD;
 
 @ActiveProfiles("test")
 @DataJpaTest

@@ -8,7 +8,6 @@ import org.springframework.test.context.ActiveProfiles;
 import toyproject.studyscheduler.domain.member.AccountType;
 import toyproject.studyscheduler.domain.member.Member;
 import toyproject.studyscheduler.domain.member.repository.MemberRepository;
-import toyproject.studyscheduler.domain.study.repository.StudyRepository;
 import toyproject.studyscheduler.domain.study.toyproject.ToyProject;
 import toyproject.studyscheduler.domain.study.toyproject.ToyProjectRepository;
 import toyproject.studyscheduler.domain.techstack.TechCategory;
