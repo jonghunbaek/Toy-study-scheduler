@@ -34,9 +34,9 @@ class StudyRepositoryTest {
     @Autowired
     MemberRepository memberRepository;
 
-    @DisplayName("01_주어진 여러개의 아이디로 여러개의 학습 상세내용을 조회한다.")
+    @DisplayName("주어진 여러개의 아이디로 여러개의 학습 상세내용을 조회한다.")
     @Test
-    void getStudiesByIds() {
+    void findStudiesByIds() {
         // given
         LocalDate startDate = LocalDate.of(2023, 7, 1);
         LocalDate endDate = LocalDate.of(2023, 8, 3);
@@ -58,6 +58,7 @@ class StudyRepositoryTest {
         // when
         List<Study> studies = studyRepository.findAllById(List.of(lecture.getId(), reading.getId(), toyProject.getId()));
 
+//        studies.forEach(study -> System.out.println("dtype TEST ==============" + study.getSubType()));
         // then
         assertThat(studies).hasSize(3)
                 .extracting("title", "description", "startDate")
@@ -69,9 +70,9 @@ class StudyRepositoryTest {
 
     }
 
-    @DisplayName("02_특정기간에 수행한 학습들을 모두 조회 한다.")
+    @DisplayName("특정기간에 수행한 학습들을 모두 조회 한다.")
     @Test
-    void getStudiesByPeriod() {
+    void findStudiesByPeriod() {
         // given
         LocalDate startDate1 = LocalDate.of(2023, 7, 1);
         LocalDate endDate1 = LocalDate.of(2023, 8, 3);
