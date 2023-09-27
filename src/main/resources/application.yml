@@ -21,3 +21,9 @@ spring:
       hibernate:
         format_sql: true
     show-sql: true
+
+  devtools:
+    restart:
+      enabled: true
+  thymeleaf:
+    cache: false
