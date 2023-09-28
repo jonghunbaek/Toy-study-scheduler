@@ -78,6 +78,16 @@ class StudyServiceTest {
             new FindStudyRequestDto(savedReading.getId()),
             new FindStudyRequestDto(savedToyProject.getId())));
 
+        List<Study> studies = studyRepository.findAll();
+
+        assertThat(studies).hasSize(3)
+            .extracting("title", "description", "startDate")
+            .containsExactlyInAnyOrder(
+                tuple("김영한의 스프링", "스프링 핵심 강의", startDate),
+                tuple("클린 코드", "클린 코드를 배우기 위한 도서", startDate),
+                tuple("스터디 스케쥴러", "개인의 학습의 진도율을 관리", startDate)
+            );
+
         // TODO : 싱글테이블 전략에서 dtype 조회하는 방법 찾기
         // when
 //        List<FindStudyResponseDto>

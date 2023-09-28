@@ -88,7 +88,10 @@ If you want an embedded database please put a supported one on the classpath or 
 ```
 
 + StudyRepository 메소드의 반환타입
-```
-고민 상황 : 부모 클래스인 Study로 반환을 받으면 자식 클래스들의 고유 필드를 사용할 수 없다.
-해결 방안 : 자식 클래스마다 repository를 만들어줘서 해결
+```java
+//고민 상황 : 부모 클래스인 Study로 반환을 받으면 자식 클래스들의 고유 필드를 사용할 수 없다.
+//해결 방안1 : 자식 클래스마다 repository를 만들어줘서 해결
+//해결 방안2 : single table 전략에서 DiscriminatorColumn을 조회해서 타입을 구분해 줄 수 있다.
+@Column(name="study_type", insertable = false, updatable = false)
+private String studyType;
 ```

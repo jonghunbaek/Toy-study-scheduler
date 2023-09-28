@@ -11,7 +11,7 @@ import java.time.LocalDate;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-@DiscriminatorColumn(name = "dtype")
+@DiscriminatorColumn(name = "study_type")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @Entity
 public abstract class Study extends BaseEntity {
@@ -19,6 +19,9 @@ public abstract class Study extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name="study_type", insertable = false, updatable = false)
+    private String studyType;
 
     private String title;
 
