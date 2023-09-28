@@ -23,9 +23,9 @@ public abstract class Study extends BaseInfoEntity {
     @Column(name="study_type", insertable = false, updatable = false)
     private String studyType;
 
-    private int totalExpectedTime;
+    private int totalExpectedPeriod;
 
-    private int planTimeInWeekDay;
+    private int planTimeInWeekday;
 
     private int planTimeInWeekend;
 
@@ -36,11 +36,11 @@ public abstract class Study extends BaseInfoEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private Member member;
 
-    protected Study(String title, String description, int totalExpectedTime, int planTimeInWeekDay, int planTimeInWeekend,
+    protected Study(String title, String description, int totalExpectedPeriod, int planTimeInWeekday, int planTimeInWeekend,
                     LocalDate startDate, LocalDate endDate, Member member) {
         super(title, description);
-        this.totalExpectedTime = totalExpectedTime;
-        this.planTimeInWeekDay = planTimeInWeekDay;
+        this.totalExpectedPeriod = totalExpectedPeriod;
+        this.planTimeInWeekday = planTimeInWeekday;
         this.planTimeInWeekend = planTimeInWeekend;
         this.startDate = startDate;
         this.endDate = endDate;

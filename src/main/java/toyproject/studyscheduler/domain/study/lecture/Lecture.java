@@ -10,7 +10,7 @@ import toyproject.studyscheduler.domain.member.Member;
 
 import java.time.LocalDate;
 
-@DiscriminatorValue("Lecture")
+@DiscriminatorValue("lecture")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
@@ -18,10 +18,13 @@ public class Lecture extends Study {
 
     private String teacherName;
 
+    private int totalRuntime;
+
     @Builder
-    private Lecture(String title, String description, int totalExpectedTime, int planTimeInWeekDay, int planTimeInWeekend,
-                   LocalDate startDate, LocalDate endDate, Member member, String teacherName) {
-        super(title, description, totalExpectedTime, planTimeInWeekDay, planTimeInWeekend, startDate, endDate, member);
+    private Lecture(String title, String description, int totalExpectedPeriod, int planTimeInWeekday, int planTimeInWeekend,
+                   LocalDate startDate, LocalDate endDate, Member member, String teacherName, int totalRuntime) {
+        super(title, description, totalExpectedPeriod, planTimeInWeekday, planTimeInWeekend, startDate, endDate, member);
         this.teacherName = teacherName;
+        this.totalRuntime = totalRuntime;
     }
 }

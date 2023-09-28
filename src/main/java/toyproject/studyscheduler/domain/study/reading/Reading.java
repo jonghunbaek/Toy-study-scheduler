@@ -2,6 +2,7 @@ package toyproject.studyscheduler.domain.study.reading;
 
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,8 +11,8 @@ import toyproject.studyscheduler.domain.member.Member;
 
 import java.time.LocalDate;
 
-@DiscriminatorValue("Reading")
-@NoArgsConstructor
+@DiscriminatorValue("reading")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
 public class Reading extends Study {
@@ -23,9 +24,9 @@ public class Reading extends Study {
     private int readPagePerMin;
 
     @Builder
-    private Reading(String title, String description, int totalExpectedTime, int planTimeInWeekDay, int planTimeInWeekend,
+    private Reading(String title, String description, int totalExpectedPeriod, int planTimeInWeekday, int planTimeInWeekend,
                     LocalDate startDate, LocalDate endDate, Member member, String authorName, int totalPage, int readPagePerMin) {
-        super(title, description, totalExpectedTime, planTimeInWeekDay, planTimeInWeekend, startDate, endDate, member);
+        super(title, description, totalExpectedPeriod, planTimeInWeekday, planTimeInWeekend, startDate, endDate, member);
         this.authorName = authorName;
         this.totalPage = totalPage;
         this.readPagePerMin = readPagePerMin;

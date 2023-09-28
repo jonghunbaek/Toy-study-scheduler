@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import toyproject.studyscheduler.api.request.FindStudyRequestDto;
+import toyproject.studyscheduler.api.request.SaveStudyRequestDto;
 import toyproject.studyscheduler.domain.member.AccountType;
 import toyproject.studyscheduler.domain.member.Member;
 import toyproject.studyscheduler.domain.member.repository.MemberRepository;
@@ -51,6 +52,30 @@ class StudyServiceTest {
     @Autowired
     MemberRepository memberRepository;
 
+    @DisplayName("study를 저장할 때 Discriminator 타입을 구분해서 저장한다.")
+    @Test
+    void saveStudyAccordingToType() {
+        // given
+        Member member = createMember();
+        Member savedMember = memberRepository.save(member);
+
+        SaveStudyRequestDto.builder()
+            .studyType("lecture")
+            .title("김영한의 스프링")
+            .description("스프링 핵심 강의")
+            .teacherName("김영한")
+            .totalExpectedTime(600)
+            .planTimeInWeekDay(30)
+            .planTimeInWeekend(100)
+            .startDate(LocalDate.of(2023, 9, 10))
+            .memberId(savedMember.getId())
+            .build();
+
+        // when
+
+        // then
+
+    }
     @DisplayName("주어진 여러개의 아이디로 여러개의 학습 상세내용을 조회한다.")
     @Test
     void findStudiesByIds() {
@@ -158,8 +183,8 @@ class StudyServiceTest {
         return ToyProject.builder()
             .title("스터디 스케쥴러")
             .description("개인의 학습의 진도율을 관리")
-            .totalExpectedTime(300)
-            .planTimeInWeekDay(60)
+            .totalExpectedPeriod(300)
+            .planTimeInWeekday(60)
             .planTimeInWeekend(120)
             .startDate(startDate)
             .endDate(endDate)
@@ -188,10 +213,10 @@ class StudyServiceTest {
             .authorName("로버트 c.마틴")
             .description("클린 코드를 배우기 위한 도서")
             .totalPage(500)
-            .planTimeInWeekDay(30)
+            .planTimeInWeekday(30)
             .planTimeInWeekend(30)
             .readPagePerMin(2)
-            .totalExpectedTime(250)
+            .totalExpectedPeriod(250)
             .startDate(startDate)
             .endDate(endDate)
             .member(member)
@@ -203,8 +228,8 @@ class StudyServiceTest {
             .title("김영한의 스프링")
             .description("스프링 핵심 강의")
             .teacherName("김영한")
-            .totalExpectedTime(600)
-            .planTimeInWeekDay(30)
+            .totalExpectedPeriod(600)
+            .planTimeInWeekday(30)
             .planTimeInWeekend(100)
             .startDate(startDate)
             .endDate(endDate)

@@ -20,7 +20,7 @@ import static toyproject.studyscheduler.domain.techstack.TechCategory.*;
 
 class ToyProjectTest {
 
-    @DisplayName("01_기술 스택을 추가한다.")
+    @DisplayName("기술 스택을 추가한다.")
     @Test
     void addStack() {
         // given
@@ -39,7 +39,7 @@ class ToyProjectTest {
             );
     }
 
-    @DisplayName("02_기능 요구사항을 추가한다.")
+    @DisplayName("기능 요구사항을 추가한다.")
     @Test
     void addRequiredFunction() {
         // given
@@ -62,8 +62,8 @@ class ToyProjectTest {
         return ToyProject.builder()
             .title("스터디 스케쥴러")
             .description("개인의 학습의 진도율을 관리")
-            .totalExpectedTime(300)
-            .planTimeInWeekDay(60)
+            .totalExpectedPeriod(300)
+            .planTimeInWeekday(60)
             .planTimeInWeekend(120)
             .startDate(LocalDate.of(2023, 8,23))
             .endDate(LocalDate.of(2023, 8,30))

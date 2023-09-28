@@ -13,7 +13,7 @@ import static org.assertj.core.api.Assertions.*;
 
 class StudyTimeTest {
 
-    @DisplayName("StudyTime 생성 시, 총 학습량 = 총 학습량 + 오늘 학습량 계산을 한다.")
+    @DisplayName("StudyTime 생성 시, 총 학습량을 계산 한다.")
     @Test
     void calculateTotalCompleteTime() {
         // given
@@ -81,8 +81,7 @@ class StudyTimeTest {
             .title("김영한의 스프링")
             .description("스프링 핵심 강의")
             .teacherName("김영한")
-            .totalExpectedTime(600)
-            .planTimeInWeekDay(30)
+            .planTimeInWeekday(30)
             .planTimeInWeekend(100)
             .startDate(LocalDate.of(2023,8,12))
             .endDate(LocalDate.of(2023,8,30))
