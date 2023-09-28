@@ -18,6 +18,8 @@ public class RequiredFunction extends BaseInfoEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private int expectedTime;
+
     @Enumerated
     private FunctionType functionType;
 
@@ -25,8 +27,9 @@ public class RequiredFunction extends BaseInfoEntity {
     ToyProject toyProject;
 
     @Builder
-    private RequiredFunction(String title, String description, FunctionType functionType, ToyProject toyProject) {
+    private RequiredFunction(String title, String description, int expectedTime, FunctionType functionType, ToyProject toyProject) {
         super(title, description);
+        this.expectedTime = expectedTime;
         this.functionType = functionType;
         this.toyProject = toyProject;
         this.toyProject.addRequiredFunction(this);

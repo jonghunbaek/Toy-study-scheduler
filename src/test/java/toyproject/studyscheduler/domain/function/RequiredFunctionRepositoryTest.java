@@ -30,7 +30,7 @@ class RequiredFunctionRepositoryTest {
     @Autowired
     MemberRepository memberRepository;
 
-    @DisplayName("01_저장된 TechStack을 모두 조회한다.")
+    @DisplayName("저장된 요구사항 기능을 모두 조회한다.")
     @Test
     void findAll() {
         // given
@@ -40,11 +40,11 @@ class RequiredFunctionRepositoryTest {
         Member member = createMember();
         ToyProject toyProject = createToyProject(startDate, endDate, member);
 
-        RequiredFunction addMember = createFunction("회원 가입", "존재하는 유저 정보가 없을 경우 신규 생성", CREATE, toyProject);
-        RequiredFunction login = createFunction("로그인", "존재하는 유저 정보가 있을 경우 세션 생성", READ, toyProject);
-        RequiredFunction logout = createFunction("로그아웃", "세션 종료", ETC, toyProject);
-        RequiredFunction updateMember = createFunction("회원 정보 수정", "회원의 정보를 수정", UPDATE, toyProject);
-        RequiredFunction deleteMember = createFunction("회원 탈퇴", "존재하는 유저 정보를 삭제", DELETE, toyProject);
+        RequiredFunction addMember = createFunction("회원 가입", "존재하는 유저 정보가 없을 경우 신규 생성", 300, CREATE, toyProject);
+        RequiredFunction login = createFunction("로그인", "존재하는 유저 정보가 있을 경우 세션 생성", 400, READ, toyProject);
+        RequiredFunction logout = createFunction("로그아웃", "세션 종료", 500, ETC, toyProject);
+        RequiredFunction updateMember = createFunction("회원 정보 수정", "회원의 정보를 수정", 450, UPDATE, toyProject);
+        RequiredFunction deleteMember = createFunction("회원 탈퇴", "존재하는 유저 정보를 삭제", 100, DELETE, toyProject);
 
         memberRepository.save(member);
         toyProjectRepository.save(toyProject);
@@ -55,13 +55,13 @@ class RequiredFunctionRepositoryTest {
 
         // then
         assertThat(functions).hasSize(5)
-            .extracting("title", "description", "functionType")
+            .extracting("title", "description", "expectedTime", "functionType")
             .containsExactlyInAnyOrder(
-                tuple("회원 가입", "존재하는 유저 정보가 없을 경우 신규 생성", CREATE),
-                tuple("로그인", "존재하는 유저 정보가 있을 경우 세션 생성", READ),
-                tuple("로그아웃", "세션 종료", ETC),
-                tuple("회원 정보 수정", "회원의 정보를 수정", UPDATE),
-                tuple("회원 탈퇴", "존재하는 유저 정보를 삭제", DELETE)
+                tuple("회원 가입", "존재하는 유저 정보가 없을 경우 신규 생성", 300, CREATE),
+                tuple("로그인", "존재하는 유저 정보가 있을 경우 세션 생성", 400, READ),
+                tuple("로그아웃", "세션 종료", 500, ETC),
+                tuple("회원 정보 수정", "회원의 정보를 수정", 450, UPDATE),
+                tuple("회원 탈퇴", "존재하는 유저 정보를 삭제", 100, DELETE)
             );
     }
 
@@ -89,10 +89,11 @@ class RequiredFunctionRepositoryTest {
             .build();
     }
 
-    private RequiredFunction createFunction(String title, String description, FunctionType functionType, ToyProject toyProject) {
+    private RequiredFunction createFunction(String title, String description, int expectedTime, FunctionType functionType, ToyProject toyProject) {
         return RequiredFunction.builder()
             .title(title)
             .description(description)
+            .expectedTime(expectedTime)
             .functionType(functionType)
             .toyProject(toyProject)
             .build();
