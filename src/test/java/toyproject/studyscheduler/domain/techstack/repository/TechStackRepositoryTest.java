@@ -41,13 +41,13 @@ class TechStackRepositoryTest {
         Member member = createMember();
         ToyProject toyProject = createToyProject(startDate, endDate, member);
 
-        TechStack language = createTechStack("Java", LANGUAGE, toyProject);
-        TechStack framework = createTechStack("Spring", FRAMEWORK, toyProject);
-        TechStack ide = createTechStack("IntelliJ", IDE, toyProject);
-        TechStack db = createTechStack("MySQL", DATABASE, toyProject);
-        TechStack os = createTechStack("window11", OS, toyProject);
-        TechStack build = createTechStack("gradle", BUILD, toyProject);
-        TechStack cloud = createTechStack("aws", CLOUD, toyProject);
+        TechStack language = createTechStack("Java", "주 사용 언어",LANGUAGE, toyProject);
+        TechStack framework = createTechStack("Spring", "프레임 워크", FRAMEWORK, toyProject);
+        TechStack ide = createTechStack("IntelliJ", "IDE는 인텔리제이", IDE, toyProject);
+        TechStack db = createTechStack("MySQL", "DB는 일단 MySQL",  DATABASE, toyProject);
+        TechStack os = createTechStack("window11", "OS는 윈도우 11",  OS, toyProject);
+        TechStack build = createTechStack("gradle", "build도구는 gradle",  BUILD, toyProject);
+        TechStack cloud = createTechStack("aws", "클라우드로 aws사용",  CLOUD, toyProject);
 
         memberRepository.save(member);
         toyProjectRepository.save(toyProject);
@@ -58,15 +58,15 @@ class TechStackRepositoryTest {
 
         // then
         assertThat(techStacks).hasSize(7)
-            .extracting("title", "techCategory")
+            .extracting("title", "techCategory", "description")
             .containsExactlyInAnyOrder(
-                tuple("Java", LANGUAGE),
-                tuple("Spring", FRAMEWORK),
-                tuple("IntelliJ", IDE),
-                tuple("MySQL", DATABASE),
-                tuple("window11", OS),
-                tuple("gradle", BUILD),
-                tuple("aws", CLOUD)
+                tuple("Java", LANGUAGE, "주 사용 언어"),
+                tuple("Spring", FRAMEWORK, "프레임 워크"),
+                tuple("IntelliJ", IDE, "IDE는 인텔리제이"),
+                tuple("MySQL", DATABASE, "DB는 일단 MySQL"),
+                tuple("window11", OS, "OS는 윈도우 11"),
+                tuple("gradle", BUILD, "build도구는 gradle"),
+                tuple("aws", CLOUD, "클라우드로 aws사용")
             );
     }
 
@@ -94,9 +94,10 @@ class TechStackRepositoryTest {
             .build();
     }
 
-     TechStack createTechStack(String title, TechCategory techCategory, ToyProject toyProject) {
+     TechStack createTechStack(String title, String description, TechCategory techCategory, ToyProject toyProject) {
         return TechStack.builder()
             .title(title)
+            .description(description)
             .techCategory(techCategory)
             .toyProject(toyProject)
             .build();

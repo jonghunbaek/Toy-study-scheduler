@@ -5,18 +5,17 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import toyproject.studyscheduler.domain.BaseInfoEntity;
 import toyproject.studyscheduler.domain.study.toyproject.ToyProject;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
-public class TechStack {
+public class TechStack extends BaseInfoEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    private String title;
 
     @Enumerated(EnumType.STRING)
     private TechCategory techCategory;
@@ -25,8 +24,8 @@ public class TechStack {
     private ToyProject toyProject;
 
     @Builder
-    private TechStack(String title, TechCategory techCategory, ToyProject toyProject) {
-        this.title = title;
+    private TechStack(String title, String description, TechCategory techCategory, ToyProject toyProject) {
+        super(title, description);
         this.techCategory = techCategory;
         this.toyProject = toyProject;
         this.toyProject.addTechStack(this);

@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import toyproject.studyscheduler.domain.BaseEntity;
+import toyproject.studyscheduler.domain.BaseInfoEntity;
 import toyproject.studyscheduler.domain.member.Member;
 
 import java.time.LocalDate;
@@ -14,7 +14,7 @@ import java.time.LocalDate;
 @DiscriminatorColumn(name = "study_type")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @Entity
-public abstract class Study extends BaseEntity {
+public abstract class Study extends BaseInfoEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,10 +22,6 @@ public abstract class Study extends BaseEntity {
 
     @Column(name="study_type", insertable = false, updatable = false)
     private String studyType;
-
-    private String title;
-
-    private String description;
 
     private int totalExpectedTime;
 
@@ -42,8 +38,7 @@ public abstract class Study extends BaseEntity {
 
     protected Study(String title, String description, int totalExpectedTime, int planTimeInWeekDay, int planTimeInWeekend,
                     LocalDate startDate, LocalDate endDate, Member member) {
-        this.title = title;
-        this.description = description;
+        super(title, description);
         this.totalExpectedTime = totalExpectedTime;
         this.planTimeInWeekDay = planTimeInWeekDay;
         this.planTimeInWeekend = planTimeInWeekend;
