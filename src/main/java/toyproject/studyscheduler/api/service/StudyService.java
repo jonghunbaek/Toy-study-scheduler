@@ -5,6 +5,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import toyproject.studyscheduler.domain.study.repository.StudyRepository;
 import toyproject.studyscheduler.domain.study.repository.StudyTimeRepository;
+import toyproject.studyscheduler.util.StudyUtil;
+
+import java.time.LocalDate;
 
 @Transactional
 @RequiredArgsConstructor
@@ -13,5 +16,6 @@ public class StudyService {
 
     private final StudyRepository studyRepository;
     private final StudyTimeRepository studyTimeRepository;
+    private final StudyUtil studyUtil;
 
 }
