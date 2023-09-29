@@ -1,13 +1,13 @@
 package toyproject.studyscheduler.util;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
+import java.time.LocalDate;
 
-class StudyUtilTest {
+import static org.assertj.core.api.Assertions.*;
+
+class StudyPeriodUtilTest {
 
     @DisplayName("강의 학습의 총 예상 기간을 계산한다.")
     @Test
@@ -16,11 +16,12 @@ class StudyUtilTest {
         int planTimeInWeekDay = 60;
         int planTimeInWeekend = 120;
         int totalRunTime = 600;
+        LocalDate startDate = LocalDate.of(2023, 9, 15);
 
-        StudyUtil studyUtil = new StudyUtil();
-
+        StudyPeriodUtil studyPeriodUtil = new StudyPeriodUtil();
         // when
-        int totalExpectedPeriod = studyUtil.calculateTotalExpectedPeriod(planTimeInWeekDay, planTimeInWeekend, totalRunTime);
+        int totalExpectedPeriod = studyPeriodUtil.setUpBasicInfo(planTimeInWeekDay, planTimeInWeekend, startDate)
+            .calculateTotalExpectedPeriod(totalRunTime);
 
         // then
         assertThat(totalExpectedPeriod).isEqualTo(8);
