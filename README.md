@@ -96,3 +96,13 @@ If you want an embedded database please put a supported one on the classpath or 
 @Column(name="study_type", insertable = false, updatable = false)
 private String studyType;
 ```
+
++ StudyUtil - PeriodCalculator 
+```
+처음엔 StudyPeriodCalculatorUtil이라는 클래스로 생성
+첫 번째로 calculateTotalExpectedPeriod() 메서드 호출 시 인자로 4개의 변수를 주는 것이 너무 많아 3개의 공통 사용될 수 있는 변수를 초기화 시 받을 수 있도록
+필드에 추가
+두 번째, 빈으로 등록시 공통으로 사용될 필드 3개에 값을 대입하기가 어려워짐. 또한 생성시에만 값을 전해줘서 불변의 객체를 만들기를 원했음
+세번째, 이러한 이유로 StudyUtil - PeriodCalculator로 분리를 하고 StudyUtil에선 PeriodCalculator의 생성만을 담당하게 설계했음
+네번째, StudyUtil을 분리한 이유는 또한 StudyTime의 학습 시간, 학습률을 계산하는 메서드들을 클래스로 만들어 사용하기 위함
+```
