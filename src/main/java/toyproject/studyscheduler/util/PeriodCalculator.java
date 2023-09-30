@@ -50,7 +50,6 @@ public class PeriodCalculator {
                 period++;
             }
         }
-
         return period;
     }
 }

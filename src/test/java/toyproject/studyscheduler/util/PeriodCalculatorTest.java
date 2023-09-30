@@ -1,12 +1,11 @@
 package toyproject.studyscheduler.util;
 
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.format.TextStyle;
-import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -21,10 +20,17 @@ class PeriodCalculatorTest {
         int totalRunTime = 600;
         LocalDate startDate = LocalDate.of(2023, 9, 15);
 
-        PeriodCalculator periodCalculator = new PeriodCalculator();
+        PeriodCalculator calculator = PeriodCalculator.builder()
+                .planTimeInWeekday(planTimeInWeekDay)
+                .planTimeInWeekend(planTimeInWeekend)
+                .startDate(startDate)
+                .build();
+
         // when
+        int period = calculator.calculateTotalExpectedPeriod(totalRunTime);
 
         // then
+        Assertions.assertThat(period).isEqualTo(8);
     }
 
     @DisplayName("DayOfWeek 학습 테스트")
@@ -41,9 +47,7 @@ class PeriodCalculatorTest {
         DayOfWeek plus3 = plus2.plus(1);
         DayOfWeek plus4 = plus3.plus(1);
 
-        // TODO : 날짜 왜 하루씩 밀리는 건지 확인
         // then
-//        assertThat(plus1.getDisplayName(TextStyle.FULL, Locale.KOREAN)).isEqualTo("토요일");
         assertThat(plus1.getValue()).isEqualTo(6);
         assertThat(plus2.getValue()).isEqualTo(7);
         assertThat(plus3.getValue()).isEqualTo(1);
