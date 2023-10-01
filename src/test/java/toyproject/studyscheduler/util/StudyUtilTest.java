@@ -1,13 +1,11 @@
 package toyproject.studyscheduler.util;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 class StudyUtilTest {
 
@@ -23,7 +21,7 @@ class StudyUtilTest {
         StudyUtil studyUtil = new StudyUtil();
 
         // when
-        int period = studyUtil.setUpPeriodCalculatorInfos(planTimeInWeekDay, planTimeInWeekend, startDate)
+        int period = studyUtil.setUpInfos(planTimeInWeekDay, planTimeInWeekend, startDate)
                 .calculateTotalExpectedPeriod(totalRunTime);
 
         // then
