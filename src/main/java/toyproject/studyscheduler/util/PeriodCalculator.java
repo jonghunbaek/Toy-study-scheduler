@@ -26,30 +26,31 @@ public class PeriodCalculator {
     }
 
     public int calculateTotalExpectedPeriod(int totalRunTime) {
-        int period = 0;
         DayOfWeek dayOfWeek = startDate.getDayOfWeek();
-        int startDay = dayOfWeek.getValue();
+        int period = 0;
+        int startDay = 0;
 
         while (true) {
+            startDay = dayOfWeek.getValue();
+            period++;
+
+            if (startDay <= FRIDAY.getValue()) {
+                totalRunTime = calculateRemaining(totalRunTime, planTimeInWeekday);
+            } else {
+                totalRunTime = calculateRemaining(totalRunTime, planTimeInWeekend);
+            }
+
             if (totalRunTime <= 0) {
                 break;
             }
 
-            if (startDay <= FRIDAY.getValue()) {
-                totalRunTime -= planTimeInWeekday;
-                dayOfWeek = dayOfWeek.plus(1);
-                startDay = dayOfWeek.getValue();
-                period++;
-                continue;
-            }
-
-            if (startDay <= SUNDAY.getValue()) {
-                totalRunTime -= planTimeInWeekend;
-                dayOfWeek = dayOfWeek.plus(1);
-                startDay = dayOfWeek.getValue();
-                period++;
-            }
+            dayOfWeek = dayOfWeek.plus(1);
         }
+
         return period;
+    }
+
+    private int calculateRemaining(int total, int planTime) {
+        return total - planTime;
     }
 }
