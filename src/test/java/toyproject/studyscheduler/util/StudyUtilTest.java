@@ -21,8 +21,8 @@ class StudyUtilTest {
         StudyUtil studyUtil = new StudyUtil();
 
         // when
-        int period = studyUtil.setUpInfos(planTimeInWeekDay, planTimeInWeekend, startDate)
-                .calculateTotalExpectedPeriod(totalRunTime);
+        int period = studyUtil.setUpPeriodCalCulatorInfos(planTimeInWeekDay, planTimeInWeekend, startDate)
+                .calculatePeriodBy(totalRunTime);
 
         // then
         assertThat(period).isEqualTo(8);

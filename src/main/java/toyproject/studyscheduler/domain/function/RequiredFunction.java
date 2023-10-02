@@ -31,7 +31,9 @@ public class RequiredFunction extends BaseInfoEntity {
         super(title, description);
         this.expectedTime = expectedTime;
         this.functionType = functionType;
-        this.toyProject = toyProject;
-        this.toyProject.addRequiredFunction(this);
+        if (toyProject != null) {
+            this.toyProject = toyProject;
+            this.toyProject.addRequiredFunction(this);
+        }
     }
 }
