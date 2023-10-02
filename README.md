@@ -105,4 +105,7 @@ private String studyType;
 두 번째, 빈으로 등록시 공통으로 사용될 필드 3개에 값을 대입하기가 어려워짐. 또한 생성시에만 값을 전해줘서 불변의 객체를 만들기를 원했음
 세번째, 이러한 이유로 StudyUtil - PeriodCalculator로 분리를 하고 StudyUtil에선 PeriodCalculator의 생성만을 담당하게 설계했음
 네번째, StudyUtil을 분리한 이유는 또한 StudyTime의 학습 시간, 학습률을 계산하는 메서드들을 클래스로 만들어 사용하기 위함
+다섯째, PeriodCalculator로 직접 생성하게 될 경우 여러 비슷한 유틸 클래스들이 매번 생성 또는 di가 되어야 한다.
+그렇기 때문에 StudyUtil이라는 관리 클래스를 의존성 주입을 시켜 다른 유틸 클래스들을 필요에 따라 생성할 수 있도록 명시적으로 바꿨다.
+
 ```

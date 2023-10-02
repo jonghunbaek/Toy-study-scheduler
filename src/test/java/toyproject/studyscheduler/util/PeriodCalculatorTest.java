@@ -33,6 +33,29 @@ class PeriodCalculatorTest {
         Assertions.assertThat(period).isEqualTo(8);
     }
 
+    @DisplayName("독서 학습의 총 예상 기간을 계산한다.")
+    @Test
+    void calculateTotalExpectedPeriodWithReading() {
+        // given
+        int planTimeInWeekDay = 30;
+        int planTimeInWeekend = 60;
+        int totalPage = 700;
+        int readPagePerMin = 2;
+        LocalDate startDate = LocalDate.of(2023, 9, 15);
+
+        PeriodCalculator calculator = PeriodCalculator.builder()
+            .planTimeInWeekday(planTimeInWeekDay)
+            .planTimeInWeekend(planTimeInWeekend)
+            .startDate(startDate)
+            .build();
+
+        // when
+        int period = calculator.calculateTotalExpectedPeriod(totalPage, readPagePerMin);
+
+        // then
+        Assertions.assertThat(period).isEqualTo(9);
+    }
+
     @DisplayName("DayOfWeek 학습 테스트")
     @Test
     void dayOfWeekStudyTest() {

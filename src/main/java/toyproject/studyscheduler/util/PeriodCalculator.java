@@ -28,17 +28,13 @@ public class PeriodCalculator {
     public int calculateTotalExpectedPeriod(int totalRunTime) {
         DayOfWeek dayOfWeek = startDate.getDayOfWeek();
         int period = 0;
-        int startDay = 0;
+        int studyDay = 0;
 
         while (true) {
-            startDay = dayOfWeek.getValue();
+            studyDay = dayOfWeek.getValue();
             period++;
 
-            if (startDay <= FRIDAY.getValue()) {
-                totalRunTime = calculateRemaining(totalRunTime, planTimeInWeekday);
-            } else {
-                totalRunTime = calculateRemaining(totalRunTime, planTimeInWeekend);
-            }
+            totalRunTime = calculateRemaining(totalRunTime, studyDay);
 
             if (totalRunTime <= 0) {
                 break;
@@ -50,7 +46,40 @@ public class PeriodCalculator {
         return period;
     }
 
-    private int calculateRemaining(int total, int planTime) {
-        return total - planTime;
+    public int calculateTotalExpectedPeriod(int totalPage, int readPagePerMin) {
+        DayOfWeek dayOfWeek = startDate.getDayOfWeek();
+        int period = 0;
+        int studyDay = 0;
+
+        while (true) {
+            studyDay = dayOfWeek.getValue();
+            period++;
+
+            totalPage = calculateRemaining(totalPage, studyDay, readPagePerMin);
+
+            if (totalPage <= 0) {
+                break;
+            }
+
+            dayOfWeek = dayOfWeek.plus(1);
+        }
+
+        return period;
+    }
+
+    private int calculateRemaining(int totalRunTime, int studyDay) {
+        if (studyDay <= FRIDAY.getValue()) {
+            return totalRunTime - planTimeInWeekday;
+        } else {
+            return totalRunTime - planTimeInWeekend;
+        }
+    }
+
+    private int calculateRemaining(int totalPage, int studyDay, int readPagePerMin) {
+        if (studyDay <= FRIDAY.getValue()) {
+            return totalPage - (planTimeInWeekday * readPagePerMin);
+        } else {
+            return totalPage - (planTimeInWeekend * readPagePerMin);
+        }
     }
 }
