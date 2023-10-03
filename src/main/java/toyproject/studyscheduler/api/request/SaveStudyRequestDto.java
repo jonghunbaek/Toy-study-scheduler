@@ -1,7 +1,5 @@
 package toyproject.studyscheduler.api.request;
 
-import jakarta.persistence.FetchType;
-import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -19,8 +17,8 @@ public class SaveStudyRequestDto {
     private String title;
     private String description;
     private String studyType;
-    private int totalExpectedTime;
-    private int planTimeInWeekDay;
+    private int totalExpectedPeriod;
+    private int planTimeInWeekday;
     private int planTimeInWeekend;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate startDate;
@@ -34,4 +32,5 @@ public class SaveStudyRequestDto {
 
     // Lecture detail
     private String teacherName;
+    private int totalRuntime;
 }

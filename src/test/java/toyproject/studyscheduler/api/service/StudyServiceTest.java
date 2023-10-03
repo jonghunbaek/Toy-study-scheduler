@@ -16,13 +16,13 @@ import toyproject.studyscheduler.domain.study.lecture.LectureRepository;
 import toyproject.studyscheduler.domain.study.reading.Reading;
 import toyproject.studyscheduler.domain.study.reading.ReadingRepository;
 import toyproject.studyscheduler.domain.study.repository.StudyRepository;
-import toyproject.studyscheduler.domain.study.repository.StudyTimeRepository;
 import toyproject.studyscheduler.domain.study.toyproject.ToyProjectRepository;
 import toyproject.studyscheduler.domain.techstack.TechCategory;
 import toyproject.studyscheduler.domain.techstack.TechStack;
 import toyproject.studyscheduler.domain.study.toyproject.ToyProject;
 import toyproject.studyscheduler.domain.function.FunctionType;
 import toyproject.studyscheduler.domain.function.RequiredFunction;
+import toyproject.studyscheduler.util.StudyUtil;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -51,6 +51,8 @@ class StudyServiceTest {
     ToyProjectRepository toyProjectRepository;
     @Autowired
     MemberRepository memberRepository;
+    @Autowired
+    StudyUtil studyUtil;
 
     @DisplayName("study를 저장할 때 Discriminator 타입을 구분해서 저장한다.")
     @Test
@@ -59,21 +61,60 @@ class StudyServiceTest {
         Member member = createMember();
         Member savedMember = memberRepository.save(member);
 
-        SaveStudyRequestDto.builder()
+        int planTimeInWeekday = 60;
+        int planTimeInWeekend = 120;
+        LocalDate startDate = LocalDate.of(2023, 9, 10);
+        int totalRuntime = 600;
+        int totalExpectedPeriod = studyUtil.setUpPeriodCalCulatorInfos(planTimeInWeekday, planTimeInWeekend, startDate)
+            .calculatePeriodBy(totalRuntime);
+
+        SaveStudyRequestDto lectureDto = SaveStudyRequestDto.builder()
             .studyType("lecture")
             .title("김영한의 스프링")
             .description("스프링 핵심 강의")
             .teacherName("김영한")
-            .totalExpectedTime(600)
-            .planTimeInWeekDay(30)
-            .planTimeInWeekend(100)
-            .startDate(LocalDate.of(2023, 9, 10))
+            .totalExpectedPeriod(totalExpectedPeriod)
+            .planTimeInWeekday(planTimeInWeekday)
+            .planTimeInWeekend(planTimeInWeekend)
+            .startDate(startDate)
+            .totalRuntime(totalRuntime)
+            .memberId(savedMember.getId())
+            .build();
+
+        planTimeInWeekday = 30;
+        planTimeInWeekend = 60;
+        startDate = LocalDate.of(2023, 9, 11);
+        int totalPage = 700;
+        int readPagePerMin = 2;
+        totalExpectedPeriod = studyUtil.setUpPeriodCalCulatorInfos(planTimeInWeekday, planTimeInWeekend, startDate)
+            .calculatePeriodBy(totalPage, readPagePerMin);
+
+        SaveStudyRequestDto readingDto = SaveStudyRequestDto.builder()
+            .studyType("reading")
+            .title("클린 코드")
+            .description("클린한 코드를 통해 유지보수성을 높이자")
+            .authorName("로버트 c.마틴")
+            .totalExpectedPeriod(totalExpectedPeriod)
+            .planTimeInWeekday(planTimeInWeekday)
+            .planTimeInWeekend(planTimeInWeekend)
+            .startDate(startDate)
+            .totalPage(totalPage)
+            .readPagePerMin(readPagePerMin)
             .memberId(savedMember.getId())
             .build();
 
         // when
+        studyService.saveStudy(lectureDto);
+        studyService.saveStudy(readingDto);
 
+        List<Study> studies = studyRepository.findAll();
         // then
+        assertThat(studies).hasSize(2)
+            .extracting("studyType", "title", "description", "planTimeInWeekday", "planTimeInWeekend", "startDate")
+            .containsExactlyInAnyOrder(
+                tuple(),
+                tuple()
+            );
 
     }
     @DisplayName("주어진 여러개의 아이디로 여러개의 학습 상세내용을 조회한다.")
