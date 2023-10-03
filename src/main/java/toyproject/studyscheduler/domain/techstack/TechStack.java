@@ -27,7 +27,9 @@ public class TechStack extends BaseInfoEntity {
     private TechStack(String title, String description, TechCategory techCategory, ToyProject toyProject) {
         super(title, description);
         this.techCategory = techCategory;
-        this.toyProject = toyProject;
-        this.toyProject.addTechStack(this);
+        if (toyProject != null) {
+            this.toyProject = toyProject;
+            this.toyProject.addTechStack(this);
+        }
     }
 }
