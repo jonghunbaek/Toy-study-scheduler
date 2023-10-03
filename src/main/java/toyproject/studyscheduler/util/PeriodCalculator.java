@@ -38,14 +38,6 @@ public class PeriodCalculator {
         return calculatePeriod(totalRunTime);
     }
 
-//    public int calculatePeriodBy(List<RequiredFunction> functions) {
-//        int totalExpectedTime = functions.stream()
-//            .mapToInt(RequiredFunction::getExpectedTime)
-//            .sum();
-//
-//        return calculatePeriod(totalExpectedTime);
-//    }
-
     public int calculatePeriodBy(List<Integer> expectedTimes) {
         int totalExpectedTime = expectedTimes.stream()
             .mapToInt(i -> i)

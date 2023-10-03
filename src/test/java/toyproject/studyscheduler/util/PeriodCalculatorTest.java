@@ -91,13 +91,7 @@ class PeriodCalculatorTest {
         // given
         int planTimeInWeekDay = 90;
         int planTimeInWeekend = 180;
-
-        RequiredFunction function1 = createFunction("1번기능", "1번 기능 내용", 300, CREATE);
-        RequiredFunction function2 = createFunction("2번기능", "2번 기능 내용", 600, READ);
-        RequiredFunction function3 = createFunction("3번기능", "3번 기능 내용", 250, UPDATE);
-        RequiredFunction function4 = createFunction("4번기능", "4번 기능 내용", 100, DELETE);
-        RequiredFunction function5 = createFunction("5번기능", "5번 기능 내용", 500, ETC);
-
+        List<Integer> expectedTimes = List.of(300, 600, 250, 100, 500);
         LocalDate startDate = LocalDate.of(2023, 9, 11);
 
         PeriodCalculator calculator = PeriodCalculator.builder()
@@ -107,7 +101,7 @@ class PeriodCalculatorTest {
             .build();
 
         // when
-        int period = calculator.calculatePeriodBy(List.of(function1, function2, function3, function4, function5));
+        int period = calculator.calculatePeriodBy(expectedTimes);
 
         // then
         Assertions.assertThat(period).isEqualTo(16);
@@ -119,13 +113,7 @@ class PeriodCalculatorTest {
         // given
         int planTimeInWeekDay = 90;
         int planTimeInWeekend = 180;
-
-        RequiredFunction function1 = createFunction("1번기능", "1번 기능 내용", 300, CREATE);
-        RequiredFunction function2 = createFunction("2번기능", "2번 기능 내용", 600, READ);
-        RequiredFunction function3 = createFunction("3번기능", "3번 기능 내용", 250, UPDATE);
-        RequiredFunction function4 = createFunction("4번기능", "4번 기능 내용", 100, DELETE);
-        RequiredFunction function5 = createFunction("5번기능", "5번 기능 내용", 500, ETC);
-
+        List<Integer> expectedTimes = List.of(300, 600, 250, 100, 500);
         LocalDate startDate = LocalDate.of(2023, 9, 15);
 
         PeriodCalculator calculator = PeriodCalculator.builder()
@@ -135,7 +123,7 @@ class PeriodCalculatorTest {
             .build();
 
         // when
-        int period = calculator.calculatePeriodBy(List.of(function1, function2, function3, function4, function5));
+        int period = calculator.calculatePeriodBy(expectedTimes);
 
         // then
         Assertions.assertThat(period).isEqualTo(16);

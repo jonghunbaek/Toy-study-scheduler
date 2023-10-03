@@ -9,7 +9,7 @@ import static org.assertj.core.api.Assertions.*;
 
 class StudyUtilTest {
 
-    @DisplayName("PeriodCalculator 객체를 생성해 총 예상 강의 학습기간을 계산한다.")
+    @DisplayName("PeriodCalculator 객체를 생성해 총 예상 학습기간을 계산한다.")
     @Test
     void calculateExpectedPeriod() {
         // given
