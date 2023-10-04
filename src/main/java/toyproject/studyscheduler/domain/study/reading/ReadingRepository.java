@@ -10,6 +10,6 @@ import java.util.List;
 public interface ReadingRepository extends JpaRepository<Reading, Long> {
 
     @Query("select r from Reading r where (r.startDate >= :startDate and r.startDate <= :endDate)" +
-        "or (r.endDate >= :startDate and r.endDate <= :endDate) ")
+        "or (r.expectedEndDate >= :startDate and r.expectedEndDate <= :endDate) ")
     List<Reading> findAllByPeriod(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
 }

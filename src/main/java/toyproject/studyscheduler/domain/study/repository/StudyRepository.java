@@ -13,6 +13,6 @@ import java.util.List;
 public interface StudyRepository extends JpaRepository<Study, Long> {
 
     @Query("select s from Study s where (s.startDate >= :startDate and s.startDate <= :endDate)" +
-        "or (s.endDate >= :startDate and s.endDate <= :endDate) ")
+        "or (s.expectedEndDate >= :startDate and s.expectedEndDate <= :endDate) ")
     List<Study> findAllByPeriod(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
 }

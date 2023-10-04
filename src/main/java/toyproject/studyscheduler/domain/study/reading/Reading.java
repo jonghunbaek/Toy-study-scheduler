@@ -25,8 +25,8 @@ public class Reading extends Study {
 
     @Builder
     private Reading(String title, String description, int totalExpectedPeriod, int planTimeInWeekday, int planTimeInWeekend,
-                    LocalDate startDate, LocalDate endDate, Member member, String authorName, int totalPage, int readPagePerMin) {
-        super(title, description, totalExpectedPeriod, planTimeInWeekday, planTimeInWeekend, startDate, endDate, member);
+                    LocalDate startDate, LocalDate expectedEndDate, Member member, String authorName, int totalPage, int readPagePerMin) {
+        super(title, description, totalExpectedPeriod, planTimeInWeekday, planTimeInWeekend, startDate, expectedEndDate, member);
         this.authorName = authorName;
         this.totalPage = totalPage;
         this.readPagePerMin = readPagePerMin;

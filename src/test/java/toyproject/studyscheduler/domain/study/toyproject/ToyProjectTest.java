@@ -1,17 +1,14 @@
 package toyproject.studyscheduler.domain.study.toyproject;
 
 import org.assertj.core.api.Assertions;
-import org.assertj.core.groups.Tuple;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import toyproject.studyscheduler.domain.function.FunctionType;
 import toyproject.studyscheduler.domain.function.RequiredFunction;
-import toyproject.studyscheduler.domain.member.Member;
 import toyproject.studyscheduler.domain.techstack.TechCategory;
 import toyproject.studyscheduler.domain.techstack.TechStack;
 
 import java.time.LocalDate;
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -66,7 +63,7 @@ class ToyProjectTest {
             .planTimeInWeekday(60)
             .planTimeInWeekend(120)
             .startDate(LocalDate.of(2023, 8,23))
-            .endDate(LocalDate.of(2023, 8,30))
+            .expectedEndDate(LocalDate.of(2023, 8,30))
             .member(null)
             .build();
     }

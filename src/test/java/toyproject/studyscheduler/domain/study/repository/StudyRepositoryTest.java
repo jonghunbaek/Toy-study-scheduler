@@ -129,7 +129,7 @@ class StudyRepositoryTest {
                 .planTimeInWeekday(60)
                 .planTimeInWeekend(120)
                 .startDate(startDate)
-                .endDate(endDate)
+                .expectedEndDate(endDate)
                 .member(member)
                 .build();
     }
@@ -160,7 +160,7 @@ class StudyRepositoryTest {
                 .readPagePerMin(2)
                 .totalExpectedPeriod(250)
                 .startDate(startDate)
-                .endDate(endDate)
+                .expectedEndDate(endDate)
                 .member(member)
                 .build();
     }
@@ -174,7 +174,7 @@ class StudyRepositoryTest {
                 .planTimeInWeekday(30)
                 .planTimeInWeekend(100)
                 .startDate(startDate)
-                .endDate(endDate)
+                .expectedEndDate(endDate)
                 .member(member)
                 .build();
     }

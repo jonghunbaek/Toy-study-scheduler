@@ -35,9 +35,9 @@ public class ToyProject extends Study {
 
     @Builder
     private ToyProject(String title, String description, int totalExpectedPeriod, int planTimeInWeekday, int planTimeInWeekend,
-                   LocalDate startDate, LocalDate endDate, Member member, List<RequiredFunction> functions, List<TechStack> stacks) {
+                   LocalDate startDate, LocalDate expectedEndDate, Member member, List<RequiredFunction> functions, List<TechStack> stacks) {
 
-        super(title, description, totalExpectedPeriod, planTimeInWeekday, planTimeInWeekend, startDate, endDate, member);
+        super(title, description, totalExpectedPeriod, planTimeInWeekday, planTimeInWeekend, startDate, expectedEndDate, member);
 
         if (functions != null) {
             this.functions = functions.stream()

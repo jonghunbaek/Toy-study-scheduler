@@ -10,6 +10,6 @@ import java.util.List;
 public interface LectureRepository extends JpaRepository<Lecture, Long> {
 
     @Query("select l from Lecture l where (l.startDate >= :startDate and l.startDate <= :endDate)" +
-        "or (l.endDate >= :startDate and l.endDate <= :endDate) ")
+        "or (l.expectedEndDate >= :startDate and l.expectedEndDate <= :endDate) ")
     List<Lecture> findAllByPeriod(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
 }

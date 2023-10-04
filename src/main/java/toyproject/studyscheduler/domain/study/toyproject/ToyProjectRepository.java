@@ -10,6 +10,6 @@ import java.util.List;
 public interface ToyProjectRepository extends JpaRepository<ToyProject, Long> {
 
     @Query("select t from ToyProject t where (t.startDate >= :startDate and t.startDate <= :endDate)" +
-        "or (t.endDate >= :startDate and t.endDate <= :endDate) ")
+        "or (t.expectedEndDate >= :startDate and t.expectedEndDate <= :endDate) ")
     List<ToyProject> findAllByPeriod(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
 }

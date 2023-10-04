@@ -157,7 +157,7 @@ class StudyTimeRepositoryTest {
                 .planTimeInWeekday(30)
                 .planTimeInWeekend(100)
                 .startDate(startDate)
-                .endDate(endDate)
+                .expectedEndDate(endDate)
                 .member(member)
                 .build();
     }

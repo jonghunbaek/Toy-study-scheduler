@@ -84,7 +84,7 @@ class StudyTimeTest {
             .planTimeInWeekday(30)
             .planTimeInWeekend(100)
             .startDate(LocalDate.of(2023,8,12))
-            .endDate(LocalDate.of(2023,8,30))
+            .expectedEndDate(LocalDate.of(2023,8,30))
             .member(member)
             .build();
     }

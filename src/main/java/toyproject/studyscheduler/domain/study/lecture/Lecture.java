@@ -20,10 +20,11 @@ public class Lecture extends Study {
 
     private int totalRuntime;
 
+
     @Builder
     private Lecture(String title, String description, int totalExpectedPeriod, int planTimeInWeekday, int planTimeInWeekend,
-                   LocalDate startDate, LocalDate endDate, Member member, String teacherName, int totalRuntime) {
-        super(title, description, totalExpectedPeriod, planTimeInWeekday, planTimeInWeekend, startDate, endDate, member);
+                   LocalDate startDate, LocalDate expectedEndDate, Member member, String teacherName, int totalRuntime) {
+        super(title, description, totalExpectedPeriod, planTimeInWeekday, planTimeInWeekend, startDate, expectedEndDate, member);
         this.teacherName = teacherName;
         this.totalRuntime = totalRuntime;
     }

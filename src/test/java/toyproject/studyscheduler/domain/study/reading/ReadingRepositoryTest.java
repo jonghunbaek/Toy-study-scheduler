@@ -102,7 +102,7 @@ class ReadingRepositoryTest {
             .readPagePerMin(2)
             .totalExpectedPeriod(250)
             .startDate(startDate)
-            .endDate(endDate)
+            .expectedEndDate(endDate)
             .member(member)
             .build();
     }
