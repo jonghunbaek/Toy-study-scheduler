@@ -3,17 +3,12 @@ package toyproject.studyscheduler.util;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import toyproject.studyscheduler.domain.function.FunctionType;
-import toyproject.studyscheduler.domain.function.RequiredFunction;
-import toyproject.studyscheduler.domain.member.Member;
-import toyproject.studyscheduler.domain.study.toyproject.ToyProject;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
-import static toyproject.studyscheduler.domain.function.FunctionType.*;
 
 class PeriodCalculatorTest {
 
@@ -127,15 +122,6 @@ class PeriodCalculatorTest {
 
         // then
         Assertions.assertThat(period).isEqualTo(16);
-    }
-
-    private RequiredFunction createFunction(String title, String description, int expectedTime, FunctionType functionType) {
-        return RequiredFunction.builder()
-            .title(title)
-            .description(description)
-            .expectedTime(expectedTime)
-            .functionType(functionType)
-            .build();
     }
 
     @DisplayName("DayOfWeek 학습 테스트")

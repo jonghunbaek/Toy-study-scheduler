@@ -63,9 +63,9 @@ class StudyServiceTest {
 
         int planTimeInWeekday = 60;
         int planTimeInWeekend = 120;
-        LocalDate startDate = LocalDate.of(2023, 9, 10);
+        LocalDate startDate1 = LocalDate.of(2023, 9, 10);
         int totalRuntime = 600;
-        int totalExpectedPeriod = studyUtil.setUpPeriodCalCulatorInfos(planTimeInWeekday, planTimeInWeekend, startDate)
+        int totalExpectedPeriod1 = studyUtil.setUpPeriodCalCulatorInfos(planTimeInWeekday, planTimeInWeekend, startDate1)
             .calculatePeriodBy(totalRuntime);
 
         SaveStudyRequestDto lectureDto = SaveStudyRequestDto.builder()
@@ -73,20 +73,20 @@ class StudyServiceTest {
             .title("김영한의 스프링")
             .description("스프링 핵심 강의")
             .teacherName("김영한")
-            .totalExpectedPeriod(totalExpectedPeriod)
+            .totalExpectedPeriod(totalExpectedPeriod1)
             .planTimeInWeekday(planTimeInWeekday)
             .planTimeInWeekend(planTimeInWeekend)
-            .startDate(startDate)
+            .startDate(startDate1)
             .totalRuntime(totalRuntime)
             .memberId(savedMember.getId())
             .build();
 
         planTimeInWeekday = 30;
         planTimeInWeekend = 60;
-        startDate = LocalDate.of(2023, 9, 11);
+        LocalDate startDate2 = LocalDate.of(2023, 9, 11);
         int totalPage = 700;
         int readPagePerMin = 2;
-        totalExpectedPeriod = studyUtil.setUpPeriodCalCulatorInfos(planTimeInWeekday, planTimeInWeekend, startDate)
+        int totalExpectedPeriod2 = studyUtil.setUpPeriodCalCulatorInfos(planTimeInWeekday, planTimeInWeekend, startDate2)
             .calculatePeriodBy(totalPage, readPagePerMin);
 
         SaveStudyRequestDto readingDto = SaveStudyRequestDto.builder()
@@ -94,10 +94,10 @@ class StudyServiceTest {
             .title("클린 코드")
             .description("클린한 코드를 통해 유지보수성을 높이자")
             .authorName("로버트 c.마틴")
-            .totalExpectedPeriod(totalExpectedPeriod)
+            .totalExpectedPeriod(totalExpectedPeriod2)
             .planTimeInWeekday(planTimeInWeekday)
             .planTimeInWeekend(planTimeInWeekend)
-            .startDate(startDate)
+            .startDate(startDate2)
             .totalPage(totalPage)
             .readPagePerMin(readPagePerMin)
             .memberId(savedMember.getId())
@@ -108,13 +108,19 @@ class StudyServiceTest {
         studyService.saveStudy(readingDto);
 
         List<Study> studies = studyRepository.findAll();
+
         // then
         assertThat(studies).hasSize(2)
-            .extracting("studyType", "title", "description", "planTimeInWeekday", "planTimeInWeekend", "startDate")
+            .extracting("studyType", "title", "description", "planTimeInWeekday", "planTimeInWeekend", "startDate", "expectedEndDate")
             .containsExactlyInAnyOrder(
-                tuple(),
-                tuple()
+                tuple("lecture", "김영한의 스프링", "스프링 핵심 강의", 60, 120, startDate1, startDate1.plusDays(totalExpectedPeriod1)),
+                tuple("reading", "클린 코드", "클린한 코드를 통해 유지보수성을 높이자", 30, 60, startDate2, startDate2.plusDays(totalExpectedPeriod2))
             );
+
+        assertThat(studies.get(0)).extracting("teacherName", "totalRuntime")
+                .contains("김영한", 600);
+        assertThat(studies.get(1)).extracting("authorName", "readPagePerMin")
+                .contains("로버트 c.마틴", 2);
 
     }
     @DisplayName("주어진 여러개의 아이디로 여러개의 학습 상세내용을 조회한다.")
@@ -228,7 +234,7 @@ class StudyServiceTest {
             .planTimeInWeekday(60)
             .planTimeInWeekend(120)
             .startDate(startDate)
-            .endDate(endDate)
+            .expectedEndDate(endDate)
             .member(member)
             .build();
     }
@@ -259,7 +265,7 @@ class StudyServiceTest {
             .readPagePerMin(2)
             .totalExpectedPeriod(250)
             .startDate(startDate)
-            .endDate(endDate)
+            .expectedEndDate(endDate)
             .member(member)
             .build();
     }
@@ -273,7 +279,7 @@ class StudyServiceTest {
             .planTimeInWeekday(30)
             .planTimeInWeekend(100)
             .startDate(startDate)
-            .endDate(endDate)
+            .expectedEndDate(endDate)
             .member(member)
             .build();
     }
