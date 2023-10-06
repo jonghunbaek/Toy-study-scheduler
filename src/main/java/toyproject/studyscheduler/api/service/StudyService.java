@@ -7,8 +7,11 @@ import toyproject.studyscheduler.api.request.SaveStudyRequestDto;
 import toyproject.studyscheduler.domain.member.Member;
 import toyproject.studyscheduler.domain.member.repository.MemberRepository;
 import toyproject.studyscheduler.domain.study.Study;
+import toyproject.studyscheduler.domain.study.lecture.Lecture;
+import toyproject.studyscheduler.domain.study.reading.Reading;
 import toyproject.studyscheduler.domain.study.repository.StudyRepository;
 import toyproject.studyscheduler.domain.study.repository.StudyTimeRepository;
+import toyproject.studyscheduler.domain.study.toyproject.ToyProject;
 import toyproject.studyscheduler.util.StudyUtil;
 
 @Transactional
@@ -36,5 +39,10 @@ public class StudyService {
         }
 
         studyRepository.save(study);
+    }
+
+    public Study findStudyById(Long id) {
+        return studyRepository.findById(id)
+            .orElseThrow(() -> new IllegalArgumentException("해당 학습 아이디는 존재하지 않습니다."));
     }
 }

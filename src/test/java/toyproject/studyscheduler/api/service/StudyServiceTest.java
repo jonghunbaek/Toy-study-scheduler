@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import toyproject.studyscheduler.api.request.FindStudyRequestDto;
 import toyproject.studyscheduler.api.request.SaveStudyRequestDto;
 import toyproject.studyscheduler.domain.member.AccountType;
 import toyproject.studyscheduler.domain.member.Member;
@@ -25,7 +24,6 @@ import toyproject.studyscheduler.domain.function.RequiredFunction;
 import toyproject.studyscheduler.util.StudyUtil;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -54,7 +52,7 @@ class StudyServiceTest {
     @Autowired
     StudyUtil studyUtil;
 
-    @DisplayName("study를 저장할 때 Discriminator 타입을 구분해서 저장한다.")
+    @DisplayName("여러 종류의 학습을 저장할 때 Discriminator 타입을 구분해서 저장한다.")
     @Test
     void saveStudyAccordingToType() {
         // given
@@ -123,9 +121,9 @@ class StudyServiceTest {
                 .contains("로버트 c.마틴", 2);
 
     }
-    @DisplayName("주어진 여러개의 아이디로 여러개의 학습 상세내용을 조회한다.")
+    @DisplayName("주어진 아이디로 학습 상세내용을 조회한다.")
     @Test
-    void findStudiesByIds() {
+    void findStudyById() {
         // given
         LocalDate startDate = LocalDate.of(2023, 7, 1);
         LocalDate endDate = LocalDate.of(2023, 8, 3);
@@ -133,46 +131,16 @@ class StudyServiceTest {
         Member member = createMember();
         memberRepository.save(member);
 
-        ToyProject toyProject = createToyProject(startDate, endDate, member);
-        RequiredFunction function1 = createFunction(CREATE, toyProject);
-        RequiredFunction function2 = createFunction(READ, toyProject);
-        TechStack stack1 = createTechStack("Java", LANGUAGE, toyProject);
-        TechStack stack2 = createTechStack("Spring", FRAMEWORK, toyProject);
-
         Lecture lecture = createLecture(startDate, endDate, member);
-        Reading reading = createReading(startDate, endDate, member);
+        Lecture savedLecture = studyRepository.save(lecture);
 
-        Lecture savedLecture = lectureRepository.save(lecture);
-        Reading savedReading = readingRepository.save(reading);
-        ToyProject savedToyProject = toyProjectRepository.save(toyProject);
-
-        List<FindStudyRequestDto> requestDto = new ArrayList<>(List.of(new FindStudyRequestDto(savedLecture.getId()),
-            new FindStudyRequestDto(savedReading.getId()),
-            new FindStudyRequestDto(savedToyProject.getId())));
-
-        List<Study> studies = studyRepository.findAll();
-
-        assertThat(studies).hasSize(3)
-            .extracting("title", "description", "startDate")
-            .containsExactlyInAnyOrder(
-                tuple("김영한의 스프링", "스프링 핵심 강의", startDate),
-                tuple("클린 코드", "클린 코드를 배우기 위한 도서", startDate),
-                tuple("스터디 스케쥴러", "개인의 학습의 진도율을 관리", startDate)
-            );
-
-        // TODO : 싱글테이블 전략에서 dtype 조회하는 방법 찾기
         // when
-//        List<FindStudyResponseDto>
-//
-//        // then
-//        assertThat(studies).hasSize(3)
-//            .extracting("title", "description", "startDate")
-//            .containsExactlyInAnyOrder(
-//                tuple("김영한의 스프링", "스프링 핵심 강의", startDate),
-//                tuple("클린 코드", "클린 코드를 배우기 위한 도서", startDate),
-//                tuple("스터디 스케쥴러", "개인의 학습의 진도율을 관리", startDate)
-//            );
+        Lecture findLecture = (Lecture) studyService.findStudyById(savedLecture.getId());
 
+        // then
+        assertThat(findLecture)
+            .extracting("title", "description", "startDate")
+            .contains();
     }
 
     @DisplayName("특정기간에 수행한 학습들을 모두 조회 한다.")
