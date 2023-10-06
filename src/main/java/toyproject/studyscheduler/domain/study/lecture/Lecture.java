@@ -1,10 +1,7 @@
 package toyproject.studyscheduler.domain.study.lecture;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import toyproject.studyscheduler.domain.study.Study;
 import toyproject.studyscheduler.domain.member.Member;
 
@@ -19,7 +16,6 @@ public class Lecture extends Study {
     private String teacherName;
 
     private int totalRuntime;
-
 
     @Builder
     private Lecture(String title, String description, int totalExpectedPeriod, int planTimeInWeekday, int planTimeInWeekend,
