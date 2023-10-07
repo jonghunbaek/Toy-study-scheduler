@@ -33,13 +33,15 @@ public abstract class Study extends BaseInfoEntity {
 
     private LocalDate expectedEndDate;
 
+    private boolean isTermination;
+
     private LocalDate realEndDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Member member;
 
     protected Study(String title, String description, int totalExpectedPeriod, int planTimeInWeekday, int planTimeInWeekend,
-                    LocalDate startDate, LocalDate expectedEndDate, Member member) {
+                    LocalDate startDate, LocalDate expectedEndDate, boolean isTermination, LocalDate realEndDate, Member member) {
         super(title, description);
         this.totalExpectedPeriod = totalExpectedPeriod;
         this.planTimeInWeekday = planTimeInWeekday;
@@ -47,9 +49,16 @@ public abstract class Study extends BaseInfoEntity {
         this.startDate = startDate;
         this.expectedEndDate = expectedEndDate;
         this.member = member;
+        this.isTermination = isTermination;
+        if (isTermination) {
+            this.realEndDate = realEndDate;
+            return;
+        }
+        this.realEndDate = LocalDate.MAX;
     }
 
     public void terminateStudyIn(LocalDate realEndDate) {
+        this.isTermination = true;
         this.realEndDate = realEndDate;
     }
 }
