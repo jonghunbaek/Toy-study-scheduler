@@ -5,7 +5,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import toyproject.studyscheduler.api.request.SaveStudyRequestDto;
+import toyproject.studyscheduler.api.controller.request.SaveStudyRequestDto;
+import toyproject.studyscheduler.api.controller.response.FindStudyResponseDto;
 import toyproject.studyscheduler.domain.member.AccountType;
 import toyproject.studyscheduler.domain.member.Member;
 import toyproject.studyscheduler.domain.member.repository.MemberRepository;
@@ -121,7 +122,9 @@ class StudyServiceTest {
                 .contains("로버트 c.마틴", 2);
 
     }
-    @DisplayName("주어진 아이디로 학습 상세내용을 조회한다.")
+    
+    // TODO : 종료된 학습에 대해서도 작성예정
+    @DisplayName("주어진 아이디로 종료되지 않은 학습 상세내용을 조회한다.")
     @Test
     void findStudyById() {
         // given
@@ -132,15 +135,16 @@ class StudyServiceTest {
         memberRepository.save(member);
 
         Lecture lecture = createLecture(startDate, endDate, member);
+        System.out.println(lecture.getRealEndDate());
         Lecture savedLecture = studyRepository.save(lecture);
 
         // when
-        Lecture findLecture = (Lecture) studyService.findStudyById(savedLecture.getId());
+        FindStudyResponseDto study = studyService.findStudyById(savedLecture.getId());
 
         // then
-        assertThat(findLecture)
-            .extracting("title", "description", "startDate")
-            .contains();
+        assertThat(study)
+            .extracting("title", "description", "isTermination", "realEndDate")
+            .contains("김영한의 스프링", "스프링 핵심 강의", false, LocalDate.EPOCH);
     }
 
     @DisplayName("특정기간에 수행한 학습들을 모두 조회 한다.")

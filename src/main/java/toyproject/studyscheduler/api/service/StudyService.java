@@ -3,12 +3,16 @@ package toyproject.studyscheduler.api.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import toyproject.studyscheduler.api.request.SaveStudyRequestDto;
+import toyproject.studyscheduler.api.controller.request.SaveStudyRequestDto;
+import toyproject.studyscheduler.api.controller.response.FindStudyResponseDto;
 import toyproject.studyscheduler.domain.member.Member;
 import toyproject.studyscheduler.domain.member.repository.MemberRepository;
 import toyproject.studyscheduler.domain.study.Study;
+import toyproject.studyscheduler.domain.study.lecture.Lecture;
+import toyproject.studyscheduler.domain.study.reading.Reading;
 import toyproject.studyscheduler.domain.study.repository.StudyRepository;
 import toyproject.studyscheduler.domain.study.repository.StudyTimeRepository;
+import toyproject.studyscheduler.domain.study.toyproject.ToyProject;
 import toyproject.studyscheduler.util.StudyUtil;
 
 @Transactional
@@ -38,8 +42,16 @@ public class StudyService {
         studyRepository.save(study);
     }
 
-    public Study findStudyById(Long id) {
-        return studyRepository.findById(id)
+    public FindStudyResponseDto findStudyById(Long id) {
+        Study study = studyRepository.findById(id)
             .orElseThrow(() -> new IllegalArgumentException("해당 학습 아이디는 존재하지 않습니다."));
+
+        if ("lecture".equals(study.getStudyType())) {
+            return FindStudyResponseDto.ofLecture((Lecture) study);
+        } else if ("reading".equals(study.getStudyType())) {
+            return FindStudyResponseDto.ofReading((Reading) study);
+        } else {
+            return FindStudyResponseDto.ofToyProject((ToyProject) study);
+        }
     }
 }

@@ -1,4 +1,4 @@
-package toyproject.studyscheduler.api.request;
+package toyproject.studyscheduler.api.controller.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import toyproject.studyscheduler.domain.member.Member;
+import toyproject.studyscheduler.domain.study.Study;
 import toyproject.studyscheduler.domain.study.lecture.Lecture;
 import toyproject.studyscheduler.domain.study.reading.Reading;
 import toyproject.studyscheduler.domain.study.toyproject.ToyProject;
@@ -26,7 +27,6 @@ public class SaveStudyRequestDto {
     private int planTimeInWeekend;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate startDate;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Long memberId;
 
     // Reading detail

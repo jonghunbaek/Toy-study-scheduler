@@ -54,7 +54,7 @@ public abstract class Study extends BaseInfoEntity {
             this.realEndDate = realEndDate;
             return;
         }
-        this.realEndDate = LocalDate.MAX;
+        this.realEndDate = LocalDate.EPOCH;
     }
 
     public void terminateStudyIn(LocalDate realEndDate) {
