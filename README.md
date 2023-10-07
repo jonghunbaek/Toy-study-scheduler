@@ -110,3 +110,10 @@ private String studyType;
 여섯째, PeriodCalculator를 의존성 주입해서 사용할 경우 해당 객체를 사용할 때 마다 필드 값을 초기화해줘야 한다. 하지만 초기화 하지
 않고 기간을 계산하는 메서드를 호출할 경우 오류가 생기기 때문에 StudyUtil에서 생성을 강제하는 것으로 정했다.
 ```
+
++ LocalDate.MAX, MIN, EPOCH
+```
+종료되지 않은 Study의 realEndDate필드 값을 LocaDate.MAX 또는 MIN으로 초기화하려 했다. 하지만 값이 계속 이상하게 출력되어
+MariaDB공식 문서를 찾아보니 DATE타입은 4Bytes라 overflow가 일어난 것이다. 
+또 다른 상수 값을 만들까 했지만 LocalDate.EPOCH라는 유닉스 시간을 상수를 가지고 있어 이를 활용했다.
+```
