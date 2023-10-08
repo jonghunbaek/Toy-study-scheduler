@@ -122,8 +122,7 @@ class StudyServiceTest {
                 .contains("로버트 c.마틴", 2);
 
     }
-    
-    // TODO : 종료된 학습에 대해서도 작성예정
+
     @DisplayName("주어진 아이디로 종료되지 않은 학습 상세내용을 조회한다.")
     @Test
     void findStudyById() {
@@ -145,6 +144,29 @@ class StudyServiceTest {
         assertThat(study)
             .extracting("title", "description", "isTermination", "realEndDate")
             .contains("김영한의 스프링", "스프링 핵심 강의", false, LocalDate.EPOCH);
+    }
+
+    @DisplayName("주어진 아이디로 종료된 학습 상세내용을 조회한다.")
+    @Test
+    void findStudyByIdWithTerminating() {
+        // given
+        LocalDate startDate = LocalDate.of(2023, 7, 1);
+        LocalDate endDate = LocalDate.of(2023, 8, 3);
+        LocalDate realEndDate = LocalDate.of(2023, 8, 10);
+
+        Member member = createMember();
+        memberRepository.save(member);
+
+        Lecture lecture = createTerminatedLecture(startDate, endDate, realEndDate, member);
+        Lecture savedLecture = studyRepository.save(lecture);
+
+        // when
+        FindStudyResponseDto study = studyService.findStudyById(savedLecture.getId());
+
+        // then
+        assertThat(study)
+                .extracting("title", "description", "isTermination", "realEndDate")
+                .contains("김영한의 스프링", "스프링 핵심 강의", true, LocalDate.of(2023,8,10));
     }
 
     @DisplayName("특정기간에 수행한 학습들을 모두 조회 한다.")
@@ -254,5 +276,21 @@ class StudyServiceTest {
             .expectedEndDate(endDate)
             .member(member)
             .build();
+    }
+
+    private static Lecture createTerminatedLecture(LocalDate startDate, LocalDate endDate, LocalDate realEndDate, Member member) {
+        return Lecture.builder()
+                .title("김영한의 스프링")
+                .description("스프링 핵심 강의")
+                .teacherName("김영한")
+                .totalExpectedPeriod(600)
+                .planTimeInWeekday(30)
+                .planTimeInWeekend(100)
+                .startDate(startDate)
+                .expectedEndDate(endDate)
+                .member(member)
+                .isTermination(true)
+                .realEndDate(realEndDate)
+                .build();
     }
 }
