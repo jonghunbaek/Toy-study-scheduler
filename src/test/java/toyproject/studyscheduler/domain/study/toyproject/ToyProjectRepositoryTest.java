@@ -107,7 +107,7 @@ class ToyProjectRepositoryTest {
 
         // then
         assertThat(toyProjects).hasSize(2)
-            .extracting("title", "description", "startDate", "endDate")
+            .extracting("title", "description", "startDate", "expectedEndDate")
             .containsExactlyInAnyOrder(
                 tuple("스터디 스케줄러", "개인의 학습 내용을 수치화해서 조회", startDate1, endDate1),
                 tuple("상품주문 애플리케이션", "동시성 이슈를 고려한 상품 주문", startDate2, endDate2)
@@ -175,7 +175,7 @@ class ToyProjectRepositoryTest {
 
         // then
         assertThat(toyProjects).hasSize(2)
-            .extracting("title", "description", "startDate", "endDate")
+            .extracting("title", "description", "startDate", "expectedEndDate")
             .containsExactlyInAnyOrder(
                 tuple("스터디 스케줄러", "개인의 학습 내용을 수치화해서 조회", startDate1, endDate1),
                 tuple("상품주문 애플리케이션", "동시성 이슈를 고려한 상품 주문", startDate2, endDate2)

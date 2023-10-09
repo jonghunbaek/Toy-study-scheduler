@@ -1,10 +1,12 @@
 package toyproject.studyscheduler.api.service;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.transaction.annotation.Transactional;
 import toyproject.studyscheduler.api.controller.request.SaveStudyRequestDto;
 import toyproject.studyscheduler.api.controller.response.FindStudyResponseDto;
 import toyproject.studyscheduler.domain.member.AccountType;
@@ -52,6 +54,12 @@ class StudyServiceTest {
     MemberRepository memberRepository;
     @Autowired
     StudyUtil studyUtil;
+
+    @AfterEach
+    void cleanUp() {
+        studyRepository.deleteAllInBatch();
+        memberRepository.deleteAllInBatch();
+    }
 
     @DisplayName("여러 종류의 학습을 저장할 때 Discriminator 타입을 구분해서 저장한다.")
     @Test

@@ -35,6 +35,7 @@ public class StudyTime extends BaseEntity {
         this.study = study;
     }
 
+    // TODO : 로직 수정해야함
     public double calculateLearningRate() {
         return Math.round((((float) totalCompleteTime /study.getTotalExpectedPeriod())*100)*100)/100.0;
     }
