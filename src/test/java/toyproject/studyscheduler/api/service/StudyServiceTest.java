@@ -9,6 +9,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 import toyproject.studyscheduler.api.controller.request.SaveStudyRequestDto;
 import toyproject.studyscheduler.api.controller.response.FindStudyResponseDto;
+import toyproject.studyscheduler.domain.function.RequiredFunctionRepository;
 import toyproject.studyscheduler.domain.member.AccountType;
 import toyproject.studyscheduler.domain.member.Member;
 import toyproject.studyscheduler.domain.member.repository.MemberRepository;
@@ -24,6 +25,7 @@ import toyproject.studyscheduler.domain.techstack.TechStack;
 import toyproject.studyscheduler.domain.study.toyproject.ToyProject;
 import toyproject.studyscheduler.domain.function.FunctionType;
 import toyproject.studyscheduler.domain.function.RequiredFunction;
+import toyproject.studyscheduler.domain.techstack.TechStackRepository;
 import toyproject.studyscheduler.util.StudyUtil;
 
 import java.time.LocalDate;
@@ -53,11 +55,18 @@ class StudyServiceTest {
     @Autowired
     MemberRepository memberRepository;
     @Autowired
+    RequiredFunctionRepository requiredFunctionRepository;
+    @Autowired
+    TechStackRepository techStackRepository;
+    @Autowired
     StudyUtil studyUtil;
 
     @AfterEach
     void cleanUp() {
-        studyRepository.deleteAllInBatch();
+//        requiredFunctionRepository.deleteAllInBatch();
+//        techStackRepository.deleteAllInBatch();
+        toyProjectRepository.deleteAllInBatch();
+//        studyRepository.deleteAllInBatch();
         memberRepository.deleteAllInBatch();
     }
 
@@ -199,7 +208,8 @@ class StudyServiceTest {
 
         Lecture lecture = createLecture(startDate2, endDate2, member);
         Reading reading = createReading(startDate3, endDate3, member);
-        List<Study> studies1 = studyRepository.saveAll(List.of(lecture, reading, toyProject));
+        studyRepository.saveAll(List.of(lecture, reading));
+        toyProjectRepository.save(toyProject);
 
         // when
         LocalDate startDate = LocalDate.of(2023, 7, 1);
@@ -215,6 +225,38 @@ class StudyServiceTest {
                 tuple("김영한의 스프링", "스프링 핵심 강의", startDate2),
                 tuple("클린 코드", "클린 코드를 배우기 위한 도서", startDate3)
             );
+    }
+
+    @DisplayName("")
+    @Test
+    void test() {
+        // given
+        LocalDate startDate1 = LocalDate.of(2023, 7, 1);
+        LocalDate endDate1 = LocalDate.of(2023, 8, 3);
+
+        Member member = createMember();
+        memberRepository.save(member);
+
+        ToyProject toyProject = createToyProject(startDate1, endDate1, member);
+        RequiredFunction function1 = createFunction(CREATE, toyProject);
+        RequiredFunction function2 = createFunction(READ, toyProject);
+        TechStack stack1 = createTechStack("Java", LANGUAGE, toyProject);
+        TechStack stack2 = createTechStack("Spring", FRAMEWORK, toyProject);
+
+        toyProjectRepository.save(toyProject);
+
+        // when
+        LocalDate startDate = LocalDate.of(2023, 7, 1);
+        LocalDate endDate = LocalDate.of(2023, 7, 31);
+
+        ToyProject toyProject1 = toyProjectRepository.findAll().get(0);
+//        String title = toyProject1.getRequiredFunctions().get(0).getTitle();
+//        TechCategory techCategory = toyProject1.getTechStacks().get(0).getTechCategory();
+//        System.out.println("=======================================");
+//        // then
+//        System.out.println(title+ " ============================= ");
+//        System.out.println(techCategory+ " ============================= ");
+
     }
 
     private static Member createMember() {
