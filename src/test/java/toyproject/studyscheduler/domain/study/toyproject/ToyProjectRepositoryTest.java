@@ -33,7 +33,7 @@ class ToyProjectRepositoryTest {
     @Autowired
     ToyProjectRepository toyProjectRepository;
 
-    @DisplayName("01_주어진 아이디로 토이프로젝트 학습의 상세내용을 조회한다.")
+    @DisplayName("주어진 아이디로 토이프로젝트 학습의 상세내용을 조회한다.")
     @Test
     void findToyProjectById() {
         // given
@@ -74,7 +74,7 @@ class ToyProjectRepositoryTest {
             );
     }
 
-    @DisplayName("02_특정기간(기간 경계값 안에 포함)에 수행한 토이 프로젝트들을 모두 조회 한다.")
+    @DisplayName("특정기간(기간 경계값 안에 포함)에 수행한 토이 프로젝트들을 모두 조회 한다.")
     @Test
     void findToyProjectsByPeriod() {
         // given
@@ -142,7 +142,7 @@ class ToyProjectRepositoryTest {
             );
     }
 
-    @DisplayName("03_특정기간(경계값)에 수행한 토이 프로젝트들을 모두 조회 한다.")
+    @DisplayName("특정기간(경계값)에 수행한 토이 프로젝트들을 모두 조회 한다.")
     @Test
     void findAllByPeriodWithBoundaryVal() {
         // given

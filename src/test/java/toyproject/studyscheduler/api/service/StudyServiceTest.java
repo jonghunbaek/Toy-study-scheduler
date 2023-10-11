@@ -63,10 +63,9 @@ class StudyServiceTest {
 
     @AfterEach
     void cleanUp() {
-//        requiredFunctionRepository.deleteAllInBatch();
-//        techStackRepository.deleteAllInBatch();
-        toyProjectRepository.deleteAllInBatch();
-//        studyRepository.deleteAllInBatch();
+        requiredFunctionRepository.deleteAllInBatch();
+        techStackRepository.deleteAllInBatch();
+        studyRepository.deleteAllInBatch();
         memberRepository.deleteAllInBatch();
     }
 
@@ -225,38 +224,6 @@ class StudyServiceTest {
                 tuple("김영한의 스프링", "스프링 핵심 강의", startDate2),
                 tuple("클린 코드", "클린 코드를 배우기 위한 도서", startDate3)
             );
-    }
-
-    @DisplayName("")
-    @Test
-    void test() {
-        // given
-        LocalDate startDate1 = LocalDate.of(2023, 7, 1);
-        LocalDate endDate1 = LocalDate.of(2023, 8, 3);
-
-        Member member = createMember();
-        memberRepository.save(member);
-
-        ToyProject toyProject = createToyProject(startDate1, endDate1, member);
-        RequiredFunction function1 = createFunction(CREATE, toyProject);
-        RequiredFunction function2 = createFunction(READ, toyProject);
-        TechStack stack1 = createTechStack("Java", LANGUAGE, toyProject);
-        TechStack stack2 = createTechStack("Spring", FRAMEWORK, toyProject);
-
-        toyProjectRepository.save(toyProject);
-
-        // when
-        LocalDate startDate = LocalDate.of(2023, 7, 1);
-        LocalDate endDate = LocalDate.of(2023, 7, 31);
-
-        ToyProject toyProject1 = toyProjectRepository.findAll().get(0);
-//        String title = toyProject1.getRequiredFunctions().get(0).getTitle();
-//        TechCategory techCategory = toyProject1.getTechStacks().get(0).getTechCategory();
-//        System.out.println("=======================================");
-//        // then
-//        System.out.println(title+ " ============================= ");
-//        System.out.println(techCategory+ " ============================= ");
-
     }
 
     private static Member createMember() {

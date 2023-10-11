@@ -16,6 +16,7 @@ import java.util.List;
 
 @DiscriminatorValue("toy")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 @Entity
 public class ToyProject extends Study {
 

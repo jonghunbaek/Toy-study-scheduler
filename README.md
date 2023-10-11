@@ -117,3 +117,43 @@ private String studyType;
 MariaDB공식 문서를 찾아보니 DATE타입은 4Bytes라 overflow가 일어난 것이다. 
 또 다른 상수 값을 만들까 했지만 LocalDate.EPOCH라는 유닉스 시간을 상수를 가지고 있어 이를 활용했다.
 ```
+
++ @Transactional 과 Lazy loading, cascade
+```java
+@DisplayName("")
+    @Test
+    void test() {
+        // given
+        LocalDate startDate1 = LocalDate.of(2023, 7, 1);
+        LocalDate endDate1 = LocalDate.of(2023, 8, 3);
+
+        Member member = createMember();
+        memberRepository.save(member);
+
+        ToyProject toyProject = createToyProject(startDate1, endDate1, member);
+        RequiredFunction function1 = createFunction(CREATE, toyProject);
+        RequiredFunction function2 = createFunction(READ, toyProject);
+        TechStack stack1 = createTechStack("Java", LANGUAGE, toyProject);
+        TechStack stack2 = createTechStack("Spring", FRAMEWORK, toyProject);
+
+        toyProjectRepository.save(toyProject);
+
+        // when
+        LocalDate startDate = LocalDate.of(2023, 7, 1);
+        LocalDate endDate = LocalDate.of(2023, 7, 31);
+
+        ToyProject toyProject1 = toyProjectRepository.findAll().get(0);
+        String title = toyProject1.getRequiredFunctions().get(0).getTitle();
+        TechCategory techCategory = toyProject1.getTechStacks().get(0).getTechCategory();
+        System.out.println("=======================================");
+        // then
+        System.out.println(title+ " ============================= ");
+        System.out.println(techCategory+ " ============================= ");
+
+    }
+```
+```
+문제 상황 : 위와 같은 테스트 코드를 작성했을 때 @Transactional이 없는 경우 지연 로딩과 영속성 전이가 모두 작동을 안했다.
+원인 : 원인은 @Transactional이 있는 경우만 영속성 컨텍스트가 살아 있고 이 때의 엔티티들은 영속 상태 이다. 하지만 없거나 끝난 경우라면
+엔티티들은 준영속 상태가 된다 .그렇기 때문에 지연 로딩과 영속성 전이 기능을 사용할 수 없는 것이다.
+```
