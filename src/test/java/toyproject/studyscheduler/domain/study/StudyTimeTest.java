@@ -13,31 +13,6 @@ import static org.assertj.core.api.Assertions.*;
 
 class StudyTimeTest {
 
-    @DisplayName("StudyTime 생성 시, 총 학습량을 계산 한다.")
-    @Test
-    void calculateTotalCompleteTime() {
-        // given
-        LocalDate yesterday = LocalDate.of(2023, 8, 7);
-        Member member = createMember();
-        Study lecture = createLecture(member);
-        int totalCompleteTime = 200;
-        int completeTimeYesterDay = 80;
-        StudyTime studyTimeYesterday = createStudyTime(lecture, yesterday, completeTimeYesterDay, totalCompleteTime);
-
-        // when
-        LocalDate today = LocalDate.of(2023, 8, 10);
-        int completeTimeToday = 100;
-        StudyTime studyTimeToday = createStudyTime(
-            lecture,
-            today,
-            completeTimeToday,
-            studyTimeYesterday.calculateTotalCompleteTime(completeTimeToday));
-
-        // then
-        assertThat(studyTimeToday.getTotalCompleteTime()).isEqualTo(studyTimeYesterday.getTotalCompleteTime() + completeTimeToday);
-
-    }
-
     @DisplayName("총 예상 시간과 총 학습 시간을 나눠 현재 학습율을 구한다.")
     @Test
     void calculateLearningRate() {
