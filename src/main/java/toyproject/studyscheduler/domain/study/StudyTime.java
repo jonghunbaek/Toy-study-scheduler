@@ -28,8 +28,8 @@ public class StudyTime extends BaseEntity {
     private Study study;
 
     @Builder
-    private StudyTime(int previousTotalCompleteTime, int completeTimeToday, LocalDate date, Study study) {
-        this.totalCompleteTime = previousTotalCompleteTime + completeTimeToday;
+    private StudyTime(int totalCompleteTime, int completeTimeToday, LocalDate date, Study study) {
+        this.totalCompleteTime = totalCompleteTime + completeTimeToday;
         this.completeTimeToday = completeTimeToday;
         this.date = date;
         this.study = study;
@@ -37,6 +37,6 @@ public class StudyTime extends BaseEntity {
 
     // TODO : 로직 수정해야함
     public double calculateLearningRate() {
-        return Math.round((((float) totalCompleteTime /study.getTotalExpectedPeriod())*100)*100)/100.0;
+        return Math.round((((float) totalCompleteTime / study.getTotalExpectedPeriod())*100)*100)/100.0;
     }
 }

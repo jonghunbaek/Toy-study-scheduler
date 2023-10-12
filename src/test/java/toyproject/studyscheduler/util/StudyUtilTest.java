@@ -21,7 +21,7 @@ class StudyUtilTest {
         StudyUtil studyUtil = new StudyUtil();
 
         // when
-        int period = studyUtil.setUpPeriodCalCulatorInfos(planTimeInWeekDay, planTimeInWeekend, startDate)
+        int period = studyUtil.setUpPeriodCalCulatorBy(planTimeInWeekDay, planTimeInWeekend, startDate)
                 .calculatePeriodBy(totalRunTime);
 
         // then

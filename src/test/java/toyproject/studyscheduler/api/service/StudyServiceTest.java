@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.transaction.annotation.Transactional;
 import toyproject.studyscheduler.api.controller.request.SaveStudyRequestDto;
 import toyproject.studyscheduler.api.controller.response.FindStudyResponseDto;
 import toyproject.studyscheduler.domain.function.RequiredFunctionRepository;
@@ -80,7 +79,7 @@ class StudyServiceTest {
         int planTimeInWeekend = 120;
         LocalDate startDate1 = LocalDate.of(2023, 9, 10);
         int totalRuntime = 600;
-        int totalExpectedPeriod1 = studyUtil.setUpPeriodCalCulatorInfos(planTimeInWeekday, planTimeInWeekend, startDate1)
+        int totalExpectedPeriod1 = studyUtil.setUpPeriodCalCulatorBy(planTimeInWeekday, planTimeInWeekend, startDate1)
             .calculatePeriodBy(totalRuntime);
 
         SaveStudyRequestDto lectureDto = SaveStudyRequestDto.builder()
@@ -101,7 +100,7 @@ class StudyServiceTest {
         LocalDate startDate2 = LocalDate.of(2023, 9, 11);
         int totalPage = 700;
         int readPagePerMin = 2;
-        int totalExpectedPeriod2 = studyUtil.setUpPeriodCalCulatorInfos(planTimeInWeekday, planTimeInWeekend, startDate2)
+        int totalExpectedPeriod2 = studyUtil.setUpPeriodCalCulatorBy(planTimeInWeekday, planTimeInWeekend, startDate2)
             .calculatePeriodBy(totalPage, readPagePerMin);
 
         SaveStudyRequestDto readingDto = SaveStudyRequestDto.builder()
