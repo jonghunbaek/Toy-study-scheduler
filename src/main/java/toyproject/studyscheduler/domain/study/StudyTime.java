@@ -20,6 +20,8 @@ public class StudyTime extends BaseEntity {
 
     private int totalCompleteTime;
 
+    private double totalLearningRate;
+
     private int completeTimeToday;
 
     private LocalDate date;
@@ -30,6 +32,7 @@ public class StudyTime extends BaseEntity {
     @Builder
     private StudyTime(int totalCompleteTime, int completeTimeToday, LocalDate date, Study study) {
         this.totalCompleteTime = totalCompleteTime + completeTimeToday;
+        this.totalLearningRate = calculateLearningRate();
         this.completeTimeToday = completeTimeToday;
         this.date = date;
         this.study = study;
@@ -37,7 +40,7 @@ public class StudyTime extends BaseEntity {
 
     // TODO : 로직 수정해야함
     // 학습율을 저장할 변수와 총 학습시간(분)을 저장하는 변수 추가 필요
-    public double calculateLearningRate() {
+    private double calculateLearningRate() {
         return Math.round((((float) totalCompleteTime / study.getTotalExpectedPeriod())*100)*100)/100.0;
     }
 }
