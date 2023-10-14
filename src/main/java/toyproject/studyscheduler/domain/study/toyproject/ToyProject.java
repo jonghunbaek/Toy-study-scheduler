@@ -20,6 +20,8 @@ import java.util.List;
 @Entity
 public class ToyProject extends Study {
 
+    private static final int INITIAL_EXPECTED_MIN = 0;
+
     @OneToMany(mappedBy = "toyProject", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     List<RequiredFunction> functions = new ArrayList<>();
 
@@ -35,10 +37,9 @@ public class ToyProject extends Study {
     }
 
     @Builder
-    private ToyProject(String title, String description, int totalExpectedPeriod, int totalExpectedMin, int planTimeInWeekday, int planTimeInWeekend,
+    private ToyProject(String title, String description, int totalExpectedPeriod, int planTimeInWeekday, int planTimeInWeekend,
                    LocalDate startDate, LocalDate expectedEndDate, boolean isTermination, LocalDate realEndDate, Member member, List<RequiredFunction> functions, List<TechStack> stacks) {
-
-        super(title, description, totalExpectedPeriod, totalExpectedMin, planTimeInWeekday, planTimeInWeekend,
+        super(title, description, totalExpectedPeriod, INITIAL_EXPECTED_MIN, planTimeInWeekday, planTimeInWeekend,
             startDate, expectedEndDate, isTermination, realEndDate, member);
 
         if (functions != null) {
@@ -67,5 +68,14 @@ public class ToyProject extends Study {
 
     public void addRequiredFunction(RequiredFunction function) {
         functions.add(function);
+        calculateTotalExpectedMin();
+    }
+
+    private void calculateTotalExpectedMin() {
+        int totalExpectedMin = functions.stream()
+            .mapToInt(RequiredFunction::getExpectedTime)
+            .sum();
+
+        super.updateTotalExpectedMin(totalExpectedMin);
     }
 }

@@ -18,10 +18,11 @@ public class Lecture extends Study {
     private int totalRuntime;
 
     @Builder
-    private Lecture(String title, String description, int totalExpectedPeriod, int totalExpectedMin, int planTimeInWeekday, int planTimeInWeekend,
+    private Lecture(String title, String description, int totalExpectedPeriod, int planTimeInWeekday, int planTimeInWeekend,
                    LocalDate startDate, LocalDate expectedEndDate, boolean isTermination, LocalDate realEndDate, Member member, String teacherName, int totalRuntime) {
-        super(title, description, totalExpectedPeriod, totalExpectedMin, planTimeInWeekday, planTimeInWeekend,
+        super(title, description, totalExpectedPeriod, totalRuntime, planTimeInWeekday, planTimeInWeekend,
             startDate, expectedEndDate, isTermination, realEndDate, member);
+
         this.teacherName = teacherName;
         this.totalRuntime = totalRuntime;
     }

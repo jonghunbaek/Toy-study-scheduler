@@ -2,6 +2,7 @@ package toyproject.studyscheduler.domain.study;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import toyproject.studyscheduler.domain.BaseInfoEntity;
@@ -63,5 +64,9 @@ public abstract class Study extends BaseInfoEntity {
     public void terminateStudyIn(LocalDate realEndDate) {
         this.isTermination = true;
         this.realEndDate = realEndDate;
+    }
+
+    protected void updateTotalExpectedMin(int totalExpectedMin) {
+        this.totalExpectedMin = totalExpectedMin;
     }
 }
