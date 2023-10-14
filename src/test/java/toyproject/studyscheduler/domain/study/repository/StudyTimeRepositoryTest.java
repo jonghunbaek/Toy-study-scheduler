@@ -1,6 +1,5 @@
 package toyproject.studyscheduler.domain.study.repository;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,7 +54,7 @@ class StudyTimeRepositoryTest {
         List<Integer> totalCompleteTimes = List.of(30, 70, 95, 118);
         List<Integer> completeTimeTodays = List.of(30, 40, 25, 23);
 
-        studyTimeRepository.saveAll(createStudies(dates.size(), lecture, dates, totalCompleteTimes, completeTimeTodays));
+        studyTimeRepository.saveAll(createStudyTimes(dates.size(), lecture, dates, totalCompleteTimes, completeTimeTodays));
 
         // when
         List<StudyTime> allByPeriod = studyTimeRepository.findAllByPeriod(startDate, endDate);
@@ -92,7 +91,7 @@ class StudyTimeRepositoryTest {
         List<Integer> totalCompleteTimes = List.of(30, 70, 95, 118);
         List<Integer> completeTimeTodays = List.of(30, 40, 25, 23);
 
-        studyTimeRepository.saveAll(createStudies(dates.size(), lecture, dates, totalCompleteTimes, completeTimeTodays));
+        studyTimeRepository.saveAll(createStudyTimes(dates.size(), lecture, dates, totalCompleteTimes, completeTimeTodays));
 
         // TODO : 로직 수정필요
         // when
@@ -119,10 +118,15 @@ class StudyTimeRepositoryTest {
             );
     }
 
-    private List<StudyTime> createStudies(int size, Study study, List<LocalDate> dates, List<Integer> totalCompleteTimes, List<Integer> completeTimeTodays) {
+    private List<StudyTime> createStudyTimes(int size, Study study, List<LocalDate> dates, List<Integer> totalCompleteTimes, List<Integer> completeTimeTodays) {
         List<StudyTime> studyTimes = new ArrayList<>(size);
         for (int i=0; i<size; i++) {
-            studyTimes.add(createStudyTime(study, dates.get(i), totalCompleteTimes.get(i), completeTimeTodays.get(i)));
+            if (i == 0) {
+                studyTimes.add(createStudyTime(study, dates.get(i), 0, completeTimeTodays.get(i)));
+                continue;
+            }
+
+            studyTimes.add(createStudyTime(study, dates.get(i), totalCompleteTimes.get(i-1), completeTimeTodays.get(i)));
         }
 
         return studyTimes;

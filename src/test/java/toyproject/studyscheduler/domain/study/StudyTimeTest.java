@@ -13,22 +13,6 @@ import static org.assertj.core.api.Assertions.*;
 
 class StudyTimeTest {
 
-    @DisplayName("총 예상 시간과 총 학습 시간을 나눠 현재 학습율을 구한다.")
-    @Test
-    void calculateLearningRate() {
-        // given
-        LocalDate yesterday = LocalDate.of(2023, 8, 7);
-        Member member = createMember();
-        Study lecture = createLecture(member);
-        int totalCompleteTime = 80;
-        int completeTimeToday = 80;
-        StudyTime studyTime = createStudyTime(lecture, yesterday, completeTimeToday, totalCompleteTime);
-
-        // when
-
-        // then
-    }
-
     private StudyTime createStudyTime(Study lecture, LocalDate today, int completeTimeToday, int totalCompleteTime) {
         return StudyTime.builder()
                 .totalCompleteTime(totalCompleteTime)

@@ -32,10 +32,10 @@ public class StudyTime extends BaseEntity {
     @Builder
     private StudyTime(int totalCompleteTime, int completeTimeToday, LocalDate date, Study study) {
         this.totalCompleteTime = totalCompleteTime + completeTimeToday;
-        this.totalLearningRate = calculateLearningRate();
         this.completeTimeToday = completeTimeToday;
         this.date = date;
         this.study = study;
+        this.totalLearningRate = calculateLearningRate();
     }
 
     // TODO : 로직 수정해야함
