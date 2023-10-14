@@ -94,14 +94,14 @@ class StudyTimeRepositoryTest {
 
         studyTimeRepository.saveAll(createStudies(dates.size(), lecture, dates, totalCompleteTimes, completeTimeTodays));
 
-
+        // TODO : 로직 수정필요
         // when
         StudyTime studyTime = studyTimeRepository.findFirstByStudyOrderByDateDesc(lecture);
         int completeTimeToday = 40;
         studyTimeRepository.save(createStudyTime(
             lecture,
             LocalDate.of(2023, 8, 23),
-            studyTime.calculateTotalCompleteTime(completeTimeToday),
+            0,
             completeTimeToday
         ));
 

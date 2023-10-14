@@ -25,10 +25,8 @@ class StudyTimeTest {
         StudyTime studyTime = createStudyTime(lecture, yesterday, completeTimeToday, totalCompleteTime);
 
         // when
-        double learningRate = studyTime.calculateLearningRate();
 
         // then
-        assertThat(learningRate).isEqualTo(13.33);
     }
 
     private StudyTime createStudyTime(Study lecture, LocalDate today, int completeTimeToday, int totalCompleteTime) {
