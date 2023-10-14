@@ -35,10 +35,11 @@ public class ToyProject extends Study {
     }
 
     @Builder
-    private ToyProject(String title, String description, int totalExpectedPeriod, int planTimeInWeekday, int planTimeInWeekend,
+    private ToyProject(String title, String description, int totalExpectedPeriod, int totalExpectedMin, int planTimeInWeekday, int planTimeInWeekend,
                    LocalDate startDate, LocalDate expectedEndDate, boolean isTermination, LocalDate realEndDate, Member member, List<RequiredFunction> functions, List<TechStack> stacks) {
 
-        super(title, description, totalExpectedPeriod, planTimeInWeekday, planTimeInWeekend, startDate, expectedEndDate, isTermination, realEndDate, member);
+        super(title, description, totalExpectedPeriod, totalExpectedMin, planTimeInWeekday, planTimeInWeekend,
+            startDate, expectedEndDate, isTermination, realEndDate, member);
 
         if (functions != null) {
             this.functions = functions.stream()
