@@ -38,6 +38,10 @@ public class PeriodCalculator {
         return calculatePeriod(totalRunTime);
     }
 
+    public int calculateMinBy(int totalRunTime) {
+        return totalRunTime;
+    }
+
     public int calculatePeriodBy(List<Integer> expectedTimes) {
         int totalExpectedTime = expectedTimes.stream()
             .mapToInt(i -> i)
@@ -46,11 +50,21 @@ public class PeriodCalculator {
         return calculatePeriod(totalExpectedTime);
     }
 
+    public int calculateMinBy(List<Integer> expectedTimes) {
+        return expectedTimes.stream()
+            .mapToInt(i -> i)
+            .sum();
+    }
+
     public int calculatePeriodBy(int totalPage, int readPagePerMin) {
         planQuantityInWeekday *= readPagePerMin;
         planQuantityInWeekend *= readPagePerMin;
 
         return calculatePeriod(totalPage);
+    }
+
+    public int calculateMinBy(int totalPage, int readPagePerMin) {
+        return totalPage/readPagePerMin;
     }
 
     private int calculatePeriod(int totalQuantity) {

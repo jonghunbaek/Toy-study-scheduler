@@ -12,6 +12,73 @@ import static org.assertj.core.api.Assertions.*;
 
 class PeriodCalculatorTest {
 
+    @DisplayName("강의 학습의 분 단위의 총 예상 시간을 계산한다.")
+    @Test
+    void calculateTotalExpectedMinWithLecture() {
+        // given
+        int planTimeInWeekDay = 60;
+        int planTimeInWeekend = 120;
+        int totalRunTime = 600;
+        LocalDate startDate = LocalDate.of(2023, 9, 15);
+
+        PeriodCalculator calculator = PeriodCalculator.builder()
+            .planQuantityInWeekday(planTimeInWeekDay)
+            .planQuantityInWeekend(planTimeInWeekend)
+            .startDate(startDate)
+            .build();
+
+        // when
+        int min = calculator.calculateMinBy(totalRunTime);
+
+        // then
+        assertThat(min).isEqualTo(totalRunTime);
+    }
+
+    @DisplayName("독서 학습의 분 단위의 총 예상 시간을 계산한다.")
+    @Test
+    void calculateTotalExpectedMinWithReading() {
+        // given
+        int planTimeInWeekDay = 30;
+        int planTimeInWeekend = 60;
+        int totalPage = 700;
+        int readPagePerMin = 2;
+        LocalDate startDate = LocalDate.of(2023, 9, 11);
+
+        PeriodCalculator calculator = PeriodCalculator.builder()
+            .planQuantityInWeekday(planTimeInWeekDay)
+            .planQuantityInWeekend(planTimeInWeekend)
+            .startDate(startDate)
+            .build();
+
+        // when
+        int period = calculator.calculateMinBy(totalPage, readPagePerMin);
+
+        // then
+        assertThat(period).isEqualTo(350);
+    }
+
+    @DisplayName("토이프로젝트 학습의 분 단위의 총 예상 기간을 계산한다.")
+    @Test
+    void calculateTotalExpectedMinWithToyProject() {
+        // given
+        int planTimeInWeekDay = 90;
+        int planTimeInWeekend = 180;
+        List<Integer> expectedTimes = List.of(300, 600, 250, 100, 500);
+        LocalDate startDate = LocalDate.of(2023, 9, 15);
+
+        PeriodCalculator calculator = PeriodCalculator.builder()
+            .planQuantityInWeekday(planTimeInWeekDay)
+            .planQuantityInWeekend(planTimeInWeekend)
+            .startDate(startDate)
+            .build();
+
+        // when
+        int period = calculator.calculateMinBy(expectedTimes);
+
+        // then
+        assertThat(period).isEqualTo(1750);
+    }
+
     @DisplayName("강의 학습의 총 예상 기간을 계산한다.")
     @Test
     void calculateTotalExpectedPeriodWithLecture() {
@@ -31,7 +98,7 @@ class PeriodCalculatorTest {
         int period = calculator.calculatePeriodBy(totalRunTime);
 
         // then
-        Assertions.assertThat(period).isEqualTo(8);
+        assertThat(period).isEqualTo(8);
     }
 
     @DisplayName("월요일에 시작한 경우 독서 학습의 총 예상 기간을 계산한다.")
@@ -54,7 +121,7 @@ class PeriodCalculatorTest {
         int period = calculator.calculatePeriodBy(totalPage, readPagePerMin);
 
         // then
-        Assertions.assertThat(period).isEqualTo(10);
+        assertThat(period).isEqualTo(10);
     }
 
     @DisplayName("토요일에 시작한 경우 독서 학습의 총 예상 기간을 계산한다.")
@@ -77,7 +144,7 @@ class PeriodCalculatorTest {
         int period = calculator.calculatePeriodBy(totalPage, readPagePerMin);
 
         // then
-        Assertions.assertThat(period).isEqualTo(9);
+        assertThat(period).isEqualTo(9);
     }
 
     @DisplayName("월요일에 시작한 경우 토이프로젝트 학습의 총 예상 기간을 계산한다.")
@@ -99,7 +166,7 @@ class PeriodCalculatorTest {
         int period = calculator.calculatePeriodBy(expectedTimes);
 
         // then
-        Assertions.assertThat(period).isEqualTo(16);
+        assertThat(period).isEqualTo(16);
     }
 
     @DisplayName("토요일에 시작한 경우 토이프로젝트 학습의 총 예상 기간을 계산한다.")
@@ -121,7 +188,7 @@ class PeriodCalculatorTest {
         int period = calculator.calculatePeriodBy(expectedTimes);
 
         // then
-        Assertions.assertThat(period).isEqualTo(16);
+        assertThat(period).isEqualTo(16);
     }
 
     @DisplayName("DayOfWeek 학습 테스트")
