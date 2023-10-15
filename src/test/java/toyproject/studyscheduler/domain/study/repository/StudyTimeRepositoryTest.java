@@ -33,7 +33,7 @@ class StudyTimeRepositoryTest {
     @Autowired
     StudyRepository studyRepository;
 
-    @DisplayName("특정기간에 수행한 일간 학습량을 모두 조회 한다.")
+    @DisplayName("특정기간에 수행한 강의 학습의 일간 학습량, 누적 학습량, 누적 학습율을 모두 조회 한다.")
     @Test
     void getStudyTimePerDay() {
         // given
@@ -49,10 +49,11 @@ class StudyTimeRepositoryTest {
         List<LocalDate> dates = List.of(LocalDate.of(2023, 8, 3),
             LocalDate.of(2023, 8, 8),
             LocalDate.of(2023, 8, 14),
-            LocalDate.of(2023, 8, 20)
+            LocalDate.of(2023, 8, 20),
+            LocalDate.of(2023, 9, 1)
         );
-        List<Integer> totalCompleteTimes = List.of(30, 70, 95, 118);
-        List<Integer> completeTimeTodays = List.of(30, 40, 25, 23);
+        List<Integer> totalCompleteTimes = List.of(0, 30, 70, 95, 118, 148);
+        List<Integer> completeTimeTodays = List.of(30, 40, 25, 23, 30);
 
         studyTimeRepository.saveAll(createStudyTimes(dates.size(), lecture, dates, totalCompleteTimes, completeTimeTodays));
 
@@ -61,72 +62,19 @@ class StudyTimeRepositoryTest {
 
         // then
         assertThat(allByPeriod).hasSize(4)
-                .extracting("totalCompleteTime", "completeTimeToday")
+                .extracting("totalCompleteTime", "totalLearningRate", "completeTimeToday", "date")
                 .containsExactlyInAnyOrder(
-                        tuple(30, 30),
-                        tuple(70, 40),
-                        tuple(95, 25),
-                        tuple(118, 23)
+                        tuple(30, 5.0, 30, LocalDate.of(2023,8,3)),
+                        tuple(70, 11.67, 40, LocalDate.of(2023,8,8)),
+                        tuple(95, 15.83, 25, LocalDate.of(2023,8,14)),
+                        tuple(118, 19.67, 23, LocalDate.of(2023,8,20))
                 );
-    }
-
-    @DisplayName("특정기간에 수행한 누적 학습량을 모두 조회 한다.")
-    @Test
-    void getTotalCompleteTimePerDay() {
-        // given
-        LocalDate startDate = LocalDate.of(2023, 8, 1);
-        LocalDate endDate = LocalDate.of(2023, 8, 23);
-
-        Member member = createMember();
-        memberRepository.save(member);
-
-        Study lecture = createLecture(startDate, endDate, member);
-        studyRepository.save(lecture);
-
-        List<LocalDate> dates = List.of(LocalDate.of(2023, 8, 3),
-            LocalDate.of(2023, 8, 8),
-            LocalDate.of(2023, 8, 14),
-            LocalDate.of(2023, 8, 20)
-        );
-        List<Integer> totalCompleteTimes = List.of(30, 70, 95, 118);
-        List<Integer> completeTimeTodays = List.of(30, 40, 25, 23);
-
-        studyTimeRepository.saveAll(createStudyTimes(dates.size(), lecture, dates, totalCompleteTimes, completeTimeTodays));
-
-        // TODO : 로직 수정필요
-        // when
-        StudyTime studyTime = studyTimeRepository.findFirstByStudyOrderByDateDesc(lecture);
-        int completeTimeToday = 40;
-        studyTimeRepository.save(createStudyTime(
-            lecture,
-            LocalDate.of(2023, 8, 23),
-            0,
-            completeTimeToday
-        ));
-
-        List<StudyTime> allByPeriod = studyTimeRepository.findAllByPeriod(startDate, endDate);
-
-        // then
-        assertThat(allByPeriod).hasSize(5)
-            .extracting("totalCompleteTime", "completeTimeToday")
-            .containsExactlyInAnyOrder(
-                tuple(30, 30),
-                tuple(70, 40),
-                tuple(95, 25),
-                tuple(118, 23),
-                tuple(158, 40)
-            );
     }
 
     private List<StudyTime> createStudyTimes(int size, Study study, List<LocalDate> dates, List<Integer> totalCompleteTimes, List<Integer> completeTimeTodays) {
         List<StudyTime> studyTimes = new ArrayList<>(size);
         for (int i=0; i<size; i++) {
-            if (i == 0) {
-                studyTimes.add(createStudyTime(study, dates.get(i), 0, completeTimeTodays.get(i)));
-                continue;
-            }
-
-            studyTimes.add(createStudyTime(study, dates.get(i), totalCompleteTimes.get(i-1), completeTimeTodays.get(i)));
+            studyTimes.add(createStudyTime(study, dates.get(i), totalCompleteTimes.get(i), completeTimeTodays.get(i)));
         }
 
         return studyTimes;
@@ -157,12 +105,12 @@ class StudyTimeRepositoryTest {
                 .title("김영한의 스프링")
                 .description("스프링 핵심 강의")
                 .teacherName("김영한")
-                .totalExpectedPeriod(600)
                 .planTimeInWeekday(30)
                 .planTimeInWeekend(100)
                 .startDate(startDate)
                 .expectedEndDate(endDate)
                 .member(member)
+                .totalRuntime(600)
                 .build();
     }
 }
