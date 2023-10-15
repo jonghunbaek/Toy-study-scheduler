@@ -225,7 +225,7 @@ class StudyServiceTest {
             );
     }
 
-    private static Member createMember() {
+    private Member createMember() {
         return Member.builder()
             .email("hong@gmail.com")
             .password("zxcv1234")

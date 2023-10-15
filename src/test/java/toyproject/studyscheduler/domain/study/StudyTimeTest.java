@@ -1,7 +1,5 @@
 package toyproject.studyscheduler.domain.study;
 
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 import toyproject.studyscheduler.domain.member.AccountType;
 import toyproject.studyscheduler.domain.member.Member;
 import toyproject.studyscheduler.domain.study.lecture.Lecture;

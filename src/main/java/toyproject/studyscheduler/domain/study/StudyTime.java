@@ -38,8 +38,6 @@ public class StudyTime extends BaseEntity {
         this.totalLearningRate = calculateLearningRate();
     }
 
-    // TODO : 로직 수정해야함
-    // 학습율을 저장할 변수와 총 학습시간(분)을 저장하는 변수 추가 필요
     private double calculateLearningRate() {
         return Math.round((((float) totalCompleteTime / study.getTotalExpectedMin())*100)*100)/100.0;
     }
