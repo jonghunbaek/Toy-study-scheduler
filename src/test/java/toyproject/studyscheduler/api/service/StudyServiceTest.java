@@ -264,7 +264,7 @@ class StudyServiceTest {
             .build();
     }
 
-    private static Reading createReading(LocalDate startDate, LocalDate endDate, Member member) {
+    private Reading createReading(LocalDate startDate, LocalDate endDate, Member member) {
         return Reading.builder()
             .title("클린 코드")
             .authorName("로버트 c.마틴")
