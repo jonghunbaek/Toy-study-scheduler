@@ -46,7 +46,6 @@ public class SaveStudyRequestDto {
             .planTimeInWeekday(planTimeInWeekday)
             .planTimeInWeekend(planTimeInWeekend)
             .startDate(startDate)
-            .expectedEndDate(startDate.plusDays(totalExpectedPeriod))
             .member(member)
             .teacherName(teacherName)
             .totalRuntime(totalRuntime)
@@ -61,7 +60,6 @@ public class SaveStudyRequestDto {
             .planTimeInWeekday(planTimeInWeekday)
             .planTimeInWeekend(planTimeInWeekend)
             .startDate(startDate)
-            .expectedEndDate(startDate.plusDays(totalExpectedPeriod))
             .member(member)
             .authorName(authorName)
             .totalPage(totalPage)
@@ -77,7 +75,6 @@ public class SaveStudyRequestDto {
             .planTimeInWeekday(planTimeInWeekday)
             .planTimeInWeekend(planTimeInWeekend)
             .startDate(startDate)
-            .expectedEndDate(startDate.plusDays(totalExpectedPeriod))
             .member(member)
             .build();
     }

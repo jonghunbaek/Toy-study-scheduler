@@ -46,6 +46,7 @@ public class PeriodCalculator {
         return calculatePeriod(totalExpectedTime);
     }
 
+    // TODO : setUp과 마찬가지로 매개변수 2개의 타입이 같기 때문에 계산오류가 발생할 확률 높으니 리팩토링하자.
     public int calculatePeriodBy(int totalPage, int readPagePerMin) {
         planQuantityInWeekday *= readPagePerMin;
         planQuantityInWeekend *= readPagePerMin;
@@ -77,8 +78,8 @@ public class PeriodCalculator {
     private int calculateRemaining(int totalQuantity, int studyDay) {
         if (studyDay <= FRIDAY.getValue()) {
             return totalQuantity - planQuantityInWeekday;
-        } else {
-            return totalQuantity - planQuantityInWeekend;
         }
+
+        return totalQuantity - planQuantityInWeekend;
     }
 }

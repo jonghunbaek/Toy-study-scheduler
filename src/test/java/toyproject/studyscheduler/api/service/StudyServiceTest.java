@@ -142,14 +142,17 @@ class StudyServiceTest {
     @Test
     void findStudyById() {
         // given
-        LocalDate startDate = LocalDate.of(2023, 7, 1);
-        LocalDate endDate = LocalDate.of(2023, 8, 3);
-
         Member member = createMember();
         memberRepository.save(member);
 
-        Lecture lecture = createLecture(startDate, endDate, member);
-        System.out.println(lecture.getRealEndDate());
+        LocalDate lectureStartDate = LocalDate.of(2023, 7, 8);
+        int lecturePTD = 50;
+        int lecturePTK = 90;
+        int totalRuntime = 600;
+        int lectureExpectedPeriod = studyUtil.setUpPeriodCalCulatorBy(lecturePTD, lecturePTK, lectureStartDate)
+                .calculatePeriodBy(totalRuntime);
+        Lecture lecture = createLecture(lecturePTD, lecturePTK, lectureStartDate, lectureExpectedPeriod, totalRuntime, member);
+
         Lecture savedLecture = studyRepository.save(lecture);
 
         // when
@@ -165,14 +168,18 @@ class StudyServiceTest {
     @Test
     void findStudyByIdWithTerminating() {
         // given
-        LocalDate startDate = LocalDate.of(2023, 7, 1);
-        LocalDate endDate = LocalDate.of(2023, 8, 3);
-        LocalDate realEndDate = LocalDate.of(2023, 8, 10);
-
         Member member = createMember();
         memberRepository.save(member);
 
-        Lecture lecture = createTerminatedLecture(startDate, endDate, realEndDate, member);
+        LocalDate lectureStartDate = LocalDate.of(2023, 7, 8);
+        LocalDate realEndDate = LocalDate.of(2023, 8, 10);
+        int lecturePTD = 50;
+        int lecturePTK = 90;
+        int totalRuntime = 600;
+        int lectureExpectedPeriod = studyUtil.setUpPeriodCalCulatorBy(lecturePTD, lecturePTK, lectureStartDate)
+                .calculatePeriodBy(totalRuntime);
+        Lecture lecture = createTerminatedLecture(lecturePTD, lecturePTK, lectureStartDate, lectureExpectedPeriod, totalRuntime, realEndDate, member);
+
         Lecture savedLecture = studyRepository.save(lecture);
 
         // when
@@ -184,30 +191,43 @@ class StudyServiceTest {
                 .contains("김영한의 스프링", "스프링 핵심 강의", true, LocalDate.of(2023,8,10));
     }
 
+    // TODO : 테스트 검증X
     @DisplayName("특정기간에 수행한 학습들을 모두 조회 한다.")
     @Test
     void findStudiesByPeriod() {
         // given
-        LocalDate startDate1 = LocalDate.of(2023, 7, 1);
-        LocalDate endDate1 = LocalDate.of(2023, 8, 3);
-        LocalDate startDate2 = LocalDate.of(2023, 7, 8);
-        LocalDate endDate2 = LocalDate.of(2023, 7, 16);
-        LocalDate startDate3 = LocalDate.of(2023, 7, 31);
-        LocalDate endDate3 = LocalDate.of(2023, 8, 30);
-
         Member member = createMember();
         memberRepository.save(member);
 
-        ToyProject toyProject = createToyProject(startDate1, endDate1, member);
-        RequiredFunction function1 = createFunction(CREATE, toyProject);
-        RequiredFunction function2 = createFunction(READ, toyProject);
-        TechStack stack1 = createTechStack("Java", LANGUAGE, toyProject);
-        TechStack stack2 = createTechStack("Spring", FRAMEWORK, toyProject);
+        LocalDate lectureStartDate = LocalDate.of(2023, 7, 8);
+        int lecturePTD = 50;
+        int lecturePTK = 90;
+        int totalRuntime = 600;
+        int lectureExpectedPeriod = studyUtil.setUpPeriodCalCulatorBy(lecturePTD, lecturePTK, lectureStartDate)
+                .calculatePeriodBy(totalRuntime);
+        Lecture lecture = createLecture(lecturePTD, lecturePTK, lectureStartDate, lectureExpectedPeriod, totalRuntime, member);
 
-        Lecture lecture = createLecture(startDate2, endDate2, member);
-        Reading reading = createReading(startDate3, endDate3, member);
-        studyRepository.saveAll(List.of(lecture, reading));
-        toyProjectRepository.save(toyProject);
+        LocalDate readingStartDate = LocalDate.of(2023, 7, 31);
+        int readingPTD = 40;
+        int readingPTK = 60;
+        int totalPage = 500;
+        int readPagePerMin = 2;
+        int readingExpectedPeriod = studyUtil.setUpPeriodCalCulatorBy(readingPTD, readingPTK, readingStartDate)
+                .calculatePeriodBy(totalPage, readPagePerMin);
+        Reading reading = createReading(readingPTD, readingPTK, readingStartDate, readingExpectedPeriod, totalPage, readPagePerMin, member);
+
+        LocalDate toyStartDate = LocalDate.of(2023, 7, 1);
+        int toyPTD = 60;
+        int toyPTK = 120;
+        List<RequiredFunction> functions = List.of(createFunction(CREATE, 300), createFunction(READ, 500));
+        List<Integer> totalExpectedTime = functions.stream()
+                .map(RequiredFunction::getExpectedTime)
+                .toList();
+        int toyExpectedPeriod = studyUtil.setUpPeriodCalCulatorBy(toyPTD, toyPTK, toyStartDate)
+                .calculatePeriodBy(totalExpectedTime);
+        ToyProject toyProject = createToyProject(toyPTD, toyPTK, toyStartDate, toyExpectedPeriod, functions, member);
+
+        studyRepository.saveAll(List.of(lecture, reading, toyProject));
 
         // when
         LocalDate startDate = LocalDate.of(2023, 7, 1);
@@ -219,9 +239,9 @@ class StudyServiceTest {
         assertThat(studies).hasSize(3)
             .extracting("title", "description", "startDate")
             .containsExactlyInAnyOrder(
-                tuple("스터디 스케쥴러", "개인의 학습의 진도율을 관리", startDate1),
-                tuple("김영한의 스프링", "스프링 핵심 강의", startDate2),
-                tuple("클린 코드", "클린 코드를 배우기 위한 도서", startDate3)
+                tuple("스터디 스케쥴러", "개인의 학습의 진도율을 관리", toyStartDate),
+                tuple("김영한의 스프링", "스프링 핵심 강의", lectureStartDate),
+                tuple("클린 코드", "클린 코드를 배우기 위한 도서", readingStartDate)
             );
     }
 
@@ -236,16 +256,16 @@ class StudyServiceTest {
             .build();
     }
 
-    private ToyProject createToyProject(LocalDate startDate, LocalDate endDate, Member member) {
+    private ToyProject createToyProject(int planTimeInWeekday, int planTimeInWeekend, LocalDate startDate, int totalExpectedPeriod, List<RequiredFunction> functions,  Member member) {
         return ToyProject.builder()
             .title("스터디 스케쥴러")
             .description("개인의 학습의 진도율을 관리")
-            .totalExpectedPeriod(300)
-            .planTimeInWeekday(60)
-            .planTimeInWeekend(120)
+            .totalExpectedPeriod(totalExpectedPeriod)
+            .planTimeInWeekday(planTimeInWeekday)
+            .planTimeInWeekend(planTimeInWeekend)
             .startDate(startDate)
-            .expectedEndDate(endDate)
             .member(member)
+            .functions(functions)
             .build();
     }
 
@@ -257,56 +277,56 @@ class StudyServiceTest {
             .build();
     }
 
-    private RequiredFunction createFunction(FunctionType functionType, ToyProject toyProject) {
+    private RequiredFunction createFunction(FunctionType functionType, int expectedTime) {
         return RequiredFunction.builder()
-            .functionType(READ)
-            .toyProject(toyProject)
+            .functionType(functionType)
+            .expectedTime(expectedTime)
             .build();
     }
 
-    private Reading createReading(LocalDate startDate, LocalDate endDate, Member member) {
+    private Reading createReading(int planTimeInWeekday, int planTimeInWeekend, LocalDate startDate, int totalExpectedPeriod, int totalPage, int readPagePerMin, Member member) {
         return Reading.builder()
             .title("클린 코드")
-            .authorName("로버트 c.마틴")
             .description("클린 코드를 배우기 위한 도서")
-            .totalPage(500)
-            .planTimeInWeekday(30)
-            .planTimeInWeekend(30)
+            .planTimeInWeekday(planTimeInWeekday)
+            .planTimeInWeekend(planTimeInWeekend)
             .readPagePerMin(2)
-            .totalExpectedPeriod(250)
+            .totalExpectedPeriod(totalExpectedPeriod)
             .startDate(startDate)
-            .expectedEndDate(endDate)
             .member(member)
+            .authorName("로버트 c.마틴")
+            .totalPage(totalPage)
+            .readPagePerMin(readPagePerMin)
             .build();
     }
 
-    private static Lecture createLecture(LocalDate startDate, LocalDate endDate, Member member) {
+    private static Lecture createLecture(int planTimeInWeekday, int planTimeInWeekend, LocalDate startDate, int totalExpectedPeriod, int totalRuntime, Member member) {
         return Lecture.builder()
             .title("김영한의 스프링")
             .description("스프링 핵심 강의")
             .teacherName("김영한")
-            .totalExpectedPeriod(600)
-            .planTimeInWeekday(30)
-            .planTimeInWeekend(100)
+            .totalExpectedPeriod(totalExpectedPeriod)
+            .planTimeInWeekday(planTimeInWeekday)
+            .planTimeInWeekend(planTimeInWeekend)
             .startDate(startDate)
-            .expectedEndDate(endDate)
             .member(member)
+            .totalRuntime(totalRuntime)
             .build();
     }
 
-    private static Lecture createTerminatedLecture(LocalDate startDate, LocalDate endDate, LocalDate realEndDate, Member member) {
+    private static Lecture createTerminatedLecture(int planTimeInWeekday, int planTimeInWeekend, LocalDate startDate, int totalExpectedPeriod, int totalRuntime, LocalDate realEndDate, Member member) {
         return Lecture.builder()
                 .title("김영한의 스프링")
                 .description("스프링 핵심 강의")
                 .teacherName("김영한")
-                .totalExpectedPeriod(600)
-                .planTimeInWeekday(30)
-                .planTimeInWeekend(100)
+                .totalExpectedPeriod(totalExpectedPeriod)
+                .planTimeInWeekday(planTimeInWeekday)
+                .planTimeInWeekend(planTimeInWeekend)
                 .startDate(startDate)
-                .expectedEndDate(endDate)
                 .member(member)
                 .isTermination(true)
                 .realEndDate(realEndDate)
+                .totalRuntime(totalRuntime)
                 .build();
     }
 }
