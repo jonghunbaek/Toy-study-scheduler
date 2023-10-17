@@ -24,7 +24,7 @@ public abstract class Study extends BaseInfoEntity {
     @Column(name="study_type", insertable = false, updatable = false)
     private String studyType;
 
-    private int totalExpectedPeriod;
+    protected int totalExpectedPeriod;
 
     private int totalExpectedMin;
 
@@ -44,14 +44,14 @@ public abstract class Study extends BaseInfoEntity {
     private Member member;
 
     protected Study(String title, String description, int totalExpectedPeriod, int totalExpectedMin, int planTimeInWeekday, int planTimeInWeekend,
-                    LocalDate startDate, LocalDate expectedEndDate, boolean isTermination, LocalDate realEndDate, Member member) {
+                    LocalDate startDate, boolean isTermination, LocalDate realEndDate, Member member) {
         super(title, description);
         this.totalExpectedPeriod = totalExpectedPeriod;
         this.totalExpectedMin = totalExpectedMin;
         this.planTimeInWeekday = planTimeInWeekday;
         this.planTimeInWeekend = planTimeInWeekend;
         this.startDate = startDate;
-        this.expectedEndDate = expectedEndDate;
+        this.expectedEndDate = startDate.plusDays(totalExpectedPeriod);
         this.member = member;
         this.isTermination = isTermination;
         if (isTermination) {
