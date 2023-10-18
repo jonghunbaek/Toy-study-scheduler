@@ -41,12 +41,11 @@ class StudyTimeRepositoryTest {
     void getStudyTimeWithLecturePerDay() {
         // given
         LocalDate startDate = LocalDate.of(2023, 8, 1);
-        LocalDate expectedEndDate = LocalDate.of(2023, 8, 23);
 
         Member member = createMember();
         memberRepository.save(member);
 
-        Study lecture = createLecture(startDate, expectedEndDate, member);
+        Study lecture = createLecture(startDate, member);
         studyRepository.save(lecture);
 
         List<LocalDate> dates = List.of(LocalDate.of(2023, 8, 3),
@@ -81,12 +80,11 @@ class StudyTimeRepositoryTest {
     void getStudyTimeWithReadingPerDay() {
         // given
         LocalDate startDate = LocalDate.of(2023, 8, 1);
-        LocalDate expectedEndDate = LocalDate.of(2023, 8, 23);
 
         Member member = createMember();
         memberRepository.save(member);
 
-        Reading reading = createReading(startDate, expectedEndDate, member);
+        Reading reading = createReading(startDate, member);
         studyRepository.save(reading);
 
         List<LocalDate> dates = List.of(LocalDate.of(2023, 8, 3),
@@ -121,12 +119,11 @@ class StudyTimeRepositoryTest {
     void getStudyTimeWithToyProjectPerDay() {
         // given
         LocalDate startDate = LocalDate.of(2023, 8, 1);
-        LocalDate expectedEndDate = LocalDate.of(2023, 8, 23);
 
         Member member = createMember();
         memberRepository.save(member);
 
-        ToyProject toyProject = createToyProject(startDate, expectedEndDate, member);
+        ToyProject toyProject = createToyProject(startDate, member);
         createFunction(READ, toyProject, 100);
         createFunction(CREATE, toyProject, 70);
         createFunction(UPDATE, toyProject, 150);
@@ -188,14 +185,13 @@ class StudyTimeRepositoryTest {
                 .build();
     }
 
-    private ToyProject createToyProject(LocalDate startDate, LocalDate expectedEndDate, Member member) {
+    private ToyProject createToyProject(LocalDate startDate, Member member) {
         return ToyProject.builder()
             .title("스터디 스케쥴러")
             .description("개인의 학습의 진도율을 관리")
             .planTimeInWeekday(60)
             .planTimeInWeekend(120)
             .startDate(startDate)
-            .expectedEndDate(expectedEndDate)
             .member(member)
             .build();
     }
@@ -209,7 +205,7 @@ class StudyTimeRepositoryTest {
             .build();
     }
 
-    private Reading createReading(LocalDate startDate, LocalDate expectedEndDate, Member member) {
+    private Reading createReading(LocalDate startDate, Member member) {
         return Reading.builder()
             .title("클린 코드")
             .authorName("로버트 c.마틴")
@@ -220,12 +216,11 @@ class StudyTimeRepositoryTest {
             .readPagePerMin(2)
             .totalExpectedPeriod(250)
             .startDate(startDate)
-            .expectedEndDate(expectedEndDate)
             .member(member)
             .build();
     }
 
-    private static Lecture createLecture(LocalDate startDate, LocalDate endDate, Member member) {
+    private static Lecture createLecture(LocalDate startDate, Member member) {
         return Lecture.builder()
                 .title("김영한의 스프링")
                 .description("스프링 핵심 강의")
@@ -233,7 +228,6 @@ class StudyTimeRepositoryTest {
                 .planTimeInWeekday(30)
                 .planTimeInWeekend(100)
                 .startDate(startDate)
-                .expectedEndDate(endDate)
                 .member(member)
                 .totalRuntime(600)
                 .build();

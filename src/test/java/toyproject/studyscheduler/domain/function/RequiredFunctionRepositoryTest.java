@@ -35,10 +35,9 @@ class RequiredFunctionRepositoryTest {
     void findAll() {
         // given
         LocalDate startDate = LocalDate.of(2023, 9, 10);
-        LocalDate endDate = LocalDate.of(2023, 9, 29);
 
         Member member = createMember();
-        ToyProject toyProject = createToyProject(startDate, endDate, member);
+        ToyProject toyProject = createToyProject(startDate, member);
 
         RequiredFunction addMember = createFunction("회원 가입", "존재하는 유저 정보가 없을 경우 신규 생성", 300, CREATE, toyProject);
         RequiredFunction login = createFunction("로그인", "존재하는 유저 정보가 있을 경우 세션 생성", 400, READ, toyProject);
@@ -76,7 +75,7 @@ class RequiredFunctionRepositoryTest {
             .build();
     }
 
-    private ToyProject createToyProject(LocalDate startDate, LocalDate endDate, Member member) {
+    private ToyProject createToyProject(LocalDate startDate, Member member) {
         return ToyProject.builder()
             .title("스터디 스케쥴러")
             .description("개인의 학습의 진도율을 관리")
@@ -84,7 +83,6 @@ class RequiredFunctionRepositoryTest {
             .planTimeInWeekday(60)
             .planTimeInWeekend(120)
             .startDate(startDate)
-            .expectedEndDate(endDate)
             .member(member)
             .build();
     }

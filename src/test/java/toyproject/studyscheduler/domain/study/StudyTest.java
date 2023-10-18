@@ -56,7 +56,6 @@ class StudyTest {
             .planTimeInWeekday(30)
             .planTimeInWeekend(100)
             .startDate(startDate)
-            .expectedEndDate(expectedEndDate)
             .member(member)
             .totalRuntime(600)
             .build();

@@ -89,7 +89,6 @@ class TechStackRepositoryTest {
             .planTimeInWeekday(60)
             .planTimeInWeekend(120)
             .startDate(startDate)
-            .expectedEndDate(endDate)
             .member(member)
             .build();
     }

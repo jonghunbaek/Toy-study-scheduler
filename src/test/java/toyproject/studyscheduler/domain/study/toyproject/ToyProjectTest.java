@@ -59,11 +59,10 @@ class ToyProjectTest {
         return ToyProject.builder()
             .title("스터디 스케쥴러")
             .description("개인의 학습의 진도율을 관리")
-            .totalExpectedPeriod(300)
+            .totalExpectedPeriod(9)
             .planTimeInWeekday(60)
             .planTimeInWeekend(120)
             .startDate(LocalDate.of(2023, 8,23))
-            .expectedEndDate(LocalDate.of(2023, 8,30))
             .member(null)
             .build();
     }
