@@ -22,7 +22,6 @@ import java.time.LocalDate;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
-import static toyproject.studyscheduler.domain.techstack.TechCategory.*;
 import static toyproject.studyscheduler.domain.function.FunctionType.*;
 
 @ActiveProfiles("test")
@@ -33,8 +32,6 @@ class StudyRepositoryTest {
     StudyRepository studyRepository;
     @Autowired
     MemberRepository memberRepository;
-    @Autowired
-    StudyUtil studyUtil;
 
     @DisplayName("주어진 여러개의 아이디로 여러개의 학습 상세내용을 조회한다.")
     @Test
@@ -42,6 +39,8 @@ class StudyRepositoryTest {
         // given
         Member member = createMember();
         memberRepository.save(member);
+
+        StudyUtil studyUtil = new StudyUtil();
 
         LocalDate lectureStartDate = LocalDate.of(2023, 7, 8);
         int lecturePTD = 50;
@@ -79,13 +78,12 @@ class StudyRepositoryTest {
 //        studies.forEach(study -> System.out.println("dtype TEST ==============" + study.getSubType()));
         // then
         assertThat(studies).hasSize(3)
-                .extracting("title", "description", "startDate")
+                .extracting("title", "description", "startDate", "expectedEndDate")
                 .containsExactlyInAnyOrder(
-                        tuple("김영한의 스프링", "스프링 핵심 강의", lectureStartDate),
-                        tuple("클린 코드", "클린 코드를 배우기 위한 도서", readingStartDate),
-                        tuple("스터디 스케쥴러", "개인의 학습의 진도율을 관리", toyStartDate)
+                        tuple("김영한의 스프링", "스프링 핵심 강의", lectureStartDate, lectureStartDate.plusDays(lectureExpectedPeriod)),
+                        tuple("클린 코드", "클린 코드를 배우기 위한 도서", readingStartDate, readingStartDate.plusDays(readingExpectedPeriod)),
+                        tuple("스터디 스케쥴러", "개인의 학습의 진도율을 관리", toyStartDate, toyStartDate.plusDays(toyExpectedPeriod))
                 );
-
     }
 
     @DisplayName("특정기간에 수행한 학습들을 모두 조회 한다.")
@@ -94,6 +92,8 @@ class StudyRepositoryTest {
         // given
         Member member = createMember();
         memberRepository.save(member);
+
+        StudyUtil studyUtil = new StudyUtil();
 
         LocalDate lectureStartDate = LocalDate.of(2023, 7, 8);
         int lecturePTD = 50;
@@ -133,10 +133,10 @@ class StudyRepositoryTest {
 
         // then
         assertThat(studies).hasSize(2)
-                .extracting("title", "description", "startDate")
+                .extracting("title", "description", "startDate", "expectedEndDate")
                 .containsExactlyInAnyOrder(
-                        tuple("스터디 스케쥴러", "개인의 학습의 진도율을 관리", toyStartDate),
-                        tuple("김영한의 스프링", "스프링 핵심 강의", lectureStartDate)
+                        tuple("스터디 스케쥴러", "개인의 학습의 진도율을 관리", toyStartDate, toyStartDate.plusDays(toyExpectedPeriod)),
+                        tuple("김영한의 스프링", "스프링 핵심 강의", lectureStartDate, lectureStartDate.plusDays(lectureExpectedPeriod))
                 );
     }
 
