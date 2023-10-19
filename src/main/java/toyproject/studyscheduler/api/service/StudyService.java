@@ -54,4 +54,10 @@ public class StudyService {
             return FindStudyResponseDto.ofToyProject((ToyProject) study);
         }
     }
+
+    // TODO : StudyTime과 조인해서 해결해야 함
+    public FindStudyResponseDto findAll() {
+
+        return null;
+    }
 }

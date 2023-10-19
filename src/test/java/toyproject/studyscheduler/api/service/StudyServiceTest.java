@@ -207,7 +207,7 @@ class StudyServiceTest {
                 .calculatePeriodBy(totalRuntime);
         Lecture lecture = createLecture(lecturePTD, lecturePTK, lectureStartDate, lectureExpectedPeriod, totalRuntime, member);
 
-        LocalDate readingStartDate = LocalDate.of(2023, 7, 31);
+        LocalDate readingStartDate = LocalDate.of(2023, 8, 1);
         int readingPTD = 40;
         int readingPTK = 60;
         int totalPage = 500;
@@ -236,12 +236,11 @@ class StudyServiceTest {
         List<Study> studies = studyRepository.findAllByPeriod(startDate, endDate);
 
         // then
-        assertThat(studies).hasSize(3)
+        assertThat(studies).hasSize(2)
             .extracting("title", "description", "startDate")
             .containsExactlyInAnyOrder(
                 tuple("스터디 스케쥴러", "개인의 학습의 진도율을 관리", toyStartDate),
-                tuple("김영한의 스프링", "스프링 핵심 강의", lectureStartDate),
-                tuple("클린 코드", "클린 코드를 배우기 위한 도서", readingStartDate)
+                tuple("김영한의 스프링", "스프링 핵심 강의", lectureStartDate)
             );
     }
 
