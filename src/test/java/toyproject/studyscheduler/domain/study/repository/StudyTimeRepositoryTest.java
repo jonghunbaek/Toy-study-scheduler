@@ -48,7 +48,8 @@ class StudyTimeRepositoryTest {
         Study lecture = createLecture(startDate, member);
         studyRepository.save(lecture);
 
-        List<LocalDate> dates = List.of(LocalDate.of(2023, 8, 3),
+        List<LocalDate> dates = List.of(
+            LocalDate.of(2023, 8, 3),
             LocalDate.of(2023, 8, 8),
             LocalDate.of(2023, 8, 14),
             LocalDate.of(2023, 8, 20),
@@ -57,7 +58,7 @@ class StudyTimeRepositoryTest {
         List<Integer> totalCompleteTimes = List.of(0, 30, 70, 95, 118, 148);
         List<Integer> completeTimeTodays = List.of(30, 40, 25, 23, 30);
 
-        studyTimeRepository.saveAll(createStudyTimes(dates.size(), lecture, dates, totalCompleteTimes, completeTimeTodays));
+        studyTimeRepository.saveAll(createStudyTimes(lecture, dates, totalCompleteTimes, completeTimeTodays));
 
         // when
         LocalDate start = LocalDate.of(2023, 8, 1);
@@ -96,7 +97,7 @@ class StudyTimeRepositoryTest {
         List<Integer> totalCompleteTimes = List.of(0, 30, 70, 95, 118, 148);
         List<Integer> completeTimeTodays = List.of(30, 40, 25, 23, 30);
 
-        studyTimeRepository.saveAll(createStudyTimes(dates.size(), reading, dates, totalCompleteTimes, completeTimeTodays));
+        studyTimeRepository.saveAll(createStudyTimes(reading, dates, totalCompleteTimes, completeTimeTodays));
 
         // when
         LocalDate start = LocalDate.of(2023, 8, 1);
@@ -138,7 +139,7 @@ class StudyTimeRepositoryTest {
         List<Integer> totalCompleteTimes = List.of(0, 30, 70, 95, 118, 148);
         List<Integer> completeTimeTodays = List.of(30, 40, 25, 23, 30);
 
-        studyTimeRepository.saveAll(createStudyTimes(dates.size(), toyProject, dates, totalCompleteTimes, completeTimeTodays));
+        studyTimeRepository.saveAll(createStudyTimes(toyProject, dates, totalCompleteTimes, completeTimeTodays));
 
         // when2
         LocalDate start = LocalDate.of(2023, 8, 1);
@@ -156,9 +157,9 @@ class StudyTimeRepositoryTest {
             );
     }
 
-    private List<StudyTime> createStudyTimes(int size, Study study, List<LocalDate> dates, List<Integer> totalCompleteTimes, List<Integer> completeTimeTodays) {
-        List<StudyTime> studyTimes = new ArrayList<>(size);
-        for (int i=0; i<size; i++) {
+    private List<StudyTime> createStudyTimes(Study study, List<LocalDate> dates, List<Integer> totalCompleteTimes, List<Integer> completeTimeTodays) {
+        List<StudyTime> studyTimes = new ArrayList<>();
+        for (int i=0; i<dates.size(); i++) {
             studyTimes.add(createStudyTime(study, dates.get(i), totalCompleteTimes.get(i), completeTimeTodays.get(i)));
         }
 

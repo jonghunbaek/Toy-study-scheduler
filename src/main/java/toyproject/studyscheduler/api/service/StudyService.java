@@ -5,15 +5,20 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import toyproject.studyscheduler.api.controller.request.SaveStudyRequestDto;
 import toyproject.studyscheduler.api.controller.response.FindStudyResponseDto;
+import toyproject.studyscheduler.api.controller.response.FindStudyTimeResponseDto;
 import toyproject.studyscheduler.domain.member.Member;
 import toyproject.studyscheduler.domain.member.repository.MemberRepository;
 import toyproject.studyscheduler.domain.study.Study;
+import toyproject.studyscheduler.domain.study.StudyTime;
 import toyproject.studyscheduler.domain.study.lecture.Lecture;
 import toyproject.studyscheduler.domain.study.reading.Reading;
 import toyproject.studyscheduler.domain.study.repository.StudyRepository;
 import toyproject.studyscheduler.domain.study.repository.StudyTimeRepository;
 import toyproject.studyscheduler.domain.study.toyproject.ToyProject;
 import toyproject.studyscheduler.util.StudyUtil;
+
+import java.time.LocalDate;
+import java.util.List;
 
 @Transactional
 @RequiredArgsConstructor
@@ -56,8 +61,20 @@ public class StudyService {
     }
 
     // TODO : StudyTime과 조인해서 해결해야 함
-    public FindStudyResponseDto findAll() {
+    public List<FindStudyTimeResponseDto> findAllBy(LocalDate startDate, LocalDate endDate) {
+        List<StudyTime> studyTimes = studyTimeRepository.findAllByPeriod(startDate, endDate);
 
-        return null;
+        return studyTimes.stream()
+            .map(studyTime -> FindStudyTimeResponseDto.of(
+                studyTime.getStudy().getTitle(),
+                studyTime.getStudy().getDescription(),
+                studyTime.getStudy().isTermination(),
+                studyTime.getTotalCompleteTime(),
+                studyTime.getTotalLearningRate(),
+                studyTime.getCompleteTimeToday(),
+                studyTime.getDate()
+            ))
+            .toList();
     }
+
 }
