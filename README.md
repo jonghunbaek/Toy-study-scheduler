@@ -44,6 +44,7 @@
 + ToyProject는 Study를 구현해야한다.
 + ToyProject는 아이디, 이름, 실제 작업시간, 계획 작업시간(평일, 주말), 구현 예정 기능들(List)을 필드로 가진다.
 + ScheduledFunction과 일대다 관계를 가진다.
++ ToyProject는 RequiredFuntion없이 생성 후 나중에 추가하는 것으로!
 
 ##### 3-2. User
 + 로그인한 사용자만 서비스를 이용할 수 있어야 한다.

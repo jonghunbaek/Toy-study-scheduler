@@ -219,7 +219,8 @@ class StudyServiceTest {
                 .toList();
         int toyExpectedPeriod = studyUtil.setUpPeriodCalCulatorBy(toyPTD, toyPTK, toyStartDate)
                 .calculatePeriodBy(totalExpectedTime);
-        ToyProject toyProject = createToyProject(toyPTD, toyPTK, toyStartDate, toyExpectedPeriod, functions, member);
+        ToyProject toyProject = createToyProject(toyPTD, toyPTK, toyStartDate, toyExpectedPeriod, member);
+        functions.forEach(toyProject::addRequiredFunction);
 
         studyRepository.saveAll(List.of(lecture, reading, toyProject));
 
@@ -291,7 +292,7 @@ class StudyServiceTest {
             .build();
     }
 
-    private ToyProject createToyProject(int planTimeInWeekday, int planTimeInWeekend, LocalDate startDate, int totalExpectedPeriod, List<RequiredFunction> functions,  Member member) {
+    private ToyProject createToyProject(int planTimeInWeekday, int planTimeInWeekend, LocalDate startDate, int totalExpectedPeriod,  Member member) {
         return ToyProject.builder()
             .title("스터디 스케쥴러")
             .description("개인의 학습의 진도율을 관리")
@@ -300,7 +301,6 @@ class StudyServiceTest {
             .planTimeInWeekend(planTimeInWeekend)
             .startDate(startDate)
             .member(member)
-            .functions(functions)
             .build();
     }
 

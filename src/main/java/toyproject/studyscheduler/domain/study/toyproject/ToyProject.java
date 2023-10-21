@@ -67,12 +67,12 @@ public class ToyProject extends Study {
     }
 
     public void addRequiredFunction(RequiredFunction function) {
-        functions.add(function);
+        this.functions.add(function);
         calculateTotalExpectedMin();
     }
 
     private void calculateTotalExpectedMin() {
-        int totalExpectedMin = functions.stream()
+        int totalExpectedMin = this.functions.stream()
             .mapToInt(RequiredFunction::getExpectedTime)
             .sum();
 
