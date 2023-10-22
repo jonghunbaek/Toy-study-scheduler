@@ -10,6 +10,7 @@ import java.time.LocalDate;
 @Getter
 public class FindStudyTimeResponseDto {
 
+    private Long studyId;
     private String title;
     private String description;
     private boolean isTermination;
@@ -19,7 +20,8 @@ public class FindStudyTimeResponseDto {
     private LocalDate date;
 
     @Builder
-    private FindStudyTimeResponseDto(String title, String description, boolean isTermination, int totalCompleteTime, double totalLearningRate, int completeTimeToday, LocalDate date) {
+    private FindStudyTimeResponseDto(Long studyId, String title, String description, boolean isTermination, int totalCompleteTime, double totalLearningRate, int completeTimeToday, LocalDate date) {
+        this.studyId = studyId;
         this.title = title;
         this.description = description;
         this.isTermination = isTermination;
@@ -29,9 +31,10 @@ public class FindStudyTimeResponseDto {
         this.date = date;
     }
 
-    public static FindStudyTimeResponseDto of(String title, String description, boolean termination,
+    public static FindStudyTimeResponseDto of(Long studyId, String title, String description, boolean termination,
                                               int totalCompleteTime, double totalLearningRate, int completeTimeToday, LocalDate date) {
         return FindStudyTimeResponseDto.builder()
+            .studyId(studyId)
             .title(title)
             .description(description)
             .isTermination(termination)

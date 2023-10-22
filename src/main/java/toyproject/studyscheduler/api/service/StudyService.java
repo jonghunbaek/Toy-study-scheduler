@@ -60,12 +60,12 @@ public class StudyService {
         }
     }
 
-    // TODO : StudyTime과 조인해서 해결해야 함
     public List<FindStudyTimeResponseDto> findAllBy(LocalDate startDate, LocalDate endDate) {
         List<StudyTime> studyTimes = studyTimeRepository.findAllByPeriod(startDate, endDate);
 
         return studyTimes.stream()
             .map(studyTime -> FindStudyTimeResponseDto.of(
+                studyTime.getStudy().getId(),
                 studyTime.getStudy().getTitle(),
                 studyTime.getStudy().getDescription(),
                 studyTime.getStudy().isTermination(),
@@ -76,5 +76,4 @@ public class StudyService {
             ))
             .toList();
     }
-
 }
