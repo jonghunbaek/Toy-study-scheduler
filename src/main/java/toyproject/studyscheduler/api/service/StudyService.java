@@ -49,11 +49,6 @@ public class StudyService {
         studyRepository.save(study);
     }
 
-    /**
-     * id로 Study 상세 내용 조회
-     * @param id
-     * @return
-     */
     public FindStudyResponseDto findStudyById(Long id) {
         Study study = studyRepository.findById(id)
             .orElseThrow(() -> new IllegalArgumentException("해당 학습 아이디는 존재하지 않습니다."));
@@ -67,12 +62,6 @@ public class StudyService {
         }
     }
 
-    /**
-     * 특정 기간 동안 학습한 학습시간 모두 조회
-     * @param startDate
-     * @param endDate
-     * @return
-     */
     public List<FindStudyTimeResponseDto> findAllBy(LocalDate startDate, LocalDate endDate) {
         List<StudyTime> studyTimes = studyTimeRepository.findAllByPeriod(startDate, endDate);
 
@@ -92,6 +81,7 @@ public class StudyService {
 
     public int calculatePeriod(StudyPlanTimeRequestDto dto) {
         PeriodCalculator periodCalculator = studyUtil.setUpPeriodCalCulatorBy(dto.getPlanTimeInWeekDay(), dto.getPlanTimeInWeekend(), dto.getStartDate());
+
         if ("lecture".equals(dto.getStudyType())) {
             return periodCalculator.calculatePeriodBy(dto.getTotalRunTime());
         } else if ("reading".equals(dto.getStudyType())) {

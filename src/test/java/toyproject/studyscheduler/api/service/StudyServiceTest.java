@@ -6,9 +6,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.transaction.annotation.Transactional;
 import toyproject.studyscheduler.api.controller.request.SaveRequiredFunctionDto;
 import toyproject.studyscheduler.api.controller.request.SaveStudyRequestDto;
+import toyproject.studyscheduler.api.controller.request.StudyPlanTimeRequestDto;
 import toyproject.studyscheduler.api.controller.response.FindStudyResponseDto;
 import toyproject.studyscheduler.api.controller.response.FindStudyTimeResponseDto;
 import toyproject.studyscheduler.domain.function.RequiredFunctionRepository;
@@ -326,20 +326,78 @@ class StudyServiceTest {
             );
     }
 
-    @DisplayName("강의 학습의 평일, 주말 학습 계획 시간, 시작일을 인자로 받아 예상 학습일을 구한다.")
+    @DisplayName("강의 학습의 평일, 주말 학습 계획 시간, 시작일을 인자로 받아 예상 학습기간을 구한다.")
     @Test
-    void calculateExpectedPeriodBy() {
+    void calculateExpectedPeriodByWithLecture() {
         // given
         int planTimeInWeekDay = 60;
         int planTimeInWeekend = 120;
-        LocalDate startDate = LocalDate.of(2023, 9, 10);
         int totalRunTime = 600;
+        LocalDate startDate = LocalDate.of(2023, 9, 15);
 
+        StudyPlanTimeRequestDto lecturePlanTime = StudyPlanTimeRequestDto.builder()
+            .studyType("lecture")
+            .planTimeInWeekDay(planTimeInWeekDay)
+            .planTimeInWeekend(planTimeInWeekend)
+            .startDate(startDate)
+            .totalRunTime(totalRunTime)
+            .build();
 
         // when
+        int period = studyService.calculatePeriod(lecturePlanTime);
 
         // then
+        assertThat(period).isEqualTo(8);
+    }
 
+    @DisplayName("독서 학습의 평일, 주말 학습 계획 시간, 시작일을 인자로 받아 예상 학습기간을 구한다.")
+    @Test
+    void calculateExpectedPeriodByWithReading() {
+        // given
+        int planTimeInWeekDay = 30;
+        int planTimeInWeekend = 60;
+        int totalPage = 700;
+        int readPagePerMin = 2;
+        LocalDate startDate = LocalDate.of(2023, 9, 11);
+
+        StudyPlanTimeRequestDto readingPlanTime = StudyPlanTimeRequestDto.builder()
+            .studyType("reading")
+            .planTimeInWeekDay(planTimeInWeekDay)
+            .planTimeInWeekend(planTimeInWeekend)
+            .startDate(startDate)
+            .totalPage(totalPage)
+            .readPagePerMin(readPagePerMin)
+            .build();
+
+        // when
+        int period = studyService.calculatePeriod(readingPlanTime);
+
+        // then
+        assertThat(period).isEqualTo(10);
+    }
+
+    @DisplayName("토이프로젝트 학습의 평일, 주말 학습 계획 시간, 시작일을 인자로 받아 예상 학습기간을 구한다.")
+    @Test
+    void calculateExpectedPeriodByWithToy() {
+        // given
+        int planTimeInWeekDay = 90;
+        int planTimeInWeekend = 180;
+        List<Integer> expectedTimes = List.of(300, 600, 250, 100, 500);
+        LocalDate startDate = LocalDate.of(2023, 9, 11);
+
+        StudyPlanTimeRequestDto toyPlanTime = StudyPlanTimeRequestDto.builder()
+            .studyType("toy")
+            .planTimeInWeekDay(planTimeInWeekDay)
+            .planTimeInWeekend(planTimeInWeekend)
+            .startDate(startDate)
+            .expectedTimes(expectedTimes)
+            .build();
+
+        // when
+        int period = studyService.calculatePeriod(toyPlanTime);
+
+        // then
+        assertThat(period).isEqualTo(16);
     }
 
     private Member createMember() {

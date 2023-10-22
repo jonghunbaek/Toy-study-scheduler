@@ -1,15 +1,12 @@
 package toyproject.studyscheduler.api.controller.request;
 
-import jakarta.persistence.Enumerated;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
-import toyproject.studyscheduler.domain.function.FunctionType;
 import toyproject.studyscheduler.domain.function.RequiredFunction;
 import toyproject.studyscheduler.domain.member.Member;
-import toyproject.studyscheduler.domain.study.Study;
 import toyproject.studyscheduler.domain.study.lecture.Lecture;
 import toyproject.studyscheduler.domain.study.reading.Reading;
 import toyproject.studyscheduler.domain.study.toyproject.ToyProject;
@@ -77,6 +74,7 @@ public class SaveStudyRequestDto {
 
     public ToyProject toToyProjectEntity(Member member) {
         List<RequiredFunction> functions = toRequiredFunctionEntity();
+
         int totalExpectedMin = functions.stream()
             .mapToInt(RequiredFunction::getExpectedTime)
             .sum();

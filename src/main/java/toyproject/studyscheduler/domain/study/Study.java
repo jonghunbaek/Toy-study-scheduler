@@ -2,7 +2,6 @@ package toyproject.studyscheduler.domain.study;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import toyproject.studyscheduler.domain.BaseInfoEntity;

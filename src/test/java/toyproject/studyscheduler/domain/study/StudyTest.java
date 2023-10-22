@@ -25,14 +25,14 @@ class StudyTest {
         // when, then
         assertThat(lecture.isTermination()).isFalse();
         assertThat(lecture).extracting("realEndDate", "expectedEndDate")
-            .contains(LocalDate.EPOCH, LocalDate.of(2023, 10, 11));
+            .contains(LocalDate.EPOCH, LocalDate.of(2023, 10, 10));
 
         LocalDate realEndDate = LocalDate.of(2023, 10, 21);
         lecture.terminateStudyIn(realEndDate);
 
         assertThat(lecture.isTermination()).isTrue();
         assertThat(lecture).extracting("realEndDate", "expectedEndDate")
-            .contains(LocalDate.of(2023, 10, 21), LocalDate.of(2023, 10, 11));
+            .contains(LocalDate.of(2023, 10, 21), LocalDate.of(2023, 10, 10));
     }
 
     private static Member createMember() {

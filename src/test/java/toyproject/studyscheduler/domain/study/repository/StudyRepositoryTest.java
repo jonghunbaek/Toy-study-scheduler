@@ -80,9 +80,9 @@ class StudyRepositoryTest {
         assertThat(studies).hasSize(3)
                 .extracting("title", "description", "startDate", "expectedEndDate")
                 .containsExactlyInAnyOrder(
-                        tuple("김영한의 스프링", "스프링 핵심 강의", lectureStartDate, lectureStartDate.plusDays(lectureExpectedPeriod)),
-                        tuple("클린 코드", "클린 코드를 배우기 위한 도서", readingStartDate, readingStartDate.plusDays(readingExpectedPeriod)),
-                        tuple("스터디 스케쥴러", "개인의 학습의 진도율을 관리", toyStartDate, toyStartDate.plusDays(toyExpectedPeriod))
+                        tuple("김영한의 스프링", "스프링 핵심 강의", lectureStartDate, lectureStartDate.plusDays(lectureExpectedPeriod - 1)),
+                        tuple("클린 코드", "클린 코드를 배우기 위한 도서", readingStartDate, readingStartDate.plusDays(readingExpectedPeriod - 1)),
+                        tuple("스터디 스케쥴러", "개인의 학습의 진도율을 관리", toyStartDate, toyStartDate.plusDays(toyExpectedPeriod - 1))
                 );
     }
 
@@ -135,8 +135,8 @@ class StudyRepositoryTest {
         assertThat(studies).hasSize(2)
                 .extracting("title", "description", "startDate", "expectedEndDate")
                 .containsExactlyInAnyOrder(
-                        tuple("스터디 스케쥴러", "개인의 학습의 진도율을 관리", toyStartDate, toyStartDate.plusDays(toyExpectedPeriod)),
-                        tuple("김영한의 스프링", "스프링 핵심 강의", lectureStartDate, lectureStartDate.plusDays(lectureExpectedPeriod))
+                        tuple("스터디 스케쥴러", "개인의 학습의 진도율을 관리", toyStartDate, toyStartDate.plusDays(toyExpectedPeriod - 1)),
+                        tuple("김영한의 스프링", "스프링 핵심 강의", lectureStartDate, lectureStartDate.plusDays(lectureExpectedPeriod - 1))
                 );
     }
 
