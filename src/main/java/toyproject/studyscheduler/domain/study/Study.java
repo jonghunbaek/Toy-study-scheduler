@@ -21,7 +21,8 @@ public abstract class Study extends BaseInfoEntity {
     private Long id;
 
     @Column(name="study_type", insertable = false, updatable = false)
-    private String studyType;
+    @Enumerated(EnumType.STRING)
+    private StudyType studyType;
 
     protected int totalExpectedPeriod;
 

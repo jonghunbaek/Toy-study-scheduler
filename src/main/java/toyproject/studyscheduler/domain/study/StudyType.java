@@ -1,6 +1,7 @@
 package toyproject.studyscheduler.domain.study;
 
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

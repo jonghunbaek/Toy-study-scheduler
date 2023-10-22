@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
+import toyproject.studyscheduler.domain.study.StudyType;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -12,7 +13,7 @@ import java.util.List;
 @Getter
 public class StudyPlanTimeRequestDto {
 
-    private String studyType;
+    private StudyType studyType;
     private int planTimeInWeekDay;
     private int planTimeInWeekend;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -26,7 +27,7 @@ public class StudyPlanTimeRequestDto {
     private List<Integer> expectedTimes;
 
     @Builder
-    private StudyPlanTimeRequestDto(String studyType, int planTimeInWeekDay, int planTimeInWeekend, LocalDate startDate, int totalRunTime, int totalPage, int readPagePerMin, List<Integer> expectedTimes) {
+    private StudyPlanTimeRequestDto(StudyType studyType, int planTimeInWeekDay, int planTimeInWeekend, LocalDate startDate, int totalRunTime, int totalPage, int readPagePerMin, List<Integer> expectedTimes) {
         this.studyType = studyType;
         this.planTimeInWeekDay = planTimeInWeekDay;
         this.planTimeInWeekend = planTimeInWeekend;

@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import toyproject.studyscheduler.domain.study.StudyType;
 import toyproject.studyscheduler.domain.study.lecture.Lecture;
 import toyproject.studyscheduler.domain.study.reading.Reading;
 import toyproject.studyscheduler.domain.study.toyproject.ToyProject;
@@ -18,7 +19,7 @@ public class FindStudyResponseDto {
 
     private String title;
     private String description;
-    private String studyType;
+    private StudyType studyType;
     private int totalExpectedPeriod;
     private int planTimeInWeekday;
     private int planTimeInWeekend;

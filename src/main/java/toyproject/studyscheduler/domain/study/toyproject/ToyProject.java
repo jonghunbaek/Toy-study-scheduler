@@ -14,7 +14,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-@DiscriminatorValue("toy")
+@DiscriminatorValue("TOY")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity

@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import toyproject.studyscheduler.domain.function.RequiredFunction;
 import toyproject.studyscheduler.domain.member.Member;
+import toyproject.studyscheduler.domain.study.StudyType;
 import toyproject.studyscheduler.domain.study.lecture.Lecture;
 import toyproject.studyscheduler.domain.study.reading.Reading;
 import toyproject.studyscheduler.domain.study.toyproject.ToyProject;
@@ -23,7 +24,7 @@ public class SaveStudyRequestDto {
 
     private String title;
     private String description;
-    private String studyType;
+    private StudyType studyType;
     private int totalExpectedPeriod;
     private int planTimeInWeekday;
     private int planTimeInWeekend;
@@ -41,6 +42,7 @@ public class SaveStudyRequestDto {
     private int totalRuntime;
 
     // ToyProject detail
+    @Builder.Default
     private List<SaveRequiredFunctionDto> functions = new ArrayList<>();
 
     public Lecture toLectureEntity(Member member) {
