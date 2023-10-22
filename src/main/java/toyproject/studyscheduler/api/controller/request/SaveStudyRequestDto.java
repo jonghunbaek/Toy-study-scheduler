@@ -1,10 +1,13 @@
 package toyproject.studyscheduler.api.controller.request;
 
+import jakarta.persistence.Enumerated;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
+import toyproject.studyscheduler.domain.function.FunctionType;
+import toyproject.studyscheduler.domain.function.RequiredFunction;
 import toyproject.studyscheduler.domain.member.Member;
 import toyproject.studyscheduler.domain.study.Study;
 import toyproject.studyscheduler.domain.study.lecture.Lecture;
@@ -12,6 +15,8 @@ import toyproject.studyscheduler.domain.study.reading.Reading;
 import toyproject.studyscheduler.domain.study.toyproject.ToyProject;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Builder
 @NoArgsConstructor
@@ -37,6 +42,9 @@ public class SaveStudyRequestDto {
     // Lecture detail
     private String teacherName;
     private int totalRuntime;
+
+    // ToyProject detail
+    private List<SaveRequiredFunctionDto> functions = new ArrayList<>();
 
     public Lecture toLectureEntity(Member member) {
         return Lecture.builder()
@@ -68,6 +76,11 @@ public class SaveStudyRequestDto {
     }
 
     public ToyProject toToyProjectEntity(Member member) {
+        List<RequiredFunction> functions = toRequiredFunctionEntity();
+        int totalExpectedMin = functions.stream()
+            .mapToInt(RequiredFunction::getExpectedTime)
+            .sum();
+
         return ToyProject.builder()
             .title(title)
             .description(description)
@@ -76,6 +89,19 @@ public class SaveStudyRequestDto {
             .planTimeInWeekend(planTimeInWeekend)
             .startDate(startDate)
             .member(member)
+            .totalExpectedMin(totalExpectedMin)
+            .functions(functions)
             .build();
+    }
+
+    private List<RequiredFunction> toRequiredFunctionEntity() {
+        return functions.stream()
+            .map(function -> RequiredFunction.builder()
+                .title(function.getTitle())
+                .description(function.getDescription())
+                .functionType(function.getFunctionType())
+                .expectedTime(function.getExpectedTime())
+                .build())
+            .toList();
     }
 }

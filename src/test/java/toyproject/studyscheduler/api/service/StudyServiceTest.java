@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.transaction.annotation.Transactional;
+import toyproject.studyscheduler.api.controller.request.SaveRequiredFunctionDto;
 import toyproject.studyscheduler.api.controller.request.SaveStudyRequestDto;
 import toyproject.studyscheduler.api.controller.response.FindStudyResponseDto;
 import toyproject.studyscheduler.api.controller.response.FindStudyTimeResponseDto;
@@ -122,8 +124,8 @@ class StudyServiceTest {
         assertThat(studies).hasSize(2)
             .extracting("studyType", "title", "description", "planTimeInWeekday", "planTimeInWeekend", "startDate", "expectedEndDate")
             .containsExactlyInAnyOrder(
-                tuple("lecture", "김영한의 스프링", "스프링 핵심 강의", 60, 120, startDate1, startDate1.plusDays(totalExpectedPeriod1)),
-                tuple("reading", "클린 코드", "클린한 코드를 통해 유지보수성을 높이자", 30, 60, startDate2, startDate2.plusDays(totalExpectedPeriod2))
+                tuple("lecture", "김영한의 스프링", "스프링 핵심 강의", 60, 120, startDate1, startDate1.plusDays(totalExpectedPeriod1 -1)),
+                tuple("reading", "클린 코드", "클린한 코드를 통해 유지보수성을 높이자", 30, 60, startDate2, startDate2.plusDays(totalExpectedPeriod2 - 1))
             );
 
         assertThat(studies.get(0)).extracting("teacherName", "totalRuntime")
@@ -131,6 +133,64 @@ class StudyServiceTest {
         assertThat(studies.get(1)).extracting("authorName", "readPagePerMin")
                 .contains("로버트 c.마틴", 2);
 
+    }
+
+    @DisplayName("ToyProject 학습을 저장하고 조회한다.")
+    @Test
+    void saveToyProject() {
+        // given
+        Member member = createMember();
+        Member savedMember = memberRepository.save(member);
+
+        SaveRequiredFunctionDto addMember = SaveRequiredFunctionDto.builder()
+            .title("회원 가입")
+            .description("신규 회원을 생성한다.")
+            .functionType(CREATE)
+            .expectedTime(70)
+            .build();
+        SaveRequiredFunctionDto loginMember = SaveRequiredFunctionDto.builder()
+            .title("로그인")
+            .description("회원의 존재여부를 확인 후 존재하면 로그인을 한다.")
+            .functionType(READ)
+            .expectedTime(100)
+            .build();
+        SaveRequiredFunctionDto updateMember = SaveRequiredFunctionDto.builder()
+            .title("회원 정보 수정")
+            .description("회원의 정보를 수정한다.")
+            .functionType(UPDATE)
+            .expectedTime(150)
+            .build();
+        List<SaveRequiredFunctionDto> functionDtos = List.of(addMember, loginMember, updateMember);
+
+        LocalDate toyStartDate = LocalDate.of(2023, 7, 1);
+        int toyPTD = 60;
+        int toyPTK = 120;
+        List<Integer> totalExpectedTime = functionDtos.stream()
+            .map(SaveRequiredFunctionDto::getExpectedTime)
+            .toList();
+        int toyExpectedPeriod = studyUtil.setUpPeriodCalCulatorBy(toyPTD, toyPTK, toyStartDate)
+            .calculatePeriodBy(totalExpectedTime);
+
+        SaveStudyRequestDto studyDto = SaveStudyRequestDto.builder()
+            .studyType("toy")
+            .title("스터디 스케쥴러")
+            .description("개인의 학습의 진도율을 관리")
+            .totalExpectedPeriod(toyExpectedPeriod)
+            .planTimeInWeekday(toyPTD)
+            .planTimeInWeekend(toyPTK)
+            .startDate(toyStartDate)
+            .memberId(savedMember.getId())
+            .functions(functionDtos)
+            .build();
+
+        studyService.saveStudy(studyDto);
+
+        // when
+        ToyProject toyProject = (ToyProject) studyRepository.findAll().get(0);
+
+        // then
+        assertThat(toyProject).extracting("title", "description", "totalExpectedPeriod", "totalExpectedMin", "expectedEndDate")
+            .contains("스터디 스케쥴러", "개인의 학습의 진도율을 관리", 4, 320, LocalDate.of(2023, 7,4));
     }
 
     @DisplayName("주어진 아이디로 종료되지 않은 학습 상세내용을 조회한다.")
@@ -264,6 +324,22 @@ class StudyServiceTest {
                 tuple("스터디 스케쥴러", "개인의 학습의 진도율을 관리", false, 95, 29.69, 25, LocalDate.of(2023,8,14)),
                 tuple("스터디 스케쥴러", "개인의 학습의 진도율을 관리", false, 118, 36.88, 23, LocalDate.of(2023,8,20))
             );
+    }
+
+    @DisplayName("강의 학습의 평일, 주말 학습 계획 시간, 시작일을 인자로 받아 예상 학습일을 구한다.")
+    @Test
+    void calculateExpectedPeriodBy() {
+        // given
+        int planTimeInWeekDay = 60;
+        int planTimeInWeekend = 120;
+        LocalDate startDate = LocalDate.of(2023, 9, 10);
+        int totalRunTime = 600;
+
+
+        // when
+
+        // then
+
     }
 
     private Member createMember() {
