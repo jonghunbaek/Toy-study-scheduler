@@ -32,7 +32,8 @@ public class ReadingService implements StudyService {
         Member member = memberRepository.findById(saveStudyRequestDto.getMemberId())
             .orElseThrow(() -> new IllegalArgumentException("해당 사용자가 존재하지 않습니다."));
 
-        saveStudyRequestDto.toReadingEntity(member);
+        Reading reading = saveStudyRequestDto.toReadingEntity(member);
+        studyRepository.save(reading);
     }
 
     @Override

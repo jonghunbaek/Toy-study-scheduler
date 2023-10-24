@@ -11,7 +11,7 @@ import toyproject.studyscheduler.domain.member.Member;
 
 import java.time.LocalDate;
 
-@DiscriminatorValue("READING")
+@DiscriminatorValue("reading")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity

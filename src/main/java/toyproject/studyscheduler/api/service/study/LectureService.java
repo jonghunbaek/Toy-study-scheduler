@@ -1,6 +1,7 @@
 package toyproject.studyscheduler.api.service.study;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import toyproject.studyscheduler.api.controller.request.SaveStudyRequestDto;
 import toyproject.studyscheduler.api.controller.request.StudyPlanTimeRequestDto;
@@ -14,6 +15,7 @@ import toyproject.studyscheduler.util.StudyUtil;
 
 import static toyproject.studyscheduler.domain.study.StudyType.*;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class LectureService implements StudyService{
@@ -32,13 +34,16 @@ public class LectureService implements StudyService{
         Member member = memberRepository.findById(saveStudyRequestDto.getMemberId())
             .orElseThrow(() -> new IllegalArgumentException("해당 사용자가 존재하지 않습니다."));
 
-        saveStudyRequestDto.toLectureEntity(member);
+        Lecture lecture = saveStudyRequestDto.toLectureEntity(member);
+        studyRepository.save(lecture);
     }
 
     @Override
     public FindStudyResponseDto findStudyById(Long id) {
         Lecture lecture = (Lecture) studyRepository.findById(id)
             .orElseThrow(() -> new IllegalArgumentException("해당 학습이 존재하지 않습니다."));
+
+        log.info("studyType :: {}", lecture.getStudyType());
 
         return FindStudyResponseDto.ofLecture(lecture);
     }

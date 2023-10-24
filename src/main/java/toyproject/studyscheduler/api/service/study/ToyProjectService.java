@@ -32,7 +32,8 @@ public class ToyProjectService implements StudyService {
         Member member = memberRepository.findById(saveStudyRequestDto.getMemberId())
             .orElseThrow(() -> new IllegalArgumentException("해당 사용자가 존재하지 않습니다."));
 
-        saveStudyRequestDto.toToyProjectEntity(member);
+        ToyProject toy = saveStudyRequestDto.toToyProjectEntity(member);
+        studyRepository.save(toy);
     }
 
     @Override

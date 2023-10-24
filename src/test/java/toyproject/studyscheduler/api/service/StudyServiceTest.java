@@ -16,6 +16,7 @@ import toyproject.studyscheduler.domain.function.RequiredFunctionRepository;
 import toyproject.studyscheduler.domain.member.AccountType;
 import toyproject.studyscheduler.domain.member.Member;
 import toyproject.studyscheduler.domain.member.repository.MemberRepository;
+import toyproject.studyscheduler.domain.study.Study;
 import toyproject.studyscheduler.domain.study.lecture.Lecture;
 import toyproject.studyscheduler.domain.study.reading.Reading;
 import toyproject.studyscheduler.domain.study.repository.StudyRepository;
@@ -208,10 +209,11 @@ class StudyServiceTest {
                 .calculatePeriodBy(totalRuntime);
         Lecture lecture = createLecture(lecturePTD, lecturePTK, lectureStartDate, lectureExpectedPeriod, totalRuntime, member);
 
-        Lecture savedLecture = studyRepository.save(lecture);
+        studyRepository.saveAndFlush(lecture);
+        Lecture savedLecture = (Lecture) studyRepository.findAll().get(0);
 
         // when
-        StudyService studyService = studyFactory.getSuitableService(savedLecture.getStudyType());
+        StudyService studyService = studyFactory.getSuitableService(toEnum(savedLecture.getStudyType()));
         FindStudyResponseDto study = studyService.findStudyById(savedLecture.getId());
 
         // then
@@ -236,10 +238,11 @@ class StudyServiceTest {
                 .calculatePeriodBy(totalRuntime);
         Lecture lecture = createTerminatedLecture(lecturePTD, lecturePTK, lectureStartDate, lectureExpectedPeriod, totalRuntime, realEndDate, member);
 
-        Lecture savedLecture = studyRepository.save(lecture);
+        studyRepository.saveAndFlush(lecture);
+        Lecture savedLecture = (Lecture) studyRepository.findAll().get(0);
 
         // when
-        StudyService studyService = studyFactory.getSuitableService(savedLecture.getStudyType());
+        StudyService studyService = studyFactory.getSuitableService(toEnum(savedLecture.getStudyType()));
         FindStudyResponseDto study = studyService.findStudyById(savedLecture.getId());
 
         // then
