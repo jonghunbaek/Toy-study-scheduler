@@ -3,6 +3,7 @@ package toyproject.studyscheduler.api.service.study;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import toyproject.studyscheduler.api.controller.request.SaveStudyRequestDto;
 import toyproject.studyscheduler.api.controller.request.StudyPlanTimeRequestDto;
 import toyproject.studyscheduler.api.controller.response.FindStudyResponseDto;
@@ -16,6 +17,7 @@ import toyproject.studyscheduler.util.StudyUtil;
 import static toyproject.studyscheduler.domain.study.StudyType.*;
 
 @Slf4j
+@Transactional
 @RequiredArgsConstructor
 @Service
 public class LectureService implements StudyService{
@@ -42,8 +44,6 @@ public class LectureService implements StudyService{
     public FindStudyResponseDto findStudyById(Long id) {
         Lecture lecture = (Lecture) studyRepository.findById(id)
             .orElseThrow(() -> new IllegalArgumentException("해당 학습이 존재하지 않습니다."));
-
-        log.info("studyType :: {}", lecture.getStudyType());
 
         return FindStudyResponseDto.ofLecture(lecture);
     }

@@ -16,7 +16,6 @@ import toyproject.studyscheduler.domain.function.RequiredFunctionRepository;
 import toyproject.studyscheduler.domain.member.AccountType;
 import toyproject.studyscheduler.domain.member.Member;
 import toyproject.studyscheduler.domain.member.repository.MemberRepository;
-import toyproject.studyscheduler.domain.study.Study;
 import toyproject.studyscheduler.domain.study.lecture.Lecture;
 import toyproject.studyscheduler.domain.study.reading.Reading;
 import toyproject.studyscheduler.domain.study.repository.StudyRepository;
@@ -84,7 +83,7 @@ class StudyServiceTest {
             .build();
 
         // when
-        StudyService studyService = studyFactory.getSuitableService(lectureDto.getStudyType());
+        StudyService studyService = studyFactory.findServiceBy(lectureDto.getStudyType());
         studyService.saveStudy(lectureDto);
 
         Lecture lecture = (Lecture) studyRepository.findAll().get(0);
@@ -123,7 +122,7 @@ class StudyServiceTest {
             .readPagePerMin(readPagePerMin)
             .memberId(savedMember.getId())
             .build();
-        StudyService studyService = studyFactory.getSuitableService(readingDto.getStudyType());
+        StudyService studyService = studyFactory.findServiceBy(readingDto.getStudyType());
 
         // when
         studyService.saveStudy(readingDto);
@@ -183,7 +182,7 @@ class StudyServiceTest {
             .functions(functionDtos)
             .build();
 
-        StudyService studyService = studyFactory.getSuitableService(toyDto.getStudyType());
+        StudyService studyService = studyFactory.findServiceBy(toyDto.getStudyType());
         studyService.saveStudy(toyDto);
 
         // when
@@ -213,7 +212,7 @@ class StudyServiceTest {
         Lecture savedLecture = (Lecture) studyRepository.findAll().get(0);
 
         // when
-        StudyService studyService = studyFactory.getSuitableService(toEnum(savedLecture.getStudyType()));
+        StudyService studyService = studyFactory.findServiceBy(toEnum(savedLecture.getStudyType()));
         FindStudyResponseDto study = studyService.findStudyById(savedLecture.getId());
 
         // then
@@ -242,7 +241,7 @@ class StudyServiceTest {
         Lecture savedLecture = (Lecture) studyRepository.findAll().get(0);
 
         // when
-        StudyService studyService = studyFactory.getSuitableService(toEnum(savedLecture.getStudyType()));
+        StudyService studyService = studyFactory.findServiceBy(toEnum(savedLecture.getStudyType()));
         FindStudyResponseDto study = studyService.findStudyById(savedLecture.getId());
 
         // then
@@ -269,7 +268,7 @@ class StudyServiceTest {
             .build();
 
         // when
-        StudyService studyService = studyFactory.getSuitableService(lecturePlanTime.getStudyType());
+        StudyService studyService = studyFactory.findServiceBy(lecturePlanTime.getStudyType());
         int period = studyService.calculatePeriod(lecturePlanTime);
 
         // then
@@ -296,7 +295,7 @@ class StudyServiceTest {
             .build();
 
         // when
-        StudyService studyService = studyFactory.getSuitableService(readingPlanTime.getStudyType());
+        StudyService studyService = studyFactory.findServiceBy(readingPlanTime.getStudyType());
         int period = studyService.calculatePeriod(readingPlanTime);
 
         // then
@@ -321,7 +320,7 @@ class StudyServiceTest {
             .build();
 
         // when
-        StudyService studyService = studyFactory.getSuitableService(toyPlanTime.getStudyType());
+        StudyService studyService = studyFactory.findServiceBy(toyPlanTime.getStudyType());
         int period = studyService.calculatePeriod(toyPlanTime);
 
         // then

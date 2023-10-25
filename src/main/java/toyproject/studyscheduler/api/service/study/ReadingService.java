@@ -2,6 +2,7 @@ package toyproject.studyscheduler.api.service.study;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import toyproject.studyscheduler.api.controller.request.SaveStudyRequestDto;
 import toyproject.studyscheduler.api.controller.request.StudyPlanTimeRequestDto;
 import toyproject.studyscheduler.api.controller.response.FindStudyResponseDto;
@@ -14,6 +15,7 @@ import toyproject.studyscheduler.util.StudyUtil;
 
 import static toyproject.studyscheduler.domain.study.StudyType.*;
 
+@Transactional
 @RequiredArgsConstructor
 @Service
 public class ReadingService implements StudyService {
