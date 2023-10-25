@@ -2,7 +2,6 @@ package toyproject.studyscheduler.domain.study;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import toyproject.studyscheduler.domain.BaseInfoEntity;
@@ -51,7 +50,7 @@ public abstract class Study extends BaseInfoEntity {
         this.planTimeInWeekday = planTimeInWeekday;
         this.planTimeInWeekend = planTimeInWeekend;
         this.startDate = startDate;
-        this.expectedEndDate = startDate.plusDays(totalExpectedPeriod);
+        this.expectedEndDate = startDate.plusDays(totalExpectedPeriod - 1);
         this.member = member;
         this.isTermination = isTermination;
         if (isTermination) {

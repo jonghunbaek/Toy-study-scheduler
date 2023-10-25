@@ -20,8 +20,6 @@ import java.util.List;
 @Entity
 public class ToyProject extends Study {
 
-    private static final int INITIAL_EXPECTED_MIN = 0;
-
     @OneToMany(mappedBy = "toyProject", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     List<RequiredFunction> functions = new ArrayList<>();
 
@@ -37,16 +35,19 @@ public class ToyProject extends Study {
     }
 
     @Builder
-    private ToyProject(String title, String description, int totalExpectedPeriod, int planTimeInWeekday, int planTimeInWeekend,
+    private ToyProject(String title, String description, int totalExpectedPeriod, int totalExpectedMin, int planTimeInWeekday, int planTimeInWeekend,
                    LocalDate startDate, boolean isTermination, LocalDate realEndDate, Member member, List<RequiredFunction> functions, List<TechStack> stacks) {
-        super(title, description, totalExpectedPeriod, INITIAL_EXPECTED_MIN, planTimeInWeekday, planTimeInWeekend,
+        super(title, description, totalExpectedPeriod, totalExpectedMin, planTimeInWeekday, planTimeInWeekend,
             startDate, isTermination, realEndDate, member);
 
         if (functions != null) {
             this.functions = functions.stream()
                 .map(function -> RequiredFunction.builder()
+                    .title(function.getTitle())
+                    .description(function.getDescription())
                     .toyProject(this)
                     .functionType(function.getFunctionType())
+                    .expectedTime(function.getExpectedTime())
                     .build())
                 .toList();
         }

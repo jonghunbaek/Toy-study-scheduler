@@ -4,11 +4,14 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import toyproject.studyscheduler.domain.study.StudyType;
 import toyproject.studyscheduler.domain.study.lecture.Lecture;
 import toyproject.studyscheduler.domain.study.reading.Reading;
 import toyproject.studyscheduler.domain.study.toyproject.ToyProject;
 
 import java.time.LocalDate;
+
+import static toyproject.studyscheduler.domain.study.StudyType.toEnum;
 
 @Builder
 @NoArgsConstructor
@@ -18,7 +21,7 @@ public class FindStudyResponseDto {
 
     private String title;
     private String description;
-    private String studyType;
+    private StudyType studyType;
     private int totalExpectedPeriod;
     private int planTimeInWeekday;
     private int planTimeInWeekend;
@@ -41,7 +44,7 @@ public class FindStudyResponseDto {
         return FindStudyResponseDto.builder()
             .title(lecture.getTitle())
             .description(lecture.getDescription())
-            .studyType(lecture.getStudyType())
+            .studyType(toEnum(lecture.getStudyType()))
             .totalExpectedPeriod(lecture.getTotalExpectedPeriod())
             .planTimeInWeekday(lecture.getPlanTimeInWeekday())
             .planTimeInWeekend(lecture.getPlanTimeInWeekend())
@@ -58,7 +61,7 @@ public class FindStudyResponseDto {
         return FindStudyResponseDto.builder()
             .title(reading.getTitle())
             .description(reading.getDescription())
-            .studyType(reading.getStudyType())
+            .studyType(toEnum(reading.getStudyType()))
             .totalExpectedPeriod(reading.getTotalExpectedPeriod())
             .planTimeInWeekday(reading.getPlanTimeInWeekday())
             .planTimeInWeekend(reading.getPlanTimeInWeekend())
@@ -76,7 +79,7 @@ public class FindStudyResponseDto {
         return FindStudyResponseDto.builder()
             .title(toyProject.getTitle())
             .description(toyProject.getDescription())
-            .studyType(toyProject.getStudyType())
+            .studyType(toEnum(toyProject.getStudyType()))
             .totalExpectedPeriod(toyProject.getTotalExpectedPeriod())
             .planTimeInWeekday(toyProject.getPlanTimeInWeekday())
             .planTimeInWeekend(toyProject.getPlanTimeInWeekend())
