@@ -4,8 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import toyproject.studyscheduler.api.controller.response.FindStudyTimeResponseDto;
-import toyproject.studyscheduler.domain.study.StudyTime;
-import toyproject.studyscheduler.domain.study.repository.StudyTimeRepository;
+import toyproject.studyscheduler.domain.studytime.StudyTime;
+import toyproject.studyscheduler.domain.studytime.repository.StudyTimeRepository;
 
 import java.time.LocalDate;
 import java.util.List;

@@ -1,26 +1,25 @@
-package toyproject.studyscheduler.api.service.study;
+package toyproject.studyscheduler.api.service.study.reading;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import toyproject.studyscheduler.api.controller.request.SaveStudyRequestDto;
 import toyproject.studyscheduler.api.controller.request.StudyPlanTimeRequestDto;
 import toyproject.studyscheduler.api.controller.response.FindStudyResponseDto;
+import toyproject.studyscheduler.api.service.study.StudyService;
 import toyproject.studyscheduler.domain.member.Member;
 import toyproject.studyscheduler.domain.member.repository.MemberRepository;
 import toyproject.studyscheduler.domain.study.StudyType;
-import toyproject.studyscheduler.domain.study.lecture.Lecture;
+import toyproject.studyscheduler.domain.study.reading.Reading;
 import toyproject.studyscheduler.domain.study.repository.StudyRepository;
 import toyproject.studyscheduler.util.StudyUtil;
 
 import static toyproject.studyscheduler.domain.study.StudyType.*;
 
-@Slf4j
 @Transactional
 @RequiredArgsConstructor
 @Service
-public class LectureService implements StudyService{
+public class ReadingService implements StudyService {
 
     private final MemberRepository memberRepository;
     private final StudyRepository studyRepository;
@@ -28,7 +27,7 @@ public class LectureService implements StudyService{
 
     @Override
     public boolean supports(StudyType studyType) {
-        return LECTURE == studyType;
+        return READING == studyType;
     }
 
     @Override
@@ -36,21 +35,21 @@ public class LectureService implements StudyService{
         Member member = memberRepository.findById(saveStudyRequestDto.getMemberId())
             .orElseThrow(() -> new IllegalArgumentException("해당 사용자가 존재하지 않습니다."));
 
-        Lecture lecture = saveStudyRequestDto.toLectureEntity(member);
-        studyRepository.save(lecture);
+        Reading reading = saveStudyRequestDto.toReadingEntity(member);
+        studyRepository.save(reading);
     }
 
     @Override
     public FindStudyResponseDto findStudyById(Long id) {
-        Lecture lecture = (Lecture) studyRepository.findById(id)
+        Reading reading = (Reading) studyRepository.findById(id)
             .orElseThrow(() -> new IllegalArgumentException("해당 학습이 존재하지 않습니다."));
 
-        return FindStudyResponseDto.ofLecture(lecture);
+        return FindStudyResponseDto.ofReading(reading);
     }
 
     @Override
     public int calculatePeriod(StudyPlanTimeRequestDto dto) {
         return studyUtil.setUpPeriodCalCulatorBy(dto.getPlanTimeInWeekDay(), dto.getPlanTimeInWeekend(), dto.getStartDate())
-            .calculatePeriodBy(dto.getTotalRunTime());
+            .calculatePeriodBy(dto.getTotalPage(), dto.getReadPagePerMin());
     }
 }

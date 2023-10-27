@@ -1,4 +1,4 @@
-package toyproject.studyscheduler.api.service;
+package toyproject.studyscheduler.api.service.study;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
@@ -10,8 +10,6 @@ import toyproject.studyscheduler.api.controller.request.SaveRequiredFunctionDto;
 import toyproject.studyscheduler.api.controller.request.SaveStudyRequestDto;
 import toyproject.studyscheduler.api.controller.request.StudyPlanTimeRequestDto;
 import toyproject.studyscheduler.api.controller.response.FindStudyResponseDto;
-import toyproject.studyscheduler.api.service.study.StudyFactory;
-import toyproject.studyscheduler.api.service.study.StudyService;
 import toyproject.studyscheduler.domain.function.RequiredFunctionRepository;
 import toyproject.studyscheduler.domain.member.AccountType;
 import toyproject.studyscheduler.domain.member.Member;
@@ -19,6 +17,7 @@ import toyproject.studyscheduler.domain.member.repository.MemberRepository;
 import toyproject.studyscheduler.domain.study.lecture.Lecture;
 import toyproject.studyscheduler.domain.study.reading.Reading;
 import toyproject.studyscheduler.domain.study.repository.StudyRepository;
+import toyproject.studyscheduler.domain.studytime.repository.StudyTimeRepository;
 import toyproject.studyscheduler.domain.study.toyproject.ToyProject;
 import toyproject.studyscheduler.domain.techstack.TechStackRepository;
 import toyproject.studyscheduler.util.StudyUtil;
@@ -39,6 +38,8 @@ class StudyServiceTest {
     @Autowired
     StudyRepository studyRepository;
     @Autowired
+    StudyTimeRepository studyTimeRepository;
+    @Autowired
     MemberRepository memberRepository;
     @Autowired
     RequiredFunctionRepository requiredFunctionRepository;
@@ -51,6 +52,7 @@ class StudyServiceTest {
     void cleanUp() {
         requiredFunctionRepository.deleteAllInBatch();
         techStackRepository.deleteAllInBatch();
+        studyTimeRepository.deleteAllInBatch();
         studyRepository.deleteAllInBatch();
         memberRepository.deleteAllInBatch();
     }

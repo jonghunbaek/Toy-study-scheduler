@@ -1,7 +1,6 @@
 package toyproject.studyscheduler.api.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import toyproject.studyscheduler.api.controller.request.SaveStudyRequestDto;
 import toyproject.studyscheduler.api.controller.request.StudyPlanTimeRequestDto;
@@ -10,12 +9,12 @@ import toyproject.studyscheduler.api.controller.response.FindStudyTimeResponseDt
 import toyproject.studyscheduler.domain.member.Member;
 import toyproject.studyscheduler.domain.member.repository.MemberRepository;
 import toyproject.studyscheduler.domain.study.Study;
-import toyproject.studyscheduler.domain.study.StudyTime;
+import toyproject.studyscheduler.domain.studytime.StudyTime;
 import toyproject.studyscheduler.domain.study.StudyType;
 import toyproject.studyscheduler.domain.study.lecture.Lecture;
 import toyproject.studyscheduler.domain.study.reading.Reading;
 import toyproject.studyscheduler.domain.study.repository.StudyRepository;
-import toyproject.studyscheduler.domain.study.repository.StudyTimeRepository;
+import toyproject.studyscheduler.domain.studytime.repository.StudyTimeRepository;
 import toyproject.studyscheduler.domain.study.toyproject.ToyProject;
 import toyproject.studyscheduler.util.PeriodCalculator;
 import toyproject.studyscheduler.util.StudyUtil;
@@ -25,7 +24,6 @@ import java.util.List;
 
 @Transactional
 @RequiredArgsConstructor
-@Service
 public class StudyService {
 
     private final StudyRepository studyRepository;

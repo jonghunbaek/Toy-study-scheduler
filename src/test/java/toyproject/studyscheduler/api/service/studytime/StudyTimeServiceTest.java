@@ -12,14 +12,12 @@ import toyproject.studyscheduler.domain.member.AccountType;
 import toyproject.studyscheduler.domain.member.Member;
 import toyproject.studyscheduler.domain.member.repository.MemberRepository;
 import toyproject.studyscheduler.domain.study.Study;
-import toyproject.studyscheduler.domain.study.StudyTime;
+import toyproject.studyscheduler.domain.studytime.StudyTime;
 import toyproject.studyscheduler.domain.study.lecture.Lecture;
 import toyproject.studyscheduler.domain.study.reading.Reading;
 import toyproject.studyscheduler.domain.study.repository.StudyRepository;
-import toyproject.studyscheduler.domain.study.repository.StudyTimeRepository;
+import toyproject.studyscheduler.domain.studytime.repository.StudyTimeRepository;
 import toyproject.studyscheduler.domain.study.toyproject.ToyProject;
-import toyproject.studyscheduler.domain.techstack.TechCategory;
-import toyproject.studyscheduler.domain.techstack.TechStack;
 import toyproject.studyscheduler.util.StudyUtil;
 
 import java.time.LocalDate;
@@ -28,7 +26,6 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.tuple;
-import static org.junit.jupiter.api.Assertions.*;
 import static toyproject.studyscheduler.domain.function.FunctionType.*;
 
 @ActiveProfiles("test")
