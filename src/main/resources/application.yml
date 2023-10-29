@@ -1,8 +1,8 @@
-#spring:
-#  profiles:
-#    default: local
-#
-#---
+spring:
+  profiles:
+    default: local
+
+---
 spring:
   config:
     activate:
@@ -27,3 +27,8 @@ spring:
       enabled: true
   thymeleaf:
     cache: false
+
+server:
+  servlet:
+    encoding:
+      force-response: true
