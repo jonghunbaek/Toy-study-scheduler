@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="common/head :: headFragment">
+<head th:replace="~{common/head :: headFragment}">
     <meta charset="UTF-8">
     <title>이것이 제목이다.</title>
 </head>
@@ -8,15 +8,15 @@
 <div class="row">
     <div class="col-8"></div>
     <div class="col-2">
-        로그인
+        <a href="/members/sign-in">로그인</a>
     </div>
     <div class="col-2">
-        회원가입
+        <a href="/members/sign-up">회원가입</a>
     </div>
 </div>
 <div class="row">
     <div class="col-3"></div>
-    <h1>안녕하세요. 당신의 학습 계획을 관리해주는 Study-Scheduler입니다!</h1>
+    <h1>안녕하세요. 학습 계획을 관리해주는 Study-Scheduler입니다!</h1>
     <div class="col-3"></div>
 </div>
 <button id="button1" onclick="clickButton()">클릭하면 바뀝니다.</button>

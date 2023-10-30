@@ -16,15 +16,14 @@ import java.util.List;
 
 @DiscriminatorValue("toy")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Getter
 @Entity
 public class ToyProject extends Study {
 
     @OneToMany(mappedBy = "toyProject", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    List<RequiredFunction> functions = new ArrayList<>();
+    private List<RequiredFunction> functions = new ArrayList<>();
 
     @OneToMany(mappedBy = "toyProject", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    List<TechStack> stacks = new ArrayList<>();
+    private List<TechStack> stacks = new ArrayList<>();
 
     public List<RequiredFunction> getRequiredFunctions() {
         return functions.stream().toList();
