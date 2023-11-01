@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import toyproject.studyscheduler.api.controller.request.SaveRequiredFunctionDto;
-import toyproject.studyscheduler.api.controller.request.SaveStudyRequestDto;
+import toyproject.studyscheduler.api.controller.request.study.SaveStudyRequestDto;
 import toyproject.studyscheduler.api.controller.request.StudyPlanTimeRequestDto;
 import toyproject.studyscheduler.api.controller.response.FindStudyResponseDto;
 import toyproject.studyscheduler.domain.function.RequiredFunctionRepository;
@@ -335,8 +335,6 @@ class StudyServiceTest {
             .password("zxcv1234")
             .name("hong")
             .accountType(AccountType.ACTIVE)
-            .originProfileImage("1234")
-            .storedProfileImage("4151")
             .build();
     }
 

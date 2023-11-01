@@ -18,6 +18,7 @@ public class Member extends BaseEntity {
 
     private String name;
 
+    @Column(unique = true)
     private String email;
 
     private String password;
@@ -25,16 +26,11 @@ public class Member extends BaseEntity {
     @Enumerated
     private AccountType accountType;
 
-    private String originProfileImage;
-    private String storedProfileImage;
-
     @Builder
-    private Member(String name, String email, String password, AccountType accountType, String originProfileImage, String storedProfileImage) {
+    private Member(String name, String email, String password, AccountType accountType) {
         this.name = name;
         this.email = email;
         this.password = password;
         this.accountType = accountType;
-        this.originProfileImage = originProfileImage;
-        this.storedProfileImage = storedProfileImage;
     }
 }

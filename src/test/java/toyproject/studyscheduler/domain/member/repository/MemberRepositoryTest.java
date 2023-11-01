@@ -20,26 +20,25 @@ class MemberRepositoryTest {
 
     @DisplayName("아이디 값을 전달 받아 사용자의 정보를 조회한다.")
     @Test
-    void test() {
+    void findMemberById() {
         // given
         Member member = createMember();
-        memberRepository.save(member);
+        Member savedMember = memberRepository.save(member);
 
         // when
-        Member result = memberRepository.findAll().get(0);
+        Member result = memberRepository.findById(savedMember.getId())
+            .orElseThrow(() -> new IllegalArgumentException("잘못된 아이디 입니다."));
 
         // then
         Assertions.assertThat(result.getName()).isEqualTo("hong");
-     }
+    }
 
-    private static Member createMember() {
+    private Member createMember() {
         return Member.builder()
             .email("hong@gmail.com")
             .password("zxcv1234")
             .name("hong")
             .accountType(AccountType.ACTIVE)
-            .originProfileImage("1234")
-            .storedProfileImage("4151")
             .build();
     }
 }

@@ -182,8 +182,6 @@ class StudyTimeRepositoryTest {
                 .password("zxcv1234")
                 .name("hong")
                 .accountType(AccountType.ACTIVE)
-                .originProfileImage("1234")
-                .storedProfileImage("4151")
                 .build();
     }
 

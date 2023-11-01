@@ -1,6 +1,6 @@
 package toyproject.studyscheduler.api.service.study;
 
-import toyproject.studyscheduler.api.controller.request.SaveStudyRequestDto;
+import toyproject.studyscheduler.api.controller.request.study.SaveStudyRequestDto;
 import toyproject.studyscheduler.api.controller.request.StudyPlanTimeRequestDto;
 import toyproject.studyscheduler.api.controller.response.FindStudyResponseDto;
 import toyproject.studyscheduler.domain.study.StudyType;

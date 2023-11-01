@@ -36,10 +36,9 @@ class TechStackRepositoryTest {
     void findAll() {
         // given
         LocalDate startDate = LocalDate.of(2023, 9, 10);
-        LocalDate endDate = LocalDate.of(2023, 9, 29);
 
         Member member = createMember();
-        ToyProject toyProject = createToyProject(startDate, endDate, member);
+        ToyProject toyProject = createToyProject(startDate, member);
 
         TechStack language = createTechStack("Java", "주 사용 언어",LANGUAGE, toyProject);
         TechStack framework = createTechStack("Spring", "프레임 워크", FRAMEWORK, toyProject);
@@ -76,12 +75,10 @@ class TechStackRepositoryTest {
             .password("zxcv1234")
             .name("hong")
             .accountType(AccountType.ACTIVE)
-            .originProfileImage("1234")
-            .storedProfileImage("4151")
             .build();
     }
 
-    private ToyProject createToyProject(LocalDate startDate, LocalDate endDate, Member member) {
+    private ToyProject createToyProject(LocalDate startDate, Member member) {
         return ToyProject.builder()
             .title("스터디 스케쥴러")
             .description("개인의 학습의 진도율을 관리")
