@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import toyproject.studyscheduler.domain.member.AccountType;
+import toyproject.studyscheduler.domain.member.Member;
 
 @NoArgsConstructor
 @Getter
@@ -20,5 +21,14 @@ public class SaveMemberRequestDto {
         this.password = password;
         this.name = name;
         this.accountType = accountType;
+    }
+
+    public Member toEntity() {
+        return Member.builder()
+            .email(email)
+            .password(password)
+            .name(name)
+            .accountType(accountType)
+            .build();
     }
 }
