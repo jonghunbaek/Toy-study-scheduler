@@ -9,7 +9,6 @@ import org.springframework.test.context.ActiveProfiles;
 import toyproject.studyscheduler.domain.member.AccountType;
 import toyproject.studyscheduler.domain.member.Member;
 
-import static org.junit.jupiter.api.Assertions.*;
 
 @ActiveProfiles("test")
 @DataJpaTest
@@ -38,7 +37,7 @@ class MemberRepositoryTest {
     void findMemberByEmail() {
         // given
         Member member = createMember();
-        Member savedMember = memberRepository.save(member);
+        memberRepository.save(member);
 
         // when
         Member result = memberRepository.findByEmail(member.getEmail())
