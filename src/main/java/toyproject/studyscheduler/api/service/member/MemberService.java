@@ -14,6 +14,14 @@ public class MemberService {
     private final MemberRepository memberRepository;
 
     public void saveMember(SaveMemberRequestDto requestDto) {
+        if (isEmailExist(requestDto.getEmail())) {
+            throw new IllegalArgumentException("해당 이메일이 이미 존재합니다.");
+        }
+
         memberRepository.save(requestDto.toEntity());
+    }
+
+    private boolean isEmailExist(String email) {
+        return memberRepository.findByEmail(email).isPresent();
     }
 }
