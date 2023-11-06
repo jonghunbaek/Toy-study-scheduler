@@ -33,6 +33,21 @@ class MemberRepositoryTest {
         Assertions.assertThat(result.getName()).isEqualTo("hong");
     }
 
+    @DisplayName("이메일을 전달 받아 회원정보를 조회한다.")
+    @Test
+    void findMemberByEmail() {
+        // given
+        Member member = createMember();
+        Member savedMember = memberRepository.save(member);
+
+        // when
+        Member result = memberRepository.findByEmail(member.getEmail())
+            .orElseThrow(() -> new IllegalArgumentException("해당 이메일을 가진 회원이 존재하지 않습니다."));
+
+        // then
+        Assertions.assertThat(result.getName()).isEqualTo("hong");
+    }
+
     private Member createMember() {
         return Member.builder()
             .email("hong@gmail.com")
