@@ -49,7 +49,7 @@ class MemberServiceTest {
             .contains("홍길동", "hong@gmail.com");
     }
 
-    @DisplayName("회원을 저장할 때 존재하는 이메일이면 예외를 발생시킨다.")
+    @DisplayName("회원을 생성할 때 존재하는 이메일이면 예외를 발생시킨다.")
     @Test
     void saveMemberWhenEmailExist() {
         // given
@@ -66,6 +66,21 @@ class MemberServiceTest {
         assertThatThrownBy(() -> memberService.saveMember(requestDto))
             .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("해당 이메일이 이미 존재합니다.");
+    }
+
+    @DisplayName("이메일로 회원을 조회하여 비밀번호가 일치하는 지 확인한다.")
+    @Test
+    void signIn() {
+        // given
+        memberRepository.save(createMember());
+        String email = "hong@gmail.com";
+        String password = "zxcv1234";
+
+        // when
+        Member member = memberService.signIn(email, password);
+
+        // then
+        assertThat(member.getEmail()).isEqualTo("hong@gmail.com");
     }
 
     private Member createMember() {

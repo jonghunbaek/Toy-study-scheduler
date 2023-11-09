@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import toyproject.studyscheduler.api.controller.request.member.SaveMemberRequestDto;
+import toyproject.studyscheduler.domain.member.Member;
 import toyproject.studyscheduler.domain.member.repository.MemberRepository;
 
 @Transactional
@@ -23,5 +24,16 @@ public class MemberService {
 
     private boolean isEmailExist(String email) {
         return memberRepository.findByEmail(email).isPresent();
+    }
+
+    public Member signIn(String email, String password) {
+        Member member = memberRepository.findByEmail(email)
+            .orElseThrow(() -> new IllegalArgumentException("해당하는 계정이 존재하지 않습니다."));
+
+        if (member.getPassword().equals(password)) {
+            return member;
+        }
+
+        throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
     }
 }
