@@ -1,6 +1,5 @@
 package toyproject.studyscheduler.api.service.member;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,7 +11,6 @@ import toyproject.studyscheduler.domain.member.Member;
 import toyproject.studyscheduler.domain.member.repository.MemberRepository;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 import static toyproject.studyscheduler.domain.member.AccountType.*;
 
 @ActiveProfiles("test")
@@ -37,7 +35,6 @@ class MemberServiceTest {
             .email("hong@gmail.com")
             .password("zxcv1234")
             .name("홍길동")
-            .accountType(ACTIVE)
             .build();
 
         // when
@@ -59,7 +56,6 @@ class MemberServiceTest {
             .email("hong@gmail.com")
             .password("zxcv1234")
             .name("홍길동")
-            .accountType(ACTIVE)
             .build();
 
         // when & then

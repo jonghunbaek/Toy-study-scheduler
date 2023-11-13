@@ -2,9 +2,11 @@ package toyproject.studyscheduler.api.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import toyproject.studyscheduler.api.controller.request.member.SaveMemberRequestDto;
 import toyproject.studyscheduler.api.service.member.MemberService;
 
 import java.net.http.HttpRequest;
@@ -27,7 +29,14 @@ public class MemberController {
     }
 
     @GetMapping("/sign-up")
-    public String signUp() {
+    public String signUpForm() {
         return "signUp";
+    }
+
+    @PostMapping("/sign-up")
+    public void signUp(SaveMemberRequestDto saveMemberRequestDto, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return;
+        }
     }
 }
