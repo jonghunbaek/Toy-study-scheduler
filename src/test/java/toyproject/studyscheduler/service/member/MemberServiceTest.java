@@ -9,7 +9,6 @@ import org.springframework.test.context.ActiveProfiles;
 import toyproject.studyscheduler.controller.request.member.SaveMemberRequestDto;
 import toyproject.studyscheduler.domain.member.Member;
 import toyproject.studyscheduler.domain.member.repository.MemberRepository;
-import toyproject.studyscheduler.service.member.MemberService;
 
 import static org.assertj.core.api.Assertions.*;
 import static toyproject.studyscheduler.domain.member.AccountType.*;

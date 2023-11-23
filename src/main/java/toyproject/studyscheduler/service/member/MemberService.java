@@ -30,7 +30,7 @@ public class MemberService {
         Member member = memberRepository.findByEmail(email)
             .orElseThrow(() -> new IllegalArgumentException("해당하는 계정이 존재하지 않습니다."));
 
-        if (member.getPassword().equals(password)) {
+        if (member.isMatching(password)) {
             return member;
         }
 

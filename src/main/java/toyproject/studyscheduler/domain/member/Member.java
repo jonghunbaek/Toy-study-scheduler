@@ -33,4 +33,8 @@ public class Member extends BaseEntity {
         this.password = password;
         this.accountType = accountType;
     }
+
+    public boolean isMatching(String password) {
+        return this.password.equals(password);
+    }
 }
