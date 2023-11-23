@@ -1,4 +1,4 @@
-package toyproject.studyscheduler.api.service.study;
+package toyproject.studyscheduler.service.study;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;

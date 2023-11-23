@@ -1,4 +1,4 @@
-package toyproject.studyscheduler.api.service.studytime;
+package toyproject.studyscheduler.service.studytime;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
