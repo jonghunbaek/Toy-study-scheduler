@@ -1,11 +1,11 @@
-package toyproject.studyscheduler.api.controller.request.study;
+package toyproject.studyscheduler.controller.request.study;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
-import toyproject.studyscheduler.api.controller.request.SaveRequiredFunctionDto;
+import toyproject.studyscheduler.controller.request.SaveRequiredFunctionDto;
 import toyproject.studyscheduler.domain.function.RequiredFunction;
 import toyproject.studyscheduler.domain.member.Member;
 import toyproject.studyscheduler.domain.study.StudyType;

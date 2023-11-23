@@ -1,13 +1,13 @@
-package toyproject.studyscheduler.api.service.study.lecture;
+package toyproject.studyscheduler.service.study.lecture;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import toyproject.studyscheduler.api.controller.request.study.SaveStudyRequestDto;
-import toyproject.studyscheduler.api.controller.request.StudyPlanTimeRequestDto;
-import toyproject.studyscheduler.api.controller.response.FindStudyResponseDto;
-import toyproject.studyscheduler.api.service.study.StudyService;
+import toyproject.studyscheduler.controller.request.study.SaveStudyRequestDto;
+import toyproject.studyscheduler.controller.request.StudyPlanTimeRequestDto;
+import toyproject.studyscheduler.controller.response.FindStudyResponseDto;
+import toyproject.studyscheduler.service.study.StudyService;
 import toyproject.studyscheduler.domain.member.Member;
 import toyproject.studyscheduler.domain.member.repository.MemberRepository;
 import toyproject.studyscheduler.domain.study.StudyType;

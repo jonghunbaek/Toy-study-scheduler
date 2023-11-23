@@ -1,4 +1,4 @@
-package toyproject.studyscheduler.api.service.study;
+package toyproject.studyscheduler.service.study;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

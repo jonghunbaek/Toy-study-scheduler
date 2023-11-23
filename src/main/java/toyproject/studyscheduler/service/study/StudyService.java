@@ -1,8 +1,8 @@
-package toyproject.studyscheduler.api.service.study;
+package toyproject.studyscheduler.service.study;
 
-import toyproject.studyscheduler.api.controller.request.study.SaveStudyRequestDto;
-import toyproject.studyscheduler.api.controller.request.StudyPlanTimeRequestDto;
-import toyproject.studyscheduler.api.controller.response.FindStudyResponseDto;
+import toyproject.studyscheduler.controller.request.study.SaveStudyRequestDto;
+import toyproject.studyscheduler.controller.request.StudyPlanTimeRequestDto;
+import toyproject.studyscheduler.controller.response.FindStudyResponseDto;
 import toyproject.studyscheduler.domain.study.StudyType;
 
 public interface StudyService {

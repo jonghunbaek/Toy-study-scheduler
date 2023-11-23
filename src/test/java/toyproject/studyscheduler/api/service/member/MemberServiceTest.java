@@ -6,9 +6,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import toyproject.studyscheduler.api.controller.request.member.SaveMemberRequestDto;
+import toyproject.studyscheduler.controller.request.member.SaveMemberRequestDto;
 import toyproject.studyscheduler.domain.member.Member;
 import toyproject.studyscheduler.domain.member.repository.MemberRepository;
+import toyproject.studyscheduler.service.member.MemberService;
 
 import static org.assertj.core.api.Assertions.*;
 import static toyproject.studyscheduler.domain.member.AccountType.*;

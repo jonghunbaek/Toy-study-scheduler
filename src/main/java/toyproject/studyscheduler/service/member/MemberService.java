@@ -1,9 +1,9 @@
-package toyproject.studyscheduler.api.service.member;
+package toyproject.studyscheduler.service.member;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import toyproject.studyscheduler.api.controller.request.member.SaveMemberRequestDto;
+import toyproject.studyscheduler.controller.request.member.SaveMemberRequestDto;
 import toyproject.studyscheduler.domain.member.Member;
 import toyproject.studyscheduler.domain.member.repository.MemberRepository;
 

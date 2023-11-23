@@ -1,4 +1,4 @@
-package toyproject.studyscheduler.api.controller;
+package toyproject.studyscheduler.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

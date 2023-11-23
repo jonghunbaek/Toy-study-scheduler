@@ -1,13 +1,13 @@
-package toyproject.studyscheduler.api.controller;
+package toyproject.studyscheduler.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import toyproject.studyscheduler.api.controller.request.study.SaveStudyRequestDto;
-import toyproject.studyscheduler.api.controller.request.StudyPlanTimeRequestDto;
-import toyproject.studyscheduler.api.controller.response.FindStudyResponseDto;
-import toyproject.studyscheduler.api.service.study.StudyFactory;
-import toyproject.studyscheduler.api.service.study.StudyService;
+import toyproject.studyscheduler.controller.request.study.SaveStudyRequestDto;
+import toyproject.studyscheduler.controller.request.StudyPlanTimeRequestDto;
+import toyproject.studyscheduler.controller.response.FindStudyResponseDto;
+import toyproject.studyscheduler.service.study.StudyFactory;
+import toyproject.studyscheduler.service.study.StudyService;
 import toyproject.studyscheduler.domain.study.StudyType;
 
 @RequiredArgsConstructor

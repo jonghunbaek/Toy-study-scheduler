@@ -1,4 +1,4 @@
-package toyproject.studyscheduler.api.controller.request.member;
+package toyproject.studyscheduler.controller.request.member;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;

@@ -1,4 +1,4 @@
-package toyproject.studyscheduler.api.controller.request;
+package toyproject.studyscheduler.controller.request;
 
 import lombok.Builder;
 import lombok.Getter;

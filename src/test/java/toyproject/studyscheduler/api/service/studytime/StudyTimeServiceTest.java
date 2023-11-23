@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import toyproject.studyscheduler.api.controller.response.FindStudyTimeResponseDto;
+import toyproject.studyscheduler.controller.response.FindStudyTimeResponseDto;
 import toyproject.studyscheduler.domain.function.FunctionType;
 import toyproject.studyscheduler.domain.function.RequiredFunction;
 import toyproject.studyscheduler.domain.member.AccountType;
@@ -18,6 +18,7 @@ import toyproject.studyscheduler.domain.study.reading.Reading;
 import toyproject.studyscheduler.domain.study.repository.StudyRepository;
 import toyproject.studyscheduler.domain.studytime.repository.StudyTimeRepository;
 import toyproject.studyscheduler.domain.study.toyproject.ToyProject;
+import toyproject.studyscheduler.service.studytime.StudyTimeService;
 import toyproject.studyscheduler.util.StudyUtil;
 
 import java.time.LocalDate;
