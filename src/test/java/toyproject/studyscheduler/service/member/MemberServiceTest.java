@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import toyproject.studyscheduler.controller.request.member.SaveMemberRequestDto;
+import toyproject.studyscheduler.controller.request.member.SignInRequestDto;
 import toyproject.studyscheduler.domain.member.Member;
 import toyproject.studyscheduler.domain.member.repository.MemberRepository;
 
@@ -72,8 +73,9 @@ class MemberServiceTest {
         String email = "hong@gmail.com";
         String password = "zxcv1234";
 
+        SignInRequestDto dto = SignInRequestDto.of(email, password);
         // when
-        Member member = memberService.signIn(email, password);
+        Member member = memberService.signIn(dto);
 
         // then
         assertThat(member.getEmail()).isEqualTo("hong@gmail.com");
