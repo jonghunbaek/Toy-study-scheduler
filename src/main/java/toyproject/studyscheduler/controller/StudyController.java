@@ -1,7 +1,6 @@
 package toyproject.studyscheduler.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import toyproject.studyscheduler.controller.request.study.SaveStudyRequestDto;
 import toyproject.studyscheduler.controller.request.StudyPlanTimeRequestDto;
@@ -11,7 +10,7 @@ import toyproject.studyscheduler.service.study.StudyService;
 import toyproject.studyscheduler.domain.study.StudyType;
 
 @RequiredArgsConstructor
-@Controller
+@RestController
 public class StudyController {
 
     private final StudyFactory studyFactory;
