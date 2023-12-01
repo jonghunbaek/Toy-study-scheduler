@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import toyproject.studyscheduler.controller.request.SaveRequiredFunctionDto;
-import toyproject.studyscheduler.controller.request.study.SaveStudyRequestDto;
+import toyproject.studyscheduler.controller.request.study.StudySave;
 import toyproject.studyscheduler.controller.request.StudyPlanTimeRequestDto;
 import toyproject.studyscheduler.controller.response.FindStudyResponseDto;
 import toyproject.studyscheduler.domain.function.RequiredFunctionRepository;
@@ -20,8 +20,6 @@ import toyproject.studyscheduler.domain.study.repository.StudyRepository;
 import toyproject.studyscheduler.domain.studytime.repository.StudyTimeRepository;
 import toyproject.studyscheduler.domain.study.toyproject.ToyProject;
 import toyproject.studyscheduler.domain.techstack.TechStackRepository;
-import toyproject.studyscheduler.service.study.StudyFactory;
-import toyproject.studyscheduler.service.study.StudyService;
 import toyproject.studyscheduler.util.StudyUtil;
 
 import java.time.LocalDate;
@@ -73,7 +71,7 @@ class StudyServiceTest {
         int totalExpectedPeriod1 = studyUtil.setUpPeriodCalCulatorBy(planTimeInWeekday, planTimeInWeekend, startDate)
             .calculatePeriodBy(totalRuntime);
 
-        SaveStudyRequestDto lectureDto = SaveStudyRequestDto.builder()
+        StudySave lectureDto = StudySave.builder()
             .studyType(LECTURE)
             .title("김영한의 스프링")
             .description("스프링 핵심 강의")
@@ -87,8 +85,8 @@ class StudyServiceTest {
             .build();
 
         // when
-        StudyService studyService = studyFactory.findServiceBy(lectureDto.getStudyType());
-        studyService.saveStudy(lectureDto);
+        StudyService studyService = studyFactory.serviceBy(lectureDto.getStudyType());
+        studyService.save(lectureDto);
 
         Lecture lecture = (Lecture) studyRepository.findAll().get(0);
 
@@ -113,7 +111,7 @@ class StudyServiceTest {
         int totalExpectedPeriod = studyUtil.setUpPeriodCalCulatorBy(planTimeInWeekday, planTimeInWeekend, startDate)
             .calculatePeriodBy(totalPage, readPagePerMin);
 
-        SaveStudyRequestDto readingDto = SaveStudyRequestDto.builder()
+        StudySave readingDto = StudySave.builder()
             .studyType(READING)
             .title("클린 코드")
             .description("클린한 코드를 통해 유지보수성을 높이자")
@@ -126,10 +124,10 @@ class StudyServiceTest {
             .readPagePerMin(readPagePerMin)
             .memberId(savedMember.getId())
             .build();
-        StudyService studyService = studyFactory.findServiceBy(readingDto.getStudyType());
+        StudyService studyService = studyFactory.serviceBy(readingDto.getStudyType());
 
         // when
-        studyService.saveStudy(readingDto);
+        studyService.save(readingDto);
 
         Reading reading = (Reading) studyRepository.findAll().get(0);
 
@@ -174,7 +172,7 @@ class StudyServiceTest {
         int toyExpectedPeriod = studyUtil.setUpPeriodCalCulatorBy(toyPTD, toyPTK, toyStartDate)
             .calculatePeriodBy(totalExpectedTime);
 
-        SaveStudyRequestDto toyDto = SaveStudyRequestDto.builder()
+        StudySave toyDto = StudySave.builder()
             .studyType(TOY)
             .title("스터디 스케쥴러")
             .description("개인의 학습의 진도율을 관리")
@@ -186,8 +184,8 @@ class StudyServiceTest {
             .functions(functionDtos)
             .build();
 
-        StudyService studyService = studyFactory.findServiceBy(toyDto.getStudyType());
-        studyService.saveStudy(toyDto);
+        StudyService studyService = studyFactory.serviceBy(toyDto.getStudyType());
+        studyService.save(toyDto);
 
         // when
         ToyProject toyProject = (ToyProject) studyRepository.findAll().get(0);
@@ -216,8 +214,8 @@ class StudyServiceTest {
         Lecture savedLecture = (Lecture) studyRepository.findAll().get(0);
 
         // when
-        StudyService studyService = studyFactory.findServiceBy(toEnum(savedLecture.getStudyType()));
-        FindStudyResponseDto study = studyService.findStudyById(savedLecture.getId());
+        StudyService studyService = studyFactory.serviceBy(toEnum(savedLecture.getStudyType()));
+        FindStudyResponseDto study = studyService.studyBy(savedLecture.getId());
 
         // then
         assertThat(study)
@@ -245,8 +243,8 @@ class StudyServiceTest {
         Lecture savedLecture = (Lecture) studyRepository.findAll().get(0);
 
         // when
-        StudyService studyService = studyFactory.findServiceBy(toEnum(savedLecture.getStudyType()));
-        FindStudyResponseDto study = studyService.findStudyById(savedLecture.getId());
+        StudyService studyService = studyFactory.serviceBy(toEnum(savedLecture.getStudyType()));
+        FindStudyResponseDto study = studyService.studyBy(savedLecture.getId());
 
         // then
         assertThat(study)
@@ -272,7 +270,7 @@ class StudyServiceTest {
             .build();
 
         // when
-        StudyService studyService = studyFactory.findServiceBy(lecturePlanTime.getStudyType());
+        StudyService studyService = studyFactory.serviceBy(lecturePlanTime.getStudyType());
         int period = studyService.calculatePeriod(lecturePlanTime);
 
         // then
@@ -299,7 +297,7 @@ class StudyServiceTest {
             .build();
 
         // when
-        StudyService studyService = studyFactory.findServiceBy(readingPlanTime.getStudyType());
+        StudyService studyService = studyFactory.serviceBy(readingPlanTime.getStudyType());
         int period = studyService.calculatePeriod(readingPlanTime);
 
         // then
@@ -324,7 +322,7 @@ class StudyServiceTest {
             .build();
 
         // when
-        StudyService studyService = studyFactory.findServiceBy(toyPlanTime.getStudyType());
+        StudyService studyService = studyFactory.serviceBy(toyPlanTime.getStudyType());
         int period = studyService.calculatePeriod(toyPlanTime);
 
         // then

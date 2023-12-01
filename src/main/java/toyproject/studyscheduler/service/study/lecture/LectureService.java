@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import toyproject.studyscheduler.controller.request.study.SaveStudyRequestDto;
+import toyproject.studyscheduler.controller.request.study.StudySave;
 import toyproject.studyscheduler.controller.request.StudyPlanTimeRequestDto;
 import toyproject.studyscheduler.controller.response.FindStudyResponseDto;
 import toyproject.studyscheduler.service.study.StudyService;
@@ -33,16 +33,16 @@ public class LectureService implements StudyService {
     }
 
     @Override
-    public void saveStudy(SaveStudyRequestDto saveStudyRequestDto) {
-        Member member = memberRepository.findById(saveStudyRequestDto.getMemberId())
+    public void save(StudySave studySave) {
+        Member member = memberRepository.findById(studySave.getMemberId())
             .orElseThrow(() -> new IllegalArgumentException("해당 사용자가 존재하지 않습니다."));
 
-        Lecture lecture = saveStudyRequestDto.toLectureEntity(member);
+        Lecture lecture = studySave.toLectureEntity(member);
         studyRepository.save(lecture);
     }
 
     @Override
-    public FindStudyResponseDto findStudyById(Long id) {
+    public FindStudyResponseDto studyBy(Long id) {
         Lecture lecture = (Lecture) studyRepository.findById(id)
             .orElseThrow(() -> new IllegalArgumentException("해당 학습이 존재하지 않습니다."));
 

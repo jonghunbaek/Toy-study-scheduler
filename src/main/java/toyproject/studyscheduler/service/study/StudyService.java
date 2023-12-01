@@ -1,6 +1,6 @@
 package toyproject.studyscheduler.service.study;
 
-import toyproject.studyscheduler.controller.request.study.SaveStudyRequestDto;
+import toyproject.studyscheduler.controller.request.study.StudySave;
 import toyproject.studyscheduler.controller.request.StudyPlanTimeRequestDto;
 import toyproject.studyscheduler.controller.response.FindStudyResponseDto;
 import toyproject.studyscheduler.domain.study.StudyType;
@@ -9,9 +9,9 @@ public interface StudyService {
 
     boolean supports(StudyType studyType);
 
-    void saveStudy(SaveStudyRequestDto saveStudyRequestDto);
+    void save(StudySave studySave);
 
-    FindStudyResponseDto findStudyById(Long id);
+    FindStudyResponseDto studyBy(Long id);
 
     int calculatePeriod(StudyPlanTimeRequestDto dto);
 }

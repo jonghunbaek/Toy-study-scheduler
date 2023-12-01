@@ -6,8 +6,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import toyproject.studyscheduler.controller.request.member.SaveMemberRequestDto;
-import toyproject.studyscheduler.controller.request.member.SignInRequestDto;
+import toyproject.studyscheduler.controller.request.member.SignUp;
+import toyproject.studyscheduler.controller.request.member.SignIn;
 import toyproject.studyscheduler.domain.member.Member;
 import toyproject.studyscheduler.domain.member.repository.MemberRepository;
 
@@ -32,7 +32,7 @@ class MemberServiceTest {
     @Test
     void saveMember() {
         // given
-        SaveMemberRequestDto requestDto = SaveMemberRequestDto.builder()
+        SignUp requestDto = SignUp.builder()
             .email("hong@gmail.com")
             .password("zxcv1234")
             .name("홍길동")
@@ -53,7 +53,7 @@ class MemberServiceTest {
         // given
         memberRepository.save(createMember());
 
-        SaveMemberRequestDto requestDto = SaveMemberRequestDto.builder()
+        SignUp requestDto = SignUp.builder()
             .email("hong@gmail.com")
             .password("zxcv1234")
             .name("홍길동")
@@ -73,7 +73,7 @@ class MemberServiceTest {
         String email = "hong@gmail.com";
         String password = "zxcv1234";
 
-        SignInRequestDto dto = SignInRequestDto.of(email, password);
+        SignIn dto = SignIn.of(email, password);
         // when
         Member member = memberService.signIn(dto);
 

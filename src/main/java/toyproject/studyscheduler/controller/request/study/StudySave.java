@@ -21,7 +21,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-public class SaveStudyRequestDto {
+public class StudySave {
 
     private String title;
     private String description;

@@ -4,19 +4,19 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 
 @Getter
-public class SignInRequestDto {
+public class SignIn {
 
     @NotBlank
     private String email;
     @NotBlank
     private String password;
 
-    private SignInRequestDto(String email, String password) {
+    private SignIn(String email, String password) {
         this.email = email;
         this.password = password;
     }
 
-    public static SignInRequestDto of(String email, String password) {
-        return new SignInRequestDto(email, password);
+    public static SignIn of(String email, String password) {
+        return new SignIn(email, password);
     }
 }

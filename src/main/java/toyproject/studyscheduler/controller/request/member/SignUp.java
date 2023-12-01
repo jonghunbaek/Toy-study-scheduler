@@ -9,7 +9,7 @@ import toyproject.studyscheduler.domain.member.Member;
 
 @NoArgsConstructor
 @Getter
-public class SaveMemberRequestDto {
+public class SignUp {
 
     @NotBlank(message = "이메일은 필수 입력 값 입니다.")
     private String email;
@@ -20,7 +20,7 @@ public class SaveMemberRequestDto {
     private AccountType accountType;
 
     @Builder
-    private SaveMemberRequestDto(String email, String password, String name) {
+    private SignUp(String email, String password, String name) {
         this.email = email;
         this.password = password;
         this.name = name;

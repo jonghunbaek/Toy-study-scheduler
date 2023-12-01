@@ -12,7 +12,7 @@ public class StudyFactory {
 
     private final List<StudyService> studyServices;
 
-    public StudyService findServiceBy(StudyType studyType) {
+    public StudyService serviceBy(StudyType studyType) {
         return studyServices.stream()
             .filter(studyService -> studyService.supports(studyType))
             .findFirst()

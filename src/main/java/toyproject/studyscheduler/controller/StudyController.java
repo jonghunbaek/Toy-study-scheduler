@@ -2,7 +2,7 @@ package toyproject.studyscheduler.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import toyproject.studyscheduler.controller.request.study.SaveStudyRequestDto;
+import toyproject.studyscheduler.controller.request.study.StudySave;
 import toyproject.studyscheduler.controller.request.StudyPlanTimeRequestDto;
 import toyproject.studyscheduler.controller.response.FindStudyResponseDto;
 import toyproject.studyscheduler.service.study.StudyFactory;
@@ -15,28 +15,21 @@ public class StudyController {
 
     private final StudyFactory studyFactory;
 
-    @GetMapping("/studies/form")
-    public String getSavingStudyForm() {
-        return "save-study";
-    }
-
     @PostMapping("/studies")
-    public void saveStudy(SaveStudyRequestDto saveStudyRequestDto) {
-        StudyService studyService = studyFactory.findServiceBy(saveStudyRequestDto.getStudyType());
-        studyService.saveStudy(saveStudyRequestDto);
+    public void saveStudy(StudySave studySave) {
+        StudyService studyService = studyFactory.serviceBy(studySave.getStudyType());
+        studyService.save(studySave);
     }
 
-    @ResponseBody
     @GetMapping("/studies/{id}")
-    public FindStudyResponseDto getStudyBy(@PathVariable Long id, @RequestHeader StudyType studyType) {
-        StudyService studyService = studyFactory.findServiceBy(studyType);
-        return studyService.findStudyById(id);
+    public FindStudyResponseDto getStudyBy(@PathVariable Long id, @RequestParam StudyType studyType) {
+        StudyService studyService = studyFactory.serviceBy(studyType);
+        return studyService.studyBy(id);
     }
 
-    @ResponseBody
     @GetMapping("/studies/period")
     public int getPeriod(@ModelAttribute StudyPlanTimeRequestDto dto) {
-        StudyService studyService = studyFactory.findServiceBy(dto.getStudyType());
+        StudyService studyService = studyFactory.serviceBy(dto.getStudyType());
         return studyService.calculatePeriod(dto);
     }
 }
