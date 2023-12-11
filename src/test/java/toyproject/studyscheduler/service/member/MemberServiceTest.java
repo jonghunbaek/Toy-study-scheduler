@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import toyproject.studyscheduler.controller.request.member.SignUp;
-import toyproject.studyscheduler.controller.request.member.SignIn;
+import toyproject.studyscheduler.controller.request.member.SignInRequest;
 import toyproject.studyscheduler.domain.member.Member;
 import toyproject.studyscheduler.domain.member.repository.MemberRepository;
 
@@ -73,7 +73,7 @@ class MemberServiceTest {
         String email = "hong@gmail.com";
         String password = "zxcv1234";
 
-        SignIn dto = SignIn.of(email, password);
+        SignInRequest dto = SignInRequest.of(email, password);
         // when
         Member member = memberService.signIn(dto);
 

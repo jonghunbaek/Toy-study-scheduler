@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import toyproject.studyscheduler.controller.request.member.SignUp;
-import toyproject.studyscheduler.controller.request.member.SignIn;
+import toyproject.studyscheduler.controller.request.member.SignInRequest;
 import toyproject.studyscheduler.domain.member.Member;
 import toyproject.studyscheduler.domain.member.repository.MemberRepository;
 
@@ -27,11 +27,11 @@ public class MemberService {
         return memberRepository.findByEmail(email).isPresent();
     }
 
-    public Member signIn(SignIn signIn) {
-        Member member = memberRepository.findByEmail(signIn.getEmail())
+    public Member signIn(SignInRequest signInRequest) {
+        Member member = memberRepository.findByEmail(signInRequest.getEmail())
             .orElseThrow(() -> new IllegalArgumentException("해당하는 계정이 존재하지 않습니다."));
 
-        if (member.isMatching(signIn.getPassword())) {
+        if (member.isMatching(signInRequest.getPassword())) {
             return member;
         }
 
