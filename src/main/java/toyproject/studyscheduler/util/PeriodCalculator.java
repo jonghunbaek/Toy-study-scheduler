@@ -1,7 +1,6 @@
 package toyproject.studyscheduler.util;
 
 import lombok.*;
-import toyproject.studyscheduler.domain.function.RequiredFunction;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;

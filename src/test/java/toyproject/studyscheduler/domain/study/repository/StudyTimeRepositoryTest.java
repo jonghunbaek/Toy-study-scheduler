@@ -5,8 +5,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
-import toyproject.studyscheduler.domain.function.FunctionType;
-import toyproject.studyscheduler.domain.function.RequiredFunction;
 import toyproject.studyscheduler.domain.member.AccountType;
 import toyproject.studyscheduler.domain.member.Member;
 import toyproject.studyscheduler.domain.member.repository.MemberRepository;
@@ -14,7 +12,6 @@ import toyproject.studyscheduler.domain.study.Study;
 import toyproject.studyscheduler.domain.studytime.StudyTime;
 import toyproject.studyscheduler.domain.study.lecture.Lecture;
 import toyproject.studyscheduler.domain.study.reading.Reading;
-import toyproject.studyscheduler.domain.study.toyproject.ToyProject;
 import toyproject.studyscheduler.domain.studytime.repository.StudyTimeRepository;
 
 import java.time.LocalDate;
@@ -23,7 +20,6 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.tuple;
-import static toyproject.studyscheduler.domain.function.FunctionType.*;
 
 
 @ActiveProfiles("test")
@@ -116,48 +112,6 @@ class StudyTimeRepositoryTest {
             );
     }
 
-    @DisplayName("특정기간에 수행한 토이프로젝트 학습의 일간 학습량, 누적 학습량, 누적 학습율을 모두 조회 한다.")
-    @Test
-    void getStudyTimeWithToyProjectPerDay() {
-        // given
-        LocalDate startDate = LocalDate.of(2023, 8, 1);
-
-        Member member = createMember();
-        memberRepository.save(member);
-
-        ToyProject toyProject = createToyProject(startDate, member);
-        createFunction(READ, toyProject, 100);
-        createFunction(CREATE, toyProject, 70);
-        createFunction(UPDATE, toyProject, 150);
-        studyRepository.save(toyProject);
-        
-        List<LocalDate> dates = List.of(LocalDate.of(2023, 8, 3),
-            LocalDate.of(2023, 8, 8),
-            LocalDate.of(2023, 8, 14),
-            LocalDate.of(2023, 8, 20),
-            LocalDate.of(2023, 9, 1)
-        );
-        List<Integer> totalCompleteTimes = List.of(0, 30, 70, 95, 118, 148);
-        List<Integer> completeTimeTodays = List.of(30, 40, 25, 23, 30);
-
-        studyTimeRepository.saveAll(createStudyTimes(toyProject, dates, totalCompleteTimes, completeTimeTodays));
-
-        // when2
-        LocalDate start = LocalDate.of(2023, 8, 1);
-        LocalDate end = LocalDate.of(2023, 8, 30);
-        List<StudyTime> allByPeriod = studyTimeRepository.findAllByPeriod(start, end);
-
-        // then2
-        assertThat(allByPeriod).hasSize(4)
-            .extracting("totalCompleteTime", "totalLearningRate", "completeTimeToday", "date")
-            .containsExactlyInAnyOrder(
-                tuple(30, 9.38, 30, LocalDate.of(2023,8,3)),
-                tuple(70, 21.88, 40, LocalDate.of(2023,8,8)),
-                tuple(95, 29.69, 25, LocalDate.of(2023,8,14)),
-                tuple(118, 36.88, 23, LocalDate.of(2023,8,20))
-            );
-    }
-
     private List<StudyTime> createStudyTimes(Study study, List<LocalDate> dates, List<Integer> totalCompleteTimes, List<Integer> completeTimeTodays) {
         List<StudyTime> studyTimes = new ArrayList<>();
         for (int i=0; i<dates.size(); i++) {
@@ -183,26 +137,6 @@ class StudyTimeRepositoryTest {
                 .name("hong")
                 .accountType(AccountType.ACTIVE)
                 .build();
-    }
-
-    private ToyProject createToyProject(LocalDate startDate, Member member) {
-        return ToyProject.builder()
-            .title("스터디 스케쥴러")
-            .description("개인의 학습의 진도율을 관리")
-            .planTimeInWeekday(60)
-            .planTimeInWeekend(120)
-            .startDate(startDate)
-            .member(member)
-            .build();
-    }
-
-    private void createFunction(FunctionType functionType, ToyProject toyProject, int expectedTime) {
-        RequiredFunction.builder()
-            .functionType(functionType)
-            .toyProject(toyProject)
-            .expectedTime(expectedTime)
-            .description("테스트용")
-            .build();
     }
 
     private Reading createReading(LocalDate startDate, Member member) {

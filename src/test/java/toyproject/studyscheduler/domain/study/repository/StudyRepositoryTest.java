@@ -8,11 +8,6 @@ import org.springframework.test.context.ActiveProfiles;
 import toyproject.studyscheduler.domain.study.Study;
 import toyproject.studyscheduler.domain.study.lecture.Lecture;
 import toyproject.studyscheduler.domain.study.reading.Reading;
-import toyproject.studyscheduler.domain.techstack.TechCategory;
-import toyproject.studyscheduler.domain.techstack.TechStack;
-import toyproject.studyscheduler.domain.function.FunctionType;
-import toyproject.studyscheduler.domain.function.RequiredFunction;
-import toyproject.studyscheduler.domain.study.toyproject.ToyProject;
 import toyproject.studyscheduler.domain.member.AccountType;
 import toyproject.studyscheduler.domain.member.Member;
 import toyproject.studyscheduler.domain.member.repository.MemberRepository;
@@ -22,7 +17,6 @@ import java.time.LocalDate;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
-import static toyproject.studyscheduler.domain.function.FunctionType.*;
 
 @ActiveProfiles("test")
 @DataJpaTest
@@ -59,30 +53,17 @@ class StudyRepositoryTest {
                 .calculatePeriodBy(totalPage, readPagePerMin);
         Reading reading = createReading(readingPTD, readingPTK, readingStartDate, readingExpectedPeriod, totalPage, readPagePerMin, member);
 
-        LocalDate toyStartDate = LocalDate.of(2023, 7, 1);
-        int toyPTD = 60;
-        int toyPTK = 120;
-        List<RequiredFunction> functions = List.of(createFunction(CREATE, 300), createFunction(READ, 500));
-        List<Integer> totalExpectedTime = functions.stream()
-                .map(RequiredFunction::getExpectedTime)
-                .toList();
-        int toyExpectedPeriod = studyUtil.setUpPeriodCalCulatorBy(toyPTD, toyPTK, toyStartDate)
-                .calculatePeriodBy(totalExpectedTime);
-        ToyProject toyProject = createToyProject(toyPTD, toyPTK, toyStartDate, toyExpectedPeriod, functions, member);
-
-        studyRepository.saveAll(List.of(lecture, reading, toyProject));
+        studyRepository.saveAll(List.of(lecture, reading));
 
         // when
-        List<Study> studies = studyRepository.findAllById(List.of(lecture.getId(), reading.getId(), toyProject.getId()));
+        List<Study> studies = studyRepository.findAllById(List.of(lecture.getId(), reading.getId()));
 
-//        studies.forEach(study -> System.out.println("dtype TEST ==============" + study.getSubType()));
         // then
-        assertThat(studies).hasSize(3)
+        assertThat(studies).hasSize(2)
                 .extracting("title", "description", "startDate", "expectedEndDate")
                 .containsExactlyInAnyOrder(
                         tuple("김영한의 스프링", "스프링 핵심 강의", lectureStartDate, lectureStartDate.plusDays(lectureExpectedPeriod - 1)),
-                        tuple("클린 코드", "클린 코드를 배우기 위한 도서", readingStartDate, readingStartDate.plusDays(readingExpectedPeriod - 1)),
-                        tuple("스터디 스케쥴러", "개인의 학습의 진도율을 관리", toyStartDate, toyStartDate.plusDays(toyExpectedPeriod - 1))
+                        tuple("클린 코드", "클린 코드를 배우기 위한 도서", readingStartDate, readingStartDate.plusDays(readingExpectedPeriod - 1))
                 );
     }
 
@@ -112,18 +93,7 @@ class StudyRepositoryTest {
                 .calculatePeriodBy(totalPage, readPagePerMin);
         Reading reading = createReading(readingPTD, readingPTK, readingStartDate, readingExpectedPeriod, totalPage, readPagePerMin, member);
 
-        LocalDate toyStartDate = LocalDate.of(2023, 7, 1);
-        int toyPTD = 60;
-        int toyPTK = 120;
-        List<RequiredFunction> functions = List.of(createFunction(CREATE, 300), createFunction(READ, 500));
-        List<Integer> totalExpectedTime = functions.stream()
-                .map(RequiredFunction::getExpectedTime)
-                .toList();
-        int toyExpectedPeriod = studyUtil.setUpPeriodCalCulatorBy(toyPTD, toyPTK, toyStartDate)
-                .calculatePeriodBy(totalExpectedTime);
-        ToyProject toyProject = createToyProject(toyPTD, toyPTK, toyStartDate, toyExpectedPeriod, functions, member);
-
-        studyRepository.saveAll(List.of(lecture, reading, toyProject));
+        studyRepository.saveAll(List.of(lecture, reading));
 
         // when
         LocalDate startDate = LocalDate.of(2023, 7, 1);
@@ -132,10 +102,9 @@ class StudyRepositoryTest {
         List<Study> studies = studyRepository.findAllByPeriod(startDate, endDate);
 
         // then
-        assertThat(studies).hasSize(2)
+        assertThat(studies).hasSize(1)
                 .extracting("title", "description", "startDate", "expectedEndDate")
                 .containsExactlyInAnyOrder(
-                        tuple("스터디 스케쥴러", "개인의 학습의 진도율을 관리", toyStartDate, toyStartDate.plusDays(toyExpectedPeriod - 1)),
                         tuple("김영한의 스프링", "스프링 핵심 강의", lectureStartDate, lectureStartDate.plusDays(lectureExpectedPeriod - 1))
                 );
     }
@@ -146,34 +115,6 @@ class StudyRepositoryTest {
                 .password("zxcv1234")
                 .name("hong")
                 .accountType(AccountType.ACTIVE)
-                .build();
-    }
-
-    private ToyProject createToyProject(int planTimeInWeekday, int planTimeInWeekend, LocalDate startDate, int totalExpectedPeriod, List<RequiredFunction> functions,  Member member) {
-        return ToyProject.builder()
-                .title("스터디 스케쥴러")
-                .description("개인의 학습의 진도율을 관리")
-                .totalExpectedPeriod(totalExpectedPeriod)
-                .planTimeInWeekday(planTimeInWeekday)
-                .planTimeInWeekend(planTimeInWeekend)
-                .startDate(startDate)
-                .member(member)
-                .functions(functions)
-                .build();
-    }
-
-    private TechStack createTechStack(String title, TechCategory techCategory, ToyProject toyProject) {
-        return TechStack.builder()
-                .title(title)
-                .techCategory(techCategory)
-                .toyProject(toyProject)
-                .build();
-    }
-
-    private RequiredFunction createFunction(FunctionType functionType, int expectedTime) {
-        return RequiredFunction.builder()
-                .functionType(functionType)
-                .expectedTime(expectedTime)
                 .build();
     }
 

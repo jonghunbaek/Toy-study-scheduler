@@ -6,11 +6,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import toyproject.studyscheduler.controller.request.SaveRequiredFunctionDto;
 import toyproject.studyscheduler.controller.request.study.StudySave;
 import toyproject.studyscheduler.controller.request.StudyPlanTimeRequestDto;
 import toyproject.studyscheduler.controller.response.FindStudyResponseDto;
-import toyproject.studyscheduler.domain.function.RequiredFunctionRepository;
 import toyproject.studyscheduler.domain.member.AccountType;
 import toyproject.studyscheduler.domain.member.Member;
 import toyproject.studyscheduler.domain.member.repository.MemberRepository;
@@ -18,15 +16,11 @@ import toyproject.studyscheduler.domain.study.lecture.Lecture;
 import toyproject.studyscheduler.domain.study.reading.Reading;
 import toyproject.studyscheduler.domain.study.repository.StudyRepository;
 import toyproject.studyscheduler.domain.studytime.repository.StudyTimeRepository;
-import toyproject.studyscheduler.domain.study.toyproject.ToyProject;
-import toyproject.studyscheduler.domain.techstack.TechStackRepository;
 import toyproject.studyscheduler.util.StudyUtil;
 
 import java.time.LocalDate;
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static toyproject.studyscheduler.domain.function.FunctionType.*;
 import static toyproject.studyscheduler.domain.study.StudyType.*;
 
 @ActiveProfiles("test")
@@ -42,16 +36,10 @@ class StudyServiceTest {
     @Autowired
     MemberRepository memberRepository;
     @Autowired
-    RequiredFunctionRepository requiredFunctionRepository;
-    @Autowired
-    TechStackRepository techStackRepository;
-    @Autowired
     StudyUtil studyUtil;
 
     @AfterEach
     void cleanUp() {
-        requiredFunctionRepository.deleteAllInBatch();
-        techStackRepository.deleteAllInBatch();
         studyTimeRepository.deleteAllInBatch();
         studyRepository.deleteAllInBatch();
         memberRepository.deleteAllInBatch();
@@ -134,65 +122,6 @@ class StudyServiceTest {
         // then
         assertThat(reading).extracting("title", "description", "totalExpectedPeriod", "totalExpectedMin", "expectedEndDate")
             .contains("클린 코드", "클린한 코드를 통해 유지보수성을 높이자", 10, 350, LocalDate.of(2023, 9,20));
-    }
-
-    @DisplayName("토이프로젝트 학습을 저장하고 조회한다.")
-    @Test
-    void saveToyProject() {
-        // given
-        Member member = createMember();
-        Member savedMember = memberRepository.save(member);
-
-        SaveRequiredFunctionDto addMember = SaveRequiredFunctionDto.builder()
-            .title("회원 가입")
-            .description("신규 회원을 생성한다.")
-            .functionType(CREATE)
-            .expectedTime(70)
-            .build();
-        SaveRequiredFunctionDto loginMember = SaveRequiredFunctionDto.builder()
-            .title("로그인")
-            .description("회원의 존재여부를 확인 후 존재하면 로그인을 한다.")
-            .functionType(READ)
-            .expectedTime(100)
-            .build();
-        SaveRequiredFunctionDto updateMember = SaveRequiredFunctionDto.builder()
-            .title("회원 정보 수정")
-            .description("회원의 정보를 수정한다.")
-            .functionType(UPDATE)
-            .expectedTime(150)
-            .build();
-        List<SaveRequiredFunctionDto> functionDtos = List.of(addMember, loginMember, updateMember);
-
-        LocalDate toyStartDate = LocalDate.of(2023, 7, 1);
-        int toyPTD = 60;
-        int toyPTK = 120;
-        List<Integer> totalExpectedTime = functionDtos.stream()
-            .map(SaveRequiredFunctionDto::getExpectedTime)
-            .toList();
-        int toyExpectedPeriod = studyUtil.setUpPeriodCalCulatorBy(toyPTD, toyPTK, toyStartDate)
-            .calculatePeriodBy(totalExpectedTime);
-
-        StudySave toyDto = StudySave.builder()
-            .studyType(TOY)
-            .title("스터디 스케쥴러")
-            .description("개인의 학습의 진도율을 관리")
-            .totalExpectedPeriod(toyExpectedPeriod)
-            .planTimeInWeekday(toyPTD)
-            .planTimeInWeekend(toyPTK)
-            .startDate(toyStartDate)
-            .memberId(savedMember.getId())
-            .functions(functionDtos)
-            .build();
-
-        StudyService studyService = studyFactory.serviceBy(toyDto.getStudyType());
-        studyService.save(toyDto);
-
-        // when
-        ToyProject toyProject = (ToyProject) studyRepository.findAll().get(0);
-
-        // then
-        assertThat(toyProject).extracting("title", "description", "totalExpectedPeriod", "totalExpectedMin", "expectedEndDate")
-            .contains("스터디 스케쥴러", "개인의 학습의 진도율을 관리", 4, 320, LocalDate.of(2023, 7,4));
     }
 
     @DisplayName("주어진 아이디로 종료되지 않은 학습 상세내용을 조회한다.")
@@ -304,49 +233,12 @@ class StudyServiceTest {
         assertThat(period).isEqualTo(10);
     }
 
-    @DisplayName("토이프로젝트 학습의 평일, 주말 학습 계획 시간, 시작일을 인자로 받아 예상 학습기간을 구한다.")
-    @Test
-    void calculateExpectedPeriodByWithToy() {
-        // given
-        int planTimeInWeekDay = 90;
-        int planTimeInWeekend = 180;
-        List<Integer> expectedTimes = List.of(300, 600, 250, 100, 500);
-        LocalDate startDate = LocalDate.of(2023, 9, 11);
-
-        StudyPlanTimeRequestDto toyPlanTime = StudyPlanTimeRequestDto.builder()
-            .studyType(TOY)
-            .planTimeInWeekDay(planTimeInWeekDay)
-            .planTimeInWeekend(planTimeInWeekend)
-            .startDate(startDate)
-            .expectedTimes(expectedTimes)
-            .build();
-
-        // when
-        StudyService studyService = studyFactory.serviceBy(toyPlanTime.getStudyType());
-        int period = studyService.calculatePeriod(toyPlanTime);
-
-        // then
-        assertThat(period).isEqualTo(16);
-    }
-
     private Member createMember() {
         return Member.builder()
             .email("hong@gmail.com")
             .password("zxcv1234")
             .name("hong")
             .accountType(AccountType.ACTIVE)
-            .build();
-    }
-
-    private ToyProject createToyProject(int planTimeInWeekday, int planTimeInWeekend, LocalDate startDate, int totalExpectedPeriod, Member member) {
-        return ToyProject.builder()
-            .title("스터디 스케쥴러")
-            .description("개인의 학습의 진도율을 관리")
-            .totalExpectedPeriod(totalExpectedPeriod)
-            .planTimeInWeekday(planTimeInWeekday)
-            .planTimeInWeekend(planTimeInWeekend)
-            .startDate(startDate)
-            .member(member)
             .build();
     }
 

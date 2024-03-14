@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import toyproject.studyscheduler.domain.study.StudyType;
 import toyproject.studyscheduler.domain.study.lecture.Lecture;
 import toyproject.studyscheduler.domain.study.reading.Reading;
-import toyproject.studyscheduler.domain.study.toyproject.ToyProject;
 
 import java.time.LocalDate;
 
@@ -72,21 +71,6 @@ public class FindStudyResponseDto {
             .totalPage(reading.getTotalPage())
             .readPagePerMin(reading.getReadPagePerMin())
             .authorName(reading.getAuthorName())
-            .build();
-    }
-
-    public static FindStudyResponseDto ofToyProject(ToyProject toyProject) {
-        return FindStudyResponseDto.builder()
-            .title(toyProject.getTitle())
-            .description(toyProject.getDescription())
-            .studyType(toEnum(toyProject.getStudyType()))
-            .totalExpectedPeriod(toyProject.getTotalExpectedPeriod())
-            .planTimeInWeekday(toyProject.getPlanTimeInWeekday())
-            .planTimeInWeekend(toyProject.getPlanTimeInWeekend())
-            .startDate(toyProject.getStartDate())
-            .isTermination(toyProject.isTermination())
-            .realEndDate(toyProject.getRealEndDate())
-            .memberId(toyProject.getMember().getId())
             .build();
     }
 }
