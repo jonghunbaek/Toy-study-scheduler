@@ -32,3 +32,8 @@ server:
   servlet:
     encoding:
       force-response: true
+
+access-secret-key: ${ACCESS_SECRET_KEY}
+access-expiration-hours: 1800
+refresh-expiration-hours: 86400
+issuer: jonghun
