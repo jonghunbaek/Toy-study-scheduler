@@ -8,7 +8,6 @@ import org.springframework.test.context.ActiveProfiles;
 import toyproject.studyscheduler.study.entity.Study;
 import toyproject.studyscheduler.study.entity.Lecture;
 import toyproject.studyscheduler.study.entity.Reading;
-import toyproject.studyscheduler.member.entity.domain.AccountType;
 import toyproject.studyscheduler.member.entity.Member;
 import toyproject.studyscheduler.member.repository.MemberRepository;
 import toyproject.studyscheduler.common.util.StudyUtil;
@@ -114,7 +113,6 @@ class StudyRepositoryTest {
                 .email("hong@gmail.com")
                 .password("zxcv1234")
                 .name("hong")
-                .accountType(AccountType.ACTIVE)
                 .build();
     }
 

@@ -5,9 +5,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import toyproject.studyscheduler.common.domain.BaseEntity;
-import toyproject.studyscheduler.member.entity.domain.AccountType;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
@@ -28,15 +26,11 @@ public class Member extends BaseEntity {
     @Enumerated
     private Role role;
 
-    @Enumerated
-    private AccountType accountType;
-
     @Builder
-    private Member(String name, String email, String password, AccountType accountType, Role role) {
+    private Member(String name, String email, String password, Role role) {
         this.name = name;
         this.email = email;
         this.password = password;
-        this.accountType = accountType;
         this.role = role;
     }
 }

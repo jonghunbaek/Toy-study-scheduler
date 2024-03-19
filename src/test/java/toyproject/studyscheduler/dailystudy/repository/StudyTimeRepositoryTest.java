@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
-import toyproject.studyscheduler.member.entity.domain.AccountType;
 import toyproject.studyscheduler.member.entity.Member;
 import toyproject.studyscheduler.member.repository.MemberRepository;
 import toyproject.studyscheduler.study.entity.Study;
@@ -135,7 +134,6 @@ class StudyTimeRepositoryTest {
                 .email("hong@gmail.com")
                 .password("zxcv1234")
                 .name("hong")
-                .accountType(AccountType.ACTIVE)
                 .build();
     }
 

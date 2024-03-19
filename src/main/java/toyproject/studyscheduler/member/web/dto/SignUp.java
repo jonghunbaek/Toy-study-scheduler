@@ -4,7 +4,6 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import toyproject.studyscheduler.member.entity.domain.AccountType;
 import toyproject.studyscheduler.member.entity.Member;
 
 @NoArgsConstructor
@@ -17,14 +16,12 @@ public class SignUp {
     private String password;
     @NotBlank(message = "이름은 필수 입력 값 입니다.")
     private String name;
-    private AccountType accountType;
 
     @Builder
     private SignUp(String email, String password, String name) {
         this.email = email;
         this.password = password;
         this.name = name;
-        this.accountType = AccountType.ACTIVE;
     }
 
     public Member toEntity() {

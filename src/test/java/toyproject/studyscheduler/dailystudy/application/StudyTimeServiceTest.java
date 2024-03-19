@@ -7,8 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import toyproject.studyscheduler.study.web.dto.FindStudyTimeResponseDto;
-import toyproject.studyscheduler.dailystudy.application.StudyTimeService;
-import toyproject.studyscheduler.member.entity.domain.AccountType;
 import toyproject.studyscheduler.member.entity.Member;
 import toyproject.studyscheduler.member.repository.MemberRepository;
 import toyproject.studyscheduler.study.entity.Study;
@@ -116,7 +114,6 @@ class StudyTimeServiceTest {
             .email("hong@gmail.com")
             .password("zxcv1234")
             .name("hong")
-            .accountType(AccountType.ACTIVE)
             .build();
     }
 

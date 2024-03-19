@@ -2,9 +2,7 @@ package toyproject.studyscheduler.study.entity;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import toyproject.studyscheduler.member.entity.domain.AccountType;
 import toyproject.studyscheduler.member.entity.Member;
-import toyproject.studyscheduler.study.entity.Lecture;
 
 import java.time.LocalDate;
 
@@ -40,7 +38,6 @@ class StudyTest {
             .email("hong@gmail.com")
             .password("zxcv1234")
             .name("hong")
-            .accountType(AccountType.ACTIVE)
             .build();
     }
 

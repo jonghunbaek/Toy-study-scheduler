@@ -23,6 +23,18 @@ class AuthServiceTest {
     @Autowired
     MemberRepository memberRepository;
 
+    @DisplayName("회원 정보를 전달 받아 회원 가입을 한다.")
+    @Test
+    void signUp() {
+        // given
+
+
+        // when
+
+        // then
+
+    }
+
     @DisplayName("로그인시 입력 받은 비밀번호와 저장된 비밀번호를 비교한다.")
     @Test
     void validatePassword() {

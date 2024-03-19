@@ -1,10 +1,8 @@
 package toyproject.studyscheduler.dailystudy.entity;
 
-import toyproject.studyscheduler.member.entity.domain.AccountType;
 import toyproject.studyscheduler.member.entity.Member;
 import toyproject.studyscheduler.study.entity.Study;
 import toyproject.studyscheduler.study.entity.Lecture;
-import toyproject.studyscheduler.dailystudy.entity.StudyTime;
 
 import java.time.LocalDate;
 
@@ -25,7 +23,6 @@ class StudyTimeTest {
             .email("hong@gmail.com")
             .password("zxcv1234")
             .name("hong")
-            .accountType(AccountType.ACTIVE)
             .build();
     }
 
