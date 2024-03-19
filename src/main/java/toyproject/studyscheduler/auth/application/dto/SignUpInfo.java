@@ -1,14 +1,16 @@
-package toyproject.studyscheduler.member.web.dto;
+package toyproject.studyscheduler.auth.application.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import toyproject.studyscheduler.member.entity.Member;
+import toyproject.studyscheduler.member.entity.Role;
 
 @NoArgsConstructor
 @Getter
-public class SignUp {
+public class SignUpInfo {
 
     @NotBlank(message = "이메일은 필수 입력 값 입니다.")
     private String email;
@@ -18,17 +20,18 @@ public class SignUp {
     private String name;
 
     @Builder
-    private SignUp(String email, String password, String name) {
+    private SignUpInfo(String email, String password, String name) {
         this.email = email;
         this.password = password;
         this.name = name;
     }
 
-    public Member toEntity() {
+    public Member toEntity(PasswordEncoder passwordEncoder) {
         return Member.builder()
             .email(email)
-            .password(password)
+            .password(passwordEncoder.encode(password))
             .name(name)
+            .role(Role.ROLE_USER)
             .build();
     }
 }

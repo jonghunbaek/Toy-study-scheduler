@@ -6,6 +6,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import toyproject.studyscheduler.auth.application.dto.MemberInfo;
 import toyproject.studyscheduler.auth.application.dto.SignInInfo;
+import toyproject.studyscheduler.auth.application.dto.SignUpInfo;
 import toyproject.studyscheduler.member.entity.Member;
 import toyproject.studyscheduler.member.repository.MemberRepository;
 
@@ -16,6 +17,19 @@ public class AuthService {
 
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
+
+    public void signUp(SignUpInfo signUpInfo) {
+        validateEmail(signUpInfo.getEmail());
+
+        Member member = signUpInfo.toEntity(passwordEncoder);
+        memberRepository.save(member);
+    }
+
+    private void validateEmail(String email) {
+        if (memberRepository.existsByEmail(email)) {
+            throw new IllegalArgumentException("이미 존재하는 이메일이 있습니다.");
+        }
+    }
 
     public MemberInfo signIn(SignInInfo signInInfo) {
         Member member = memberRepository.findByEmail(signInInfo.getEmail())
