@@ -4,14 +4,20 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import toyproject.studyscheduler.auth.application.dto.MemberInfo;
 import toyproject.studyscheduler.auth.application.dto.SignInInfo;
 import toyproject.studyscheduler.auth.application.dto.SignUpInfo;
+import toyproject.studyscheduler.auth.exception.AuthException;
+import toyproject.studyscheduler.common.exception.ResponseCode;
 import toyproject.studyscheduler.member.entity.Member;
 import toyproject.studyscheduler.member.repository.MemberRepository;
 
+import static toyproject.studyscheduler.common.exception.ResponseCode.*;
+
 @Slf4j
 @RequiredArgsConstructor
+@Transactional
 @Service
 public class AuthService {
 
@@ -32,17 +38,21 @@ public class AuthService {
     }
 
     public MemberInfo signIn(SignInInfo signInInfo) {
-        Member member = memberRepository.findByEmail(signInInfo.getEmail())
-            .orElseThrow(() -> new IllegalArgumentException("존재하는 회원이 없습니다."));
+        Member member = findMember(signInInfo.getEmail());
 
         validatePassword(signInInfo.getPassword(), member.getPassword());
 
         return MemberInfo.of(member);
     }
 
+    private Member findMember(String email) {
+        return memberRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("존재하는 회원이 없습니다."));
+    }
+
     private void validatePassword(String requestPassword, String storedPassword) {
         if (isNotMatch(requestPassword, storedPassword)) {
-            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+            throw new AuthException(E10000);
         }
     }
 

@@ -6,9 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
-import toyproject.studyscheduler.auth.application.dto.MemberInfo;
 import toyproject.studyscheduler.auth.application.dto.SignInInfo;
 import toyproject.studyscheduler.auth.application.dto.SignUpInfo;
+import toyproject.studyscheduler.auth.exception.AuthException;
 import toyproject.studyscheduler.member.entity.Member;
 import toyproject.studyscheduler.member.repository.MemberRepository;
 
@@ -62,21 +62,21 @@ class AuthServiceTest {
                 .hasMessage("이미 존재하는 이메일이 있습니다.");
     }
 
-    @DisplayName("로그인시 입력 받은 비밀번호와 저장된 비밀번호를 비교한다.")
+    @DisplayName("로그인시 입력 받은 비밀번호와 저장된 비밀번호가 다를 경우 예외를 발생시킨다.")
     @Test
     void validatePassword() {
         // given
-        memberRepository.save(Member.builder()
-                .email("abc@gmail.com")
+        SignUpInfo signUpInfo = SignUpInfo.builder()
+                .name("hong")
                 .password("1234")
-                .build());
-        SignInInfo correct = new SignInInfo("abc@gmail.com", "1234");
-        SignInInfo incorrect = new SignInInfo("abc@gmail.com", "12345");
+                .email("hong@gmail.com")
+                .build();
+        authService.signUp(signUpInfo);
 
-        // when
-        MemberInfo memberInfo = authService.signIn(correct);
+        SignInInfo incorrectInfo = new SignInInfo("hong@gmail.com", "12345");
 
-        // then
-        assertThat(memberInfo.getMemberId()).isEqualTo(1);
+        // when & then
+        assertThatThrownBy(() -> authService.signIn(incorrectInfo))
+                .isInstanceOf(AuthException.class);
     }
 }
