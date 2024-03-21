@@ -27,15 +27,15 @@ class JwtProviderTest {
     @Test
     void createAccessToken() {
         // given
-        String email = "hong@gmail.com";
+        long memberId = 1L;
         Role role = Role.ROLE_USER;
-        String accessToken = jwtProvider.createAccessToken(email, role);
+        String accessToken = jwtProvider.createAccessToken(memberId, role);
 
         // when
         String[] subjects = jwtProvider.parseAccessToken(accessToken);
 
         // then
-        assertThat(subjects[0]).isEqualTo("hong@gmail.com");
+        assertThat(subjects[0]).isEqualTo("1");
         assertThat(subjects[1]).isEqualTo("ROLE_USER");
     }
 
@@ -43,9 +43,9 @@ class JwtProviderTest {
     @Test
     void parseAccessTokenWhenExpired() throws InterruptedException {
         // given
-        String email = "hong@gmail.com";
+        long memberId = 1L;
         Role role = Role.ROLE_USER;
-        String accessToken = jwtProvider.createAccessToken(email, role);
+        String accessToken = jwtProvider.createAccessToken(memberId, role);
 
         // when & then
         Thread.sleep(5000);

@@ -15,30 +15,35 @@ import java.util.Date;
 @Component
 public class JwtProvider {
     public static final String SUBJECT_DELIMITER = ":";
+
     private long accessExpiration;
     private long refreshExpiration;
     private String issuer;
-    private SecretKey accessSecretKey;
+    private SecretKey secretKey;
 
     public JwtProvider(
-        @Value("${access-secret-key}") String accessSecretKey,
+        @Value("${secret-key}") String secretKey,
         @Value("${access-expiration-hours}") long accessExpiration,
         @Value("${refresh-expiration-hours}") long refreshExpiration,
         @Value("${issuer}") String issuer) {
 
-        this.accessSecretKey = Keys.hmacShaKeyFor(accessSecretKey.getBytes());
+        this.secretKey = Keys.hmacShaKeyFor(secretKey.getBytes());
         this.accessExpiration = accessExpiration;
         this.refreshExpiration = refreshExpiration;
         this.issuer = issuer;
     }
 
-    public String createAccessToken(String email, Role role) {
-        String subject = createSubject(email, role);
-        return createToken(subject, accessSecretKey, accessExpiration);
+    public String createAccessToken(Long memberId, Role role) {
+        String subject = createSubject(memberId, role);
+        return createToken(subject, secretKey, accessExpiration);
     }
 
-    private String createSubject(String email, Role role) {
-        return email + SUBJECT_DELIMITER + role.toString();
+    private String createSubject(Long memberId, Role role) {
+        return memberId + SUBJECT_DELIMITER + role.toString();
+    }
+
+    public String createRefreshToken() {
+        return createToken("", secretKey, refreshExpiration);
     }
 
     private String createToken(String subject, SecretKey secretKey, long expiration) {
@@ -52,7 +57,7 @@ public class JwtProvider {
     }
 
     public String[] parseAccessToken(String token) {
-        JwtParser jwtParser = createJwtParser(accessSecretKey);
+        JwtParser jwtParser = createJwtParser(secretKey);
 
         return parseToken(token, jwtParser)
             .split(SUBJECT_DELIMITER);
