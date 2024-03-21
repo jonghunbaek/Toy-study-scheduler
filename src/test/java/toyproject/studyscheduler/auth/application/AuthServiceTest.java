@@ -35,7 +35,7 @@ class AuthServiceTest {
                 .build();
 
         // when
-        authService.signUp(signUpInfo);
+        authService.saveNewMember(signUpInfo);
         Member member = memberRepository.findAll().get(0);
 
         // then
@@ -57,7 +57,7 @@ class AuthServiceTest {
                 .build();
 
         // when & then
-        assertThatThrownBy(() -> authService.signUp(signUpInfo))
+        assertThatThrownBy(() -> authService.saveNewMember(signUpInfo))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("이미 존재하는 이메일이 있습니다.");
     }
@@ -71,12 +71,12 @@ class AuthServiceTest {
                 .password("1234")
                 .email("hong@gmail.com")
                 .build();
-        authService.signUp(signUpInfo);
+        authService.saveNewMember(signUpInfo);
 
         SignInInfo incorrectInfo = new SignInInfo("hong@gmail.com", "12345");
 
         // when & then
-        assertThatThrownBy(() -> authService.signIn(incorrectInfo))
+        assertThatThrownBy(() -> authService.login(incorrectInfo))
                 .isInstanceOf(AuthException.class);
     }
 }

@@ -9,7 +9,6 @@ import toyproject.studyscheduler.auth.application.dto.MemberInfo;
 import toyproject.studyscheduler.auth.application.dto.SignInInfo;
 import toyproject.studyscheduler.auth.application.dto.SignUpInfo;
 import toyproject.studyscheduler.auth.exception.AuthException;
-import toyproject.studyscheduler.common.exception.ResponseCode;
 import toyproject.studyscheduler.member.entity.Member;
 import toyproject.studyscheduler.member.repository.MemberRepository;
 
@@ -24,7 +23,7 @@ public class AuthService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public void signUp(SignUpInfo signUpInfo) {
+    public void saveNewMember(SignUpInfo signUpInfo) {
         validateEmail(signUpInfo.getEmail());
 
         Member member = signUpInfo.toEntity(passwordEncoder);
@@ -37,17 +36,12 @@ public class AuthService {
         }
     }
 
-    public MemberInfo signIn(SignInInfo signInInfo) {
+    public MemberInfo login(SignInInfo signInInfo) {
         Member member = findMember(signInInfo.getEmail());
 
         validatePassword(signInInfo.getPassword(), member.getPassword());
 
         return MemberInfo.of(member);
-    }
-
-    private Member findMember(String email) {
-        return memberRepository.findByEmail(email)
-                .orElseThrow(() -> new IllegalArgumentException("존재하는 회원이 없습니다."));
     }
 
     private void validatePassword(String requestPassword, String storedPassword) {
@@ -58,5 +52,10 @@ public class AuthService {
 
     private boolean isNotMatch(String requestPassword, String storedPassword) {
         return !passwordEncoder.matches(requestPassword, storedPassword);
+    }
+
+    private Member findMember(String email) {
+        return memberRepository.findByEmail(email)
+            .orElseThrow(() -> new IllegalArgumentException("존재하는 회원이 없습니다."));
     }
 }
