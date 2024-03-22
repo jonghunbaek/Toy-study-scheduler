@@ -1,5 +1,6 @@
 package toyproject.studyscheduler.token.application.dto;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import toyproject.studyscheduler.member.entity.Member;
@@ -12,6 +13,7 @@ public class TokenCreationInfo {
     private long memberId;
     private Role role;
 
+    @Builder
     private TokenCreationInfo(long memberId, Role role) {
         this.memberId = memberId;
         this.role = role;
