@@ -9,13 +9,13 @@ import toyproject.studyscheduler.member.entity.Role;
 
 import static org.assertj.core.api.Assertions.*;
 
-class JwtProviderTest {
+class JwtManagerTest {
 
-    private JwtProvider jwtProvider;
+    private JwtManager jwtManager;
 
     @BeforeEach
     void setUp() {
-        jwtProvider = new JwtProvider(
+        jwtManager = new JwtManager(
             "NiOeyFbN1Gqo10bPgUyTFsRMkJpGLXSvGP04eFqj5B30r5TcrtlSXfQ7TndvYjNvfkEKLqILn0j1SmKODO6Yw3JpBBgI6nVPEbhqxeY1qbPSFGyzyEVxnl4bQcrnVneI",
             5,
             20,
@@ -29,10 +29,10 @@ class JwtProviderTest {
         // given
         long memberId = 1L;
         Role role = Role.ROLE_USER;
-        String accessToken = jwtProvider.createAccessToken(memberId, role);
+        String accessToken = jwtManager.createAccessToken(memberId, role);
 
         // when
-        String[] subjects = jwtProvider.parseAccessToken(accessToken);
+        String[] subjects = jwtManager.parseAccessToken(accessToken);
 
         // then
         assertThat(subjects[0]).isEqualTo("1");
@@ -45,11 +45,11 @@ class JwtProviderTest {
         // given
         long memberId = 1L;
         Role role = Role.ROLE_USER;
-        String accessToken = jwtProvider.createAccessToken(memberId, role);
+        String accessToken = jwtManager.createAccessToken(memberId, role);
 
         // when & then
         Thread.sleep(5000);
-        assertThatThrownBy(() -> jwtProvider.parseAccessToken(accessToken))
+        assertThatThrownBy(() -> jwtManager.parseAccessToken(accessToken))
             .isInstanceOf(ExpiredJwtException.class);
     }
 
@@ -60,7 +60,7 @@ class JwtProviderTest {
         String fakeToken = "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6IjM3MSIsImlhdCI6MTcwOTc4MDYwNCwic3ViIjoiMzcxIiwiZXhwIjoxNzEwOTkwMjA0fQ.YWgsDZ6N9KTyOF9w73PVuKMfHzU26tiXnJn8eRirkpo";
 
         // when & then
-        assertThatThrownBy(() -> jwtProvider.parseAccessToken(fakeToken))
+        assertThatThrownBy(() -> jwtManager.parseAccessToken(fakeToken))
             .isInstanceOf(SignatureException.class);
     }
 }

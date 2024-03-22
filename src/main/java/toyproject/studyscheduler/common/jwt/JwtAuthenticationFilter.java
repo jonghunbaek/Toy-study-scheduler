@@ -28,7 +28,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     public static final String AUTH_TYPE = "Bearer ";
     public static final String EXCEPTION_KEY = "exception";
 
-    private final JwtProvider jwtProvider;
+    private final JwtManager jwtManager;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -71,7 +71,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     private Authentication getAuthentication(String accessToken) {
-        String[] idAndRole = jwtProvider.parseAccessToken(accessToken);
+        String[] idAndRole = jwtManager.parseAccessToken(accessToken);
 
         return new UsernamePasswordAuthenticationToken(
             idAndRole[0],

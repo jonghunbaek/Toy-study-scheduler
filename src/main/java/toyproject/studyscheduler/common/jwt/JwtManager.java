@@ -13,7 +13,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.Date;
 
 @Component
-public class JwtProvider {
+public class JwtManager {
     public static final String SUBJECT_DELIMITER = ":";
 
     private long accessExpiration;
@@ -21,7 +21,7 @@ public class JwtProvider {
     private String issuer;
     private SecretKey secretKey;
 
-    public JwtProvider(
+    public JwtManager(
         @Value("${secret-key}") String secretKey,
         @Value("${access-expiration-hours}") long accessExpiration,
         @Value("${refresh-expiration-hours}") long refreshExpiration,
