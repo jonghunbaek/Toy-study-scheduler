@@ -5,8 +5,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import toyproject.studyscheduler.auth.application.AuthService;
-import toyproject.studyscheduler.auth.application.TokenService;
-import toyproject.studyscheduler.auth.application.dto.MemberInfo;
+import toyproject.studyscheduler.token.application.TokenService;
+import toyproject.studyscheduler.token.application.dto.TokenCreationInfo;
 import toyproject.studyscheduler.auth.application.dto.SignInInfo;
 import toyproject.studyscheduler.auth.application.dto.SignUpInfo;
 import toyproject.studyscheduler.auth.web.dto.Tokens;
@@ -25,7 +25,7 @@ public class AuthController {
 
     @PostMapping("/auth/sign-in")
     public Tokens signIn(@RequestBody SignInInfo signInInfo) {
-        MemberInfo memberInfo = authService.login(signInInfo);
-        return tokenService.createTokens(memberInfo);
+        TokenCreationInfo tokenCreationInfo = authService.login(signInInfo);
+        return tokenService.createTokens(tokenCreationInfo);
     }
 }

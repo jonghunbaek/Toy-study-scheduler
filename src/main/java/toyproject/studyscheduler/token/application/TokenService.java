@@ -1,9 +1,9 @@
-package toyproject.studyscheduler.auth.application;
+package toyproject.studyscheduler.token.application;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import toyproject.studyscheduler.auth.application.dto.MemberInfo;
+import toyproject.studyscheduler.token.application.dto.TokenCreationInfo;
 import toyproject.studyscheduler.auth.web.dto.Tokens;
 import toyproject.studyscheduler.common.jwt.JwtManager;
 
@@ -11,11 +11,12 @@ import toyproject.studyscheduler.common.jwt.JwtManager;
 @Service
 public class TokenService {
 
+    // TODO :: 추후 시간되면 토큰 매니저를 추상화하기
     private final JwtManager jwtManager;
 
     @Transactional
-    public Tokens createTokens(MemberInfo memberInfo) {
-        String accessToken = jwtManager.createAccessToken(memberInfo.getMemberId(), memberInfo.getRole());
+    public Tokens createTokens(TokenCreationInfo tokenCreationInfo) {
+        String accessToken = jwtManager.createAccessToken(tokenCreationInfo.getMemberId(), tokenCreationInfo.getRole());
         String refreshToken = jwtManager.createRefreshToken();
 
         return Tokens.of(accessToken, refreshToken);

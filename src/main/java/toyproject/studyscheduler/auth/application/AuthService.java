@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import toyproject.studyscheduler.auth.application.dto.MemberInfo;
+import toyproject.studyscheduler.token.application.dto.TokenCreationInfo;
 import toyproject.studyscheduler.auth.application.dto.SignInInfo;
 import toyproject.studyscheduler.auth.application.dto.SignUpInfo;
 import toyproject.studyscheduler.auth.exception.AuthException;
@@ -36,12 +36,12 @@ public class AuthService {
         }
     }
 
-    public MemberInfo login(SignInInfo signInInfo) {
+    public TokenCreationInfo login(SignInInfo signInInfo) {
         Member member = findMember(signInInfo.getEmail());
 
         validatePassword(signInInfo.getPassword(), member.getPassword());
 
-        return MemberInfo.of(member);
+        return TokenCreationInfo.of(member);
     }
 
     private void validatePassword(String requestPassword, String storedPassword) {
