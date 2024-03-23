@@ -98,3 +98,16 @@ MariaDB공식 문서를 찾아보니 DATE타입은 4Bytes라 overflow가 일어�
 원인 : 원인은 @Transactional이 있는 경우만 영속성 컨텍스트가 살아 있고 이 때의 엔티티들은 영속 상태 이다. 하지만 없거나 끝난 경우라면
 엔티티들은 준영속 상태가 된다 .그렇기 때문에 지연 로딩과 영속성 전이 기능을 사용할 수 없는 것이다.
 ```
+
++ @WebMvcTest
+```
+@WebMvcTest(
+        controllers = AuthController.class,
+        includeFilters = {@ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = SecurityConfig.class)},
+        excludeFilters = {@ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = JwtAuthenticationFilter.class)}
+)
+@WebMvcTest는 Spring Security의 설정 파일을 빈으로 등록하지 않고 기본설정 상태로 둔다.
+그렇기 때문에 모든 유저에 대한 권한이 필요한 상황이 생김
+위 설정과 더불어 SecurityConfig에 필요한 의존성 또한 Mocking처리해야 하기 때문에 불필요 코드가 늘어나게 된다.
+인증이 중요한 테스트가 아니라면 ~filter관련 설정은 빼고 @WithMockUser로 인증된 모킹 유저를 통해 간단하게 테스트하자.
+```

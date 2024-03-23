@@ -16,6 +16,7 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import toyproject.studyscheduler.common.jwt.JwtAuthenticationEntryPoint;
 import toyproject.studyscheduler.common.jwt.JwtAuthenticationFilter;
 
@@ -26,7 +27,6 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    public static final String[] PERMIT_LIST = {"/home", "/security/**", "/h2-console/**"};
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final AuthenticationEntryPoint entryPoint;
     private final AccessDeniedHandler accessDeniedHandler;
@@ -37,7 +37,11 @@ public class SecurityConfig {
             .csrf(AbstractHttpConfigurer::disable)
             .cors(AbstractHttpConfigurer::disable)
             .formLogin(AbstractHttpConfigurer::disable)
-            .authorizeHttpRequests(authorize -> authorize.requestMatchers(PERMIT_LIST).permitAll()
+            .authorizeHttpRequests(authorize -> authorize.requestMatchers(
+                            new AntPathRequestMatcher("/home"),
+                            new AntPathRequestMatcher("/h2-console/**"),
+                            new AntPathRequestMatcher("/auth/**")
+                    ).permitAll()
                 .anyRequest().authenticated())
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .exceptionHandling(handler -> handler
