@@ -63,6 +63,12 @@ public class JwtManager {
             .split(SUBJECT_DELIMITER);
     }
 
+    public void validateRefreshToken(String refreshToken) {
+        JwtParser jwtParser = createJwtParser(secretKey);
+
+        parseToken(refreshToken, jwtParser);
+    }
+
     private JwtParser createJwtParser(SecretKey secretKey) {
         return Jwts.parser()
             .verifyWith(secretKey)

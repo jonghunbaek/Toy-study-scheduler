@@ -18,7 +18,7 @@ class JwtManagerTest {
         jwtManager = new JwtManager(
             "NiOeyFbN1Gqo10bPgUyTFsRMkJpGLXSvGP04eFqj5B30r5TcrtlSXfQ7TndvYjNvfkEKLqILn0j1SmKODO6Yw3JpBBgI6nVPEbhqxeY1qbPSFGyzyEVxnl4bQcrnVneI",
             5,
-            20,
+            5,
             "test"
         );
     }
@@ -55,12 +55,36 @@ class JwtManagerTest {
 
     @DisplayName("위조된 액세스 토큰을 파싱하면 예외가 발생한다.")
     @Test
-    void parseAccessTokenWhenforgery() {
+    void parseAccessTokenWhenForgery() {
         // given
         String fakeToken = "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6IjM3MSIsImlhdCI6MTcwOTc4MDYwNCwic3ViIjoiMzcxIiwiZXhwIjoxNzEwOTkwMjA0fQ.YWgsDZ6N9KTyOF9w73PVuKMfHzU26tiXnJn8eRirkpo";
 
         // when & then
         assertThatThrownBy(() -> jwtManager.parseAccessToken(fakeToken))
             .isInstanceOf(SignatureException.class);
+    }
+
+    @DisplayName("토큰 재발행 전에 refresh token을 검증한다 - 만료 여부 확인")
+    @Test
+    void validateRefreshTokenWhenExpired() throws InterruptedException {
+        // given
+        String oldToken = jwtManager.createRefreshToken();
+
+        // when & then
+        Thread.sleep(5000);
+        assertThatThrownBy(() -> jwtManager.validateRefreshToken(oldToken))
+                .isInstanceOf(ExpiredJwtException.class);
+    }
+
+    @DisplayName("토큰 재발행 전에 refresh token을 검증한다 - 위조 여부 확인")
+    @Test
+    void validateRefreshTokenWhenForgery() throws InterruptedException {
+        // given
+        String fakeToken = "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6IjM3MSIsImlhdCI6MTcwOTc4MDYwNCwic3ViIjoiMzcxIiwiZXhwIjoxNzEwOTkwMjA0fQ.YWgsDZ6N9KTyOF9w73PVuKMfHzU26tiXnJn8eRirkpo";
+
+        // when & then
+        Thread.sleep(5000);
+        assertThatThrownBy(() -> jwtManager.validateRefreshToken(fakeToken))
+                .isInstanceOf(SignatureException.class);
     }
 }

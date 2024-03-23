@@ -70,6 +70,5 @@ class AuthControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(cookie().value("access_token", accessToken))
                 .andExpect(cookie().value("refresh_token", refreshToken));
-
     }
 }
