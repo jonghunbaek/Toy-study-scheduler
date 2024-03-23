@@ -17,8 +17,8 @@ class JwtManagerTest {
     void setUp() {
         jwtManager = new JwtManager(
             "NiOeyFbN1Gqo10bPgUyTFsRMkJpGLXSvGP04eFqj5B30r5TcrtlSXfQ7TndvYjNvfkEKLqILn0j1SmKODO6Yw3JpBBgI6nVPEbhqxeY1qbPSFGyzyEVxnl4bQcrnVneI",
-            5,
-            5,
+            2,
+            2,
             "test"
         );
     }
@@ -41,14 +41,14 @@ class JwtManagerTest {
 
     @DisplayName("만료된 액세스 토큰을 파싱하면 예외가 발생한다.")
     @Test
-    void parseAccessTokenWhenExpired() throws InterruptedException {
+    void parseAccessTokenWhenExpired() {
         // given
         long memberId = 1L;
         Role role = Role.ROLE_USER;
         String accessToken = jwtManager.createAccessToken(memberId, role);
 
         // when & then
-        Thread.sleep(5000);
+        sleep(2000);
         assertThatThrownBy(() -> jwtManager.parseAccessToken(accessToken))
             .isInstanceOf(ExpiredJwtException.class);
     }
@@ -66,25 +66,48 @@ class JwtManagerTest {
 
     @DisplayName("토큰 재발행 전에 refresh token을 검증한다 - 만료 여부 확인")
     @Test
-    void validateRefreshTokenWhenExpired() throws InterruptedException {
+    void validateRefreshTokenWhenExpired() {
         // given
         String oldToken = jwtManager.createRefreshToken();
 
         // when & then
-        Thread.sleep(5000);
+        sleep(2000);
         assertThatThrownBy(() -> jwtManager.validateRefreshToken(oldToken))
                 .isInstanceOf(ExpiredJwtException.class);
     }
 
     @DisplayName("토큰 재발행 전에 refresh token을 검증한다 - 위조 여부 확인")
     @Test
-    void validateRefreshTokenWhenForgery() throws InterruptedException {
+    void validateRefreshTokenWhenForgery() {
         // given
         String fakeToken = "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6IjM3MSIsImlhdCI6MTcwOTc4MDYwNCwic3ViIjoiMzcxIiwiZXhwIjoxNzEwOTkwMjA0fQ.YWgsDZ6N9KTyOF9w73PVuKMfHzU26tiXnJn8eRirkpo";
 
         // when & then
-        Thread.sleep(5000);
+        sleep(2000);
         assertThatThrownBy(() -> jwtManager.validateRefreshToken(fakeToken))
                 .isInstanceOf(SignatureException.class);
+    }
+
+    @DisplayName("만료된 access token을 전달받아 새로운 access token을 발행한다.")
+    @Test
+    void reissueAccessToken() {
+        // given
+        String expiredToken = jwtManager.createAccessToken(1L, Role.ROLE_USER);
+        sleep(2000);
+
+        // when
+        String newToken = jwtManager.reissueAccessToken(expiredToken);
+        String[] subjects = jwtManager.parseAccessToken(newToken);
+
+        // then
+        assertThat(subjects[0]).isEqualTo("1");
+    }
+
+    private void sleep(long time) {
+        try {
+            Thread.sleep(time);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

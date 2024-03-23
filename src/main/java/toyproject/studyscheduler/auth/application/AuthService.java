@@ -32,7 +32,7 @@ public class AuthService {
 
     private void validateEmail(String email) {
         if (memberRepository.existsByEmail(email)) {
-            throw new IllegalArgumentException("이미 존재하는 이메일이 있습니다.");
+            throw new AuthException(E10001);
         }
     }
 

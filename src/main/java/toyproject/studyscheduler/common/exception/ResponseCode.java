@@ -14,7 +14,10 @@ public enum ResponseCode {
 
     // member
     E10000("비밀번호가 일치하지 않습니다.", BAD_REQUEST),
-    E10001("이메일과 일치하는 회원이 존재하지 않습니다.", BAD_REQUEST);
+    E10001("이미 존재하는 이메일이 있습니다.", BAD_REQUEST),
+
+    // token
+    E20000("일치하는 리프레쉬 토큰이 없습니다.", BAD_REQUEST);
 
     private String message;
     private HttpStatus httpStatus;

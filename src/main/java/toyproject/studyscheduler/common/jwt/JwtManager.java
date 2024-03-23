@@ -1,16 +1,23 @@
 package toyproject.studyscheduler.common.jwt;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import toyproject.studyscheduler.common.exception.GlobalException;
+import toyproject.studyscheduler.common.exception.ResponseCode;
 import toyproject.studyscheduler.member.entity.Role;
 
 import javax.crypto.SecretKey;
+import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.Base64;
 import java.util.Date;
+import java.util.Map;
 
 @Component
 public class JwtManager {
@@ -34,19 +41,19 @@ public class JwtManager {
     }
 
     public String createAccessToken(Long memberId, Role role) {
-        String subject = createSubject(memberId, role);
-        return createToken(subject, secretKey, accessExpiration);
+        String subject = createSubject(memberId, role.toString());
+        return createToken(subject, accessExpiration);
     }
 
-    private String createSubject(Long memberId, Role role) {
-        return memberId + SUBJECT_DELIMITER + role.toString();
+    private String createSubject(Long memberId, String role) {
+        return memberId + SUBJECT_DELIMITER + role;
     }
 
     public String createRefreshToken() {
-        return createToken("", secretKey, refreshExpiration);
+        return createToken("", refreshExpiration);
     }
 
-    private String createToken(String subject, SecretKey secretKey, long expiration) {
+    private String createToken(String subject, long expiration) {
         return Jwts.builder()
             .signWith(secretKey, Jwts.SIG.HS512)
             .subject(subject)
@@ -79,5 +86,23 @@ public class JwtManager {
         return jwtParser.parseSignedClaims(token)
             .getPayload()
             .getSubject();
+    }
+
+    public String reissueAccessToken(String accessTokens) {
+        String[] subjects = decodeJwtPayload(accessTokens);
+        return createToken(createSubject(Long.parseLong(subjects[0]), subjects[1]), accessExpiration);
+    }
+
+    private String[] decodeJwtPayload(String oldAccessToken) {
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        try {
+            return objectMapper.readValue(new String(Base64.getDecoder().decode(oldAccessToken.split("\\.")[1]), StandardCharsets.UTF_8), Map.class)
+                    .get("sub")
+                    .toString()
+                    .split(SUBJECT_DELIMITER);
+        } catch (JsonProcessingException e) {
+            throw new IllegalStateException(e);
+        }
     }
 }
