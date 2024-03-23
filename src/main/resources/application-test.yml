@@ -16,6 +16,6 @@ spring:
       mode: never
 
 secret-key: NiOeyFbN1Gqo10bPgUyTFsRMkJpGLXSvGP04eFqj5B30r5TcrtlSXfQ7TndvYjNvfkEKLqILn0j1SmKODO6Yw3JpBBgI6nVPEbhqxeY1qbPSFGyzyEVxnl4bQcrnVneI
-access-expiration-hours: 10
+access-expiration-hours: 5
 refresh-expiration-hours: 30
 issuer: test

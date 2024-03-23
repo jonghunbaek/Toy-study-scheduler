@@ -8,9 +8,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 import toyproject.studyscheduler.auth.web.dto.Tokens;
+import toyproject.studyscheduler.common.exception.ResponseCode;
 import toyproject.studyscheduler.member.entity.Role;
 import toyproject.studyscheduler.token.application.dto.TokenCreationInfo;
 import toyproject.studyscheduler.token.entity.RefreshToken;
+import toyproject.studyscheduler.token.exception.TokenException;
 import toyproject.studyscheduler.token.repository.RefreshTokenRepository;
 
 import static org.assertj.core.api.Assertions.*;
@@ -46,7 +48,7 @@ class TokenServiceTest {
 
     @DisplayName("refresh token이 이미 DB에 존재하면 새로운 토큰으로 갱신한다.")
     @Test
-    void saveRefreshTokenWhenExist() throws InterruptedException {
+    void saveRefreshTokenWhenExist() {
         // given
         TokenCreationInfo info = TokenCreationInfo.builder()
             .memberId(1L)
@@ -57,7 +59,7 @@ class TokenServiceTest {
         Tokens oldTokens = tokenService.createTokens(info);
 
         // 일시정지 하지 않으면 시간 차이가 없어 결과적으로 같은 refresh token이 생성됨
-        Thread.sleep(1000);
+        sleep(1000);
         Tokens newTokens = tokenService.createTokens(info);
 
         RefreshToken refreshToken = refreshTokenRepository.findById(1L)
@@ -66,5 +68,55 @@ class TokenServiceTest {
         // then
         assertThat(oldTokens.getRefreshToken()).isNotEqualTo(refreshToken.getToken());
         assertThat(newTokens.getRefreshToken()).isEqualTo(refreshToken.getToken());
+    }
+
+    @DisplayName("acces token이 만료되면 access, refresh token을 재발행한다.")
+    @Test
+    void reissuTokens() {
+        // given
+        TokenCreationInfo info = TokenCreationInfo.builder()
+                .memberId(1L)
+                .role(Role.ROLE_USER)
+                .build();
+
+        // when
+        Tokens oldTokens = tokenService.createTokens(info);
+        sleep(5000);
+
+        // when
+        Tokens newTokens = tokenService.reissueTokens(oldTokens.getAccessToken(), oldTokens.getRefreshToken());
+
+        // then
+        assertThat(newTokens.getAccessToken()).isNotEqualTo(oldTokens.getAccessToken());
+        assertThat(newTokens.getRefreshToken()).isNotEqualTo(oldTokens.getRefreshToken());
+    }
+
+    @DisplayName("access, refresh token을 재발행할 때 DB에 저장된 refresh token이 다를 경우 예외가 발생한다.")
+    @Test
+    void reissuTokensWhenRefreshTokenNotSame() {
+        // given
+        TokenCreationInfo info = TokenCreationInfo.builder()
+                .memberId(1L)
+                .role(Role.ROLE_USER)
+                .build();
+
+        // when
+        Tokens oldTokens = tokenService.createTokens(info);
+        RefreshToken refreshToken = refreshTokenRepository.findById(1L)
+                .orElseThrow();
+        refreshToken.updateNewToken("already update token");
+
+        // when & then
+        assertThatThrownBy(() -> tokenService.reissueTokens(oldTokens.getAccessToken(), oldTokens.getRefreshToken()))
+                .isInstanceOf(TokenException.class)
+                .hasMessage(ResponseCode.E20000.getMessage());
+    }
+
+    private void sleep(long time) {
+        try {
+            Thread.sleep(time);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

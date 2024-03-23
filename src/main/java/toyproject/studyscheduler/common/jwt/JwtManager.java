@@ -90,9 +90,15 @@ public class JwtManager {
 
     public String reissueAccessToken(String accessTokens) {
         String[] subjects = decodeJwtPayload(accessTokens);
+
         return createToken(createSubject(Long.parseLong(subjects[0]), subjects[1]), accessExpiration);
     }
 
+    /**
+     * 만료된 토큰을 jwtParser로 파싱하게 되면 만료 예외가 발생하므로 토큰의 subject부분만 디코딩
+     * @param oldAccessToken 만료된 토큰
+     * @return
+     */
     private String[] decodeJwtPayload(String oldAccessToken) {
         ObjectMapper objectMapper = new ObjectMapper();
 
