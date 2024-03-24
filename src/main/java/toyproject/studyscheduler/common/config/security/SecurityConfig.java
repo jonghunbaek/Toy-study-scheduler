@@ -40,7 +40,9 @@ public class SecurityConfig {
             .authorizeHttpRequests(authorize -> authorize.requestMatchers(
                             new AntPathRequestMatcher("/home"),
                             new AntPathRequestMatcher("/h2-console/**"),
-                            new AntPathRequestMatcher("/auth/**")
+                            new AntPathRequestMatcher("/auth/sign-in"),
+                            new AntPathRequestMatcher("/auth/sign-up"),
+                            new AntPathRequestMatcher("/token/**")
                     ).permitAll()
                 .anyRequest().authenticated())
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
