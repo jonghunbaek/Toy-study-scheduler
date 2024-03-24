@@ -8,7 +8,7 @@ import toyproject.studyscheduler.auth.web.dto.Tokens;
 public class CookieManager {
 
     public static final String[] TOKEN_TYPE = {"access_token", "refresh_token"};
-    public static final int COOKIE_MAX_AGE = 60 * 60 * 24;
+    public static final int COOKIE_MAX_AGE = 60 * 60;
 
     public static void setUpTokensToCookie(Tokens tokens, HttpServletResponse response) {
         ResponseCookie accessTokenCookie = createCookie(TOKEN_TYPE[0], tokens.getAccessToken(), false, COOKIE_MAX_AGE);

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import toyproject.studyscheduler.auth.application.AuthService;
+import toyproject.studyscheduler.common.util.CookieManager;
 import toyproject.studyscheduler.token.application.TokenService;
 import toyproject.studyscheduler.token.application.dto.TokenCreationInfo;
 import toyproject.studyscheduler.auth.application.dto.SignInInfo;
@@ -34,23 +35,8 @@ public class AuthController {
     public void signIn(@RequestBody SignInInfo signInInfo, HttpServletResponse response) {
         TokenCreationInfo tokenCreationInfo = authService.login(signInInfo);
         Tokens tokens = tokenService.createTokens(tokenCreationInfo);
-        setUpCookie(response, tokens);
+        CookieManager.setUpTokensToCookie(tokens, response);
     }
 
-    private void setUpCookie(HttpServletResponse response, Tokens tokens) {
-        ResponseCookie accessCookie = createCookie(TOKEN_TYPE[0], tokens.getAccessToken());
-        ResponseCookie refreshCookie = createCookie(TOKEN_TYPE[1], tokens.getRefreshToken());
 
-        response.addHeader(SET_COOKIE, accessCookie.toString());
-        response.addHeader(SET_COOKIE, refreshCookie.toString());
-    }
-
-    private ResponseCookie createCookie(String tokenType, String token) {
-        return ResponseCookie.from(tokenType, token)
-                .path("/")
-                .httpOnly(true)
-                .secure(true)
-                .maxAge(1800)
-                .build();
-    }
 }
