@@ -22,21 +22,23 @@ repositories {
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation "org.springframework.boot:spring-boot-starter-security"
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+	// persistence
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client:3.1.4' // 실사용
+	runtimeOnly 'com.h2database:h2' // 테스트용
 
 	// jjwt
 	implementation "io.jsonwebtoken:jjwt:0.12.3"
 	implementation 'javax.xml.bind:jaxb-api:2.4.0-b180830.0359'
 
-	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client:3.1.4'
-	runtimeOnly 'com.h2database:h2'
-
 	compileOnly 'org.projectlombok:lombok'
-	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	annotationProcessor 'org.projectlombok:lombok'
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
 }
