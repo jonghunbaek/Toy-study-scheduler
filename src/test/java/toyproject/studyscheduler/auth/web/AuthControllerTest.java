@@ -1,6 +1,7 @@
 package toyproject.studyscheduler.auth.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.http.Cookie;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ import toyproject.studyscheduler.token.application.TokenService;
 
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -60,5 +62,20 @@ class AuthControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(cookie().value("access_token", accessToken))
                 .andExpect(cookie().value("refresh_token", refreshToken));
+    }
+
+    @WithMockUser
+    @DisplayName("로그아웃 요청이 들어오면 쿠키에서 access, refresh token의 값을 삭제한다.")
+    @Test
+    void logout() throws Exception {
+        mockMvc.perform(post("/auth/logout")
+                .header(AUTHORIZATION, "1234")
+                .cookie(new Cookie("refresh_token", "123456"))
+                .cookie(new Cookie("access_token", "1234"))
+                .with(csrf())
+            )
+            .andExpect(status().isOk())
+            .andExpect(cookie().value("access_token", ""))
+            .andExpect(cookie().value("refresh_token", ""));
     }
 }

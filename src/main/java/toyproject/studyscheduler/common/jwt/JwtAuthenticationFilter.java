@@ -32,13 +32,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        Optional<String> tokenWithBearer = Optional.ofNullable(request.getHeader(HttpHeaders.AUTHORIZATION));
-        tokenWithBearer.ifPresent(token -> authenticate(request, token));
+        Optional.ofNullable(request.getHeader(HttpHeaders.AUTHORIZATION))
+                .ifPresent(token -> authorize(request, token));
 
         filterChain.doFilter(request, response);
     }
 
-    private void authenticate(HttpServletRequest request, String tokenWithBearer) {
+    private void authorize(HttpServletRequest request, String tokenWithBearer) {
         try {
             String accessToken = extractToken(tokenWithBearer);
 
