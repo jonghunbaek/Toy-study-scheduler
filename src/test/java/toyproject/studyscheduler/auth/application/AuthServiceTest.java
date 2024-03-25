@@ -58,7 +58,7 @@ class AuthServiceTest {
 
         // when & then
         assertThatThrownBy(() -> authService.saveNewMember(signUpInfo))
-                .isInstanceOf(IllegalArgumentException.class)
+                .isInstanceOf(AuthException.class)
                 .hasMessage("이미 존재하는 이메일이 있습니다.");
     }
 

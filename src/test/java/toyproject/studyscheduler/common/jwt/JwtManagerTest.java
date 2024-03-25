@@ -7,7 +7,11 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import toyproject.studyscheduler.member.entity.Role;
 
+import java.time.Duration;
+import java.time.Instant;
+
 import static org.assertj.core.api.Assertions.*;
+import static toyproject.studyscheduler.member.entity.Role.*;
 
 class JwtManagerTest {
 
@@ -28,8 +32,8 @@ class JwtManagerTest {
     void createAccessToken() {
         // given
         long memberId = 1L;
-        Role role = Role.ROLE_USER;
-        String accessToken = jwtManager.createAccessToken(memberId, role);
+        Role role = ROLE_USER;
+        String accessToken = jwtManager.createAccessToken(memberId, role, Instant.now());
 
         // when
         String[] subjects = jwtManager.parseAccessToken(accessToken);
@@ -44,8 +48,8 @@ class JwtManagerTest {
     void parseAccessTokenWhenExpired() {
         // given
         long memberId = 1L;
-        Role role = Role.ROLE_USER;
-        String accessToken = jwtManager.createAccessToken(memberId, role);
+        Role role = ROLE_USER;
+        String accessToken = jwtManager.createAccessToken(memberId, role, Instant.now());
 
         // when & then
         sleep(2000);
@@ -68,7 +72,7 @@ class JwtManagerTest {
     @Test
     void validateRefreshTokenWhenExpired() {
         // given
-        String oldToken = jwtManager.createRefreshToken();
+        String oldToken = jwtManager.createRefreshToken(Instant.now());
 
         // when & then
         sleep(2000);
@@ -92,16 +96,17 @@ class JwtManagerTest {
     @Test
     void reissueAccessToken() {
         // given
-        String expiredToken = jwtManager.createAccessToken(1L, Role.ROLE_USER);
+        String expiredToken = jwtManager.createAccessToken(1L, ROLE_USER, Instant.now());
         sleep(2000);
 
         // when
-        String newToken = jwtManager.reissueAccessToken(expiredToken);
+        String newToken = jwtManager.reissueAccessToken(expiredToken, Instant.now());
         String[] subjects = jwtManager.parseAccessToken(newToken);
 
         // then
         assertThat(subjects[0]).isEqualTo("1");
     }
+
 
     private void sleep(long time) {
         try {

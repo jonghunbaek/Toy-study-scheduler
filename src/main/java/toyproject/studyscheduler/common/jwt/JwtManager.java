@@ -40,25 +40,25 @@ public class JwtManager {
         this.issuer = issuer;
     }
 
-    public String createAccessToken(Long memberId, Role role) {
+    public String createAccessToken(Long memberId, Role role, Instant now) {
         String subject = createSubject(memberId, role.toString());
-        return createToken(subject, accessExpiration);
+        return createToken(subject, accessExpiration, now);
     }
 
     private String createSubject(Long memberId, String role) {
         return memberId + SUBJECT_DELIMITER + role;
     }
 
-    public String createRefreshToken() {
-        return createToken("", refreshExpiration);
+    public String createRefreshToken(Instant now) {
+        return createToken("", refreshExpiration, now);
     }
 
-    private String createToken(String subject, long expiration) {
+    private String createToken(String subject, long expiration, Instant now) {
         return Jwts.builder()
             .signWith(secretKey, Jwts.SIG.HS512)
             .subject(subject)
             .issuer(issuer)
-            .issuedAt(Date.from(Instant.now()))
+            .issuedAt(Date.from(now))
             .expiration(Date.from(Instant.now().plus(expiration, ChronoUnit.SECONDS)))
             .compact();
     }
@@ -88,10 +88,10 @@ public class JwtManager {
             .getPayload();
     }
 
-    public String reissueAccessToken(String accessTokens) {
+    public String reissueAccessToken(String accessTokens, Instant now) {
         String[] subjects = decodeJwtPayload(accessTokens);
 
-        return createToken(createSubject(Long.parseLong(subjects[0]), subjects[1]), accessExpiration);
+        return createToken(createSubject(Long.parseLong(subjects[0]), subjects[1]), accessExpiration, now);
     }
 
     /**

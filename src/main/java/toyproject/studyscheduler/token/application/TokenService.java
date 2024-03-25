@@ -32,8 +32,9 @@ public class TokenService {
         long memberId = tokenCreationInfo.getMemberId();
         Role role = tokenCreationInfo.getRole();
 
-        String accessToken = jwtManager.createAccessToken(memberId, role);
-        String refreshToken = jwtManager.createRefreshToken();
+        Instant now = Instant.now();
+        String accessToken = jwtManager.createAccessToken(memberId, role, now);
+        String refreshToken = jwtManager.createRefreshToken(now);
 
         saveRefreshToken(memberId, refreshToken);
 
@@ -57,17 +58,18 @@ public class TokenService {
      */
     @Transactional
     public Tokens reissueTokens(String accessTokens, String refreshToken) {
-        String newRefreshToken = reissueRefreshToken(refreshToken);
-        String newAccessToken = jwtManager.reissueAccessToken(accessTokens);
+        Instant now = Instant.now();
+        String newRefreshToken = reissueRefreshToken(refreshToken, now);
+        String newAccessToken = jwtManager.reissueAccessToken(accessTokens, now);
 
         return Tokens.of(newAccessToken, newRefreshToken);
     }
 
-    private String reissueRefreshToken(String refreshToken) {
+    private String reissueRefreshToken(String refreshToken, Instant now) {
         jwtManager.validateRefreshToken(refreshToken);
         RefreshToken entity = findRefreshToken(refreshToken);
 
-        String newRefresh = jwtManager.createRefreshToken();
+        String newRefresh = jwtManager.createRefreshToken(now);
 
         entity.updateNewToken(newRefresh);
         return newRefresh;
