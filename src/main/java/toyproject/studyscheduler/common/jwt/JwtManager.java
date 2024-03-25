@@ -59,7 +59,7 @@ public class JwtManager {
             .subject(subject)
             .issuer(issuer)
             .issuedAt(Date.from(now))
-            .expiration(Date.from(Instant.now().plus(expiration, ChronoUnit.SECONDS)))
+            .expiration(Date.from(now.plus(expiration, ChronoUnit.SECONDS)))
             .compact();
     }
 

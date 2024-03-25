@@ -9,6 +9,8 @@ import toyproject.studyscheduler.member.entity.Role;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.Date;
 
 import static org.assertj.core.api.Assertions.*;
 import static toyproject.studyscheduler.member.entity.Role.*;
@@ -107,6 +109,21 @@ class JwtManagerTest {
         assertThat(subjects[0]).isEqualTo("1");
     }
 
+    @DisplayName("access token 만료시간을 초 단위로 변환해서 반환한다.")
+    @Test
+    void calculateExpirationSec() {
+        // given
+        Instant createNow = Instant.now();
+        String accessToken = jwtManager.createAccessToken(1L, ROLE_USER, createNow);
+        Instant expiration = createNow.plusSeconds(2).truncatedTo(ChronoUnit.SECONDS);
+
+        // when
+        Instant calculateNow = Instant.now();
+        long expirationSec = jwtManager.calculateExpirationSec(accessToken, calculateNow);
+
+        // then
+        assertThat(expirationSec).isEqualTo(Duration.between(calculateNow, expiration).getSeconds());
+    }
 
     private void sleep(long time) {
         try {
