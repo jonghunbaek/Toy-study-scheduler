@@ -2,7 +2,7 @@ spring:
   config:
     activate:
       on-profile: test
-
+  #JPA 설정
   jpa:
     hibernate:
       ddl-auto: create
@@ -10,11 +10,17 @@ spring:
     properties:
       hibernate:
         format_sql: true
+  #Redis 설정
+  data:
+    redis:
+      host: localhost
+      port: 6379
 
   sql:
     init:
       mode: never
 
+#JWT
 secret-key: NiOeyFbN1Gqo10bPgUyTFsRMkJpGLXSvGP04eFqj5B30r5TcrtlSXfQ7TndvYjNvfkEKLqILn0j1SmKODO6Yw3JpBBgI6nVPEbhqxeY1qbPSFGyzyEVxnl4bQcrnVneI
 access-expiration-hours: 5
 refresh-expiration-hours: 30
