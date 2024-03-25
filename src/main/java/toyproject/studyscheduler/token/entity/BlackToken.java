@@ -14,19 +14,11 @@ public class BlackToken {
     @Id
     private String token;
 
-    private String name;
-
     @TimeToLive
     private Long expirationSec;
 
     public BlackToken(String token, Long expirationSec) {
         this.token = token;
-        this.expirationSec = expirationSec;
-    }
-
-    public BlackToken(String token, String name, Long expirationSec) {
-        this.token = token;
-        this.name = name;
         this.expirationSec = expirationSec;
     }
 }

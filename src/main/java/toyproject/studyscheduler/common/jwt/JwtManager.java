@@ -2,17 +2,17 @@ package toyproject.studyscheduler.common.jwt;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import toyproject.studyscheduler.common.exception.GlobalException;
-import toyproject.studyscheduler.common.exception.ResponseCode;
 import toyproject.studyscheduler.member.entity.Role;
 
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Base64;
@@ -64,28 +64,28 @@ public class JwtManager {
     }
 
     public String[] parseAccessToken(String token) {
-        JwtParser jwtParser = createJwtParser(secretKey);
+        JwtParser jwtParser = createJwtParser();
 
         return parseToken(token, jwtParser)
+            .getSubject()
             .split(SUBJECT_DELIMITER);
     }
 
     public void validateRefreshToken(String refreshToken) {
-        JwtParser jwtParser = createJwtParser(secretKey);
+        JwtParser jwtParser = createJwtParser();
 
         parseToken(refreshToken, jwtParser);
     }
 
-    private JwtParser createJwtParser(SecretKey secretKey) {
+    private JwtParser createJwtParser() {
         return Jwts.parser()
             .verifyWith(secretKey)
             .build();
     }
 
-    private String parseToken(String token, JwtParser jwtParser) {
+    private Claims parseToken(String token, JwtParser jwtParser) {
         return jwtParser.parseSignedClaims(token)
-            .getPayload()
-            .getSubject();
+            .getPayload();
     }
 
     public String reissueAccessToken(String accessTokens) {
@@ -110,5 +110,19 @@ public class JwtManager {
         } catch (JsonProcessingException e) {
             throw new IllegalStateException(e);
         }
+    }
+
+    public long calculateExpirationSec(String accessToken, Instant now) {
+        Date expiration = getExpiration(accessToken);
+
+        return Duration.between(now, expiration.toInstant())
+            .getSeconds();
+    }
+
+    private Date getExpiration(String accessToken) {
+        JwtParser jwtParser = createJwtParser();
+
+        return parseToken(accessToken, jwtParser)
+            .getExpiration();
     }
 }

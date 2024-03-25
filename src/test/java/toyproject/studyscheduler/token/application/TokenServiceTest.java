@@ -1,6 +1,5 @@
 package toyproject.studyscheduler.token.application;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,14 +8,20 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 import toyproject.studyscheduler.auth.web.dto.Tokens;
 import toyproject.studyscheduler.common.exception.ResponseCode;
+import toyproject.studyscheduler.common.jwt.JwtManager;
 import toyproject.studyscheduler.member.entity.Role;
 import toyproject.studyscheduler.token.application.dto.TokenCreationInfo;
+import toyproject.studyscheduler.token.entity.BlackToken;
 import toyproject.studyscheduler.token.entity.RefreshToken;
 import toyproject.studyscheduler.token.exception.TokenException;
 import toyproject.studyscheduler.token.repository.RefreshTokenRepository;
+import toyproject.studyscheduler.token.repository.redis.BlackTokenRepository;
+
+import java.time.Duration;
+import java.time.Instant;
+import java.util.Date;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 @ActiveProfiles("test")
 @Transactional
@@ -27,6 +32,10 @@ class TokenServiceTest {
     TokenService tokenService;
     @Autowired
     RefreshTokenRepository refreshTokenRepository;
+    @Autowired
+    BlackTokenRepository blackTokenRepository;
+    @Autowired
+    JwtManager jwtManager;
 
     @DisplayName("access, refresh token을 생성할 때 refresh token을 DB에 저장한다.")
     @Test
@@ -110,6 +119,44 @@ class TokenServiceTest {
         assertThatThrownBy(() -> tokenService.reissueTokens(oldTokens.getAccessToken(), oldTokens.getRefreshToken()))
                 .isInstanceOf(TokenException.class)
                 .hasMessage(ResponseCode.E20000.getMessage());
+    }
+
+    @DisplayName("DB에 저장돼 있는 refresh token을 삭제한다.")
+    @Test
+    void deleteRefreshTokne() {
+        // given
+        TokenCreationInfo info = TokenCreationInfo.builder()
+            .memberId(1L)
+            .role(Role.ROLE_USER)
+            .build();
+        Tokens tokens = tokenService.createTokens(info);
+
+        // when
+        tokenService.blockTokens(tokens.getAccessToken());
+
+        // then
+        assertThat(refreshTokenRepository.findById(1L).isEmpty()).isTrue();
+    }
+
+    @DisplayName("access token의 남은 유효시간을 계산해 해당 시간만큼 Redis에 저장한다.")
+    @Test
+    void saveAccessTokenToRedis() {
+        // given
+        TokenCreationInfo info = TokenCreationInfo.builder()
+            .memberId(1L)
+            .role(Role.ROLE_USER)
+            .build();
+        Tokens tokens = tokenService.createTokens(info);
+        long expirationSec = jwtManager.calculateExpirationSec(tokens.getAccessToken(), Instant.now());
+        tokenService.blockTokens(tokens.getAccessToken());
+
+        // when
+        BlackToken blackToken = blackTokenRepository.findById(tokens.getAccessToken())
+            .orElseThrow();
+
+        // then
+        assertThat(blackToken.getToken()).isEqualTo(tokens.getAccessToken());
+        assertThat(blackToken.getExpirationSec()).isEqualTo(expirationSec);
     }
 
     private void sleep(long time) {

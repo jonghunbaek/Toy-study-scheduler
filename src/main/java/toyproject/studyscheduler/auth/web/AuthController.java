@@ -30,6 +30,7 @@ public class AuthController {
     public void signIn(@RequestBody SignInInfo signInInfo, HttpServletResponse response) {
         TokenCreationInfo tokenCreationInfo = authService.login(signInInfo);
         Tokens tokens = tokenService.createTokens(tokenCreationInfo);
+
         setUpTokensToCookie(tokens, response);
     }
 }
