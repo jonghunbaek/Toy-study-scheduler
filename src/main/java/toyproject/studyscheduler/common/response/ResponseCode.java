@@ -12,7 +12,12 @@ public enum ResponseCode {
 
     // auth
     E00000("OK", OK),
-    E00001("해당 페이지에 접근 권한이 없습니다.", FORBIDDEN),
+    E00001("토큰이 존재하지 않거나 허가되지 않은 접근입니다.", UNAUTHORIZED),
+    E00002("해당 페이지에 접근 권한이 없습니다.", FORBIDDEN),
+    E00003("토큰이 만료됐습니다.", UNAUTHORIZED),
+    E00004("토큰이 위조됐습니다.", UNAUTHORIZED),
+    E00005("해당 토큰은 사용 불가한 토큰입니다.", UNAUTHORIZED),
+
 
     // member
     E10000("비밀번호가 일치하지 않습니다.", BAD_REQUEST),
