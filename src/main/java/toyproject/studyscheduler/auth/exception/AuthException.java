@@ -1,7 +1,7 @@
 package toyproject.studyscheduler.auth.exception;
 
 import toyproject.studyscheduler.common.exception.GlobalException;
-import toyproject.studyscheduler.common.exception.ResponseCode;
+import toyproject.studyscheduler.common.response.ResponseCode;
 
 public class AuthException extends GlobalException {
 

@@ -1,4 +1,4 @@
-package toyproject.studyscheduler.common.exception;
+package toyproject.studyscheduler.common.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,7 +10,9 @@ import static org.springframework.http.HttpStatus.*;
 @Getter
 public enum ResponseCode {
 
+    // auth
     E00000("OK", OK),
+    E00001("해당 페이지에 접근 권한이 없습니다.", FORBIDDEN),
 
     // member
     E10000("비밀번호가 일치하지 않습니다.", BAD_REQUEST),

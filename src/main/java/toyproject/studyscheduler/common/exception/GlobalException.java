@@ -1,5 +1,7 @@
 package toyproject.studyscheduler.common.exception;
 
+import toyproject.studyscheduler.common.response.ResponseCode;
+
 public class GlobalException extends RuntimeException {
 
     private String message;
