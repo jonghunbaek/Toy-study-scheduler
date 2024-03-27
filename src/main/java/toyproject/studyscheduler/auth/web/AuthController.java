@@ -2,7 +2,6 @@ package toyproject.studyscheduler.auth.web;
 
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -15,7 +14,7 @@ import toyproject.studyscheduler.auth.application.dto.SignUpInfo;
 import toyproject.studyscheduler.auth.web.dto.Tokens;
 
 import static org.springframework.http.HttpHeaders.*;
-import static toyproject.studyscheduler.common.util.CookieManager.*;
+import static toyproject.studyscheduler.common.util.ResponseManager.*;
 
 @RequiredArgsConstructor
 @RestController

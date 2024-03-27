@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import toyproject.studyscheduler.auth.web.dto.Tokens;
 import toyproject.studyscheduler.token.application.TokenService;
 
-import static toyproject.studyscheduler.common.util.CookieManager.*;
+import static toyproject.studyscheduler.common.util.ResponseManager.*;
 
 @RequiredArgsConstructor
 @RestController
