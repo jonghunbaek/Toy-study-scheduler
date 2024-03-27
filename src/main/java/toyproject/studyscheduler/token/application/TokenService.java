@@ -3,7 +3,7 @@ package toyproject.studyscheduler.token.application;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import toyproject.studyscheduler.common.exception.ResponseCode;
+import toyproject.studyscheduler.common.response.ResponseCode;
 import toyproject.studyscheduler.member.entity.Role;
 import toyproject.studyscheduler.token.application.dto.TokenCreationInfo;
 import toyproject.studyscheduler.auth.web.dto.Tokens;
@@ -14,9 +14,7 @@ import toyproject.studyscheduler.token.exception.TokenException;
 import toyproject.studyscheduler.token.repository.RefreshTokenRepository;
 import toyproject.studyscheduler.token.repository.redis.BlackTokenRepository;
 
-import java.time.Duration;
 import java.time.Instant;
-import java.util.Date;
 
 @RequiredArgsConstructor
 @Service

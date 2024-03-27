@@ -12,7 +12,7 @@ import toyproject.studyscheduler.auth.exception.AuthException;
 import toyproject.studyscheduler.member.entity.Member;
 import toyproject.studyscheduler.member.repository.MemberRepository;
 
-import static toyproject.studyscheduler.common.exception.ResponseCode.*;
+import static toyproject.studyscheduler.common.response.ResponseCode.*;
 
 @Slf4j
 @RequiredArgsConstructor
