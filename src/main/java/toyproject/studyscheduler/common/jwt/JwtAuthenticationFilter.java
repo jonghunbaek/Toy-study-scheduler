@@ -15,6 +15,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
+import toyproject.studyscheduler.token.repository.redis.BlackTokenRepository;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -29,6 +30,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     public static final String EXCEPTION_KEY = "exception";
 
     private final JwtManager jwtManager;
+    private final BlackTokenRepository blackTokenRepository;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -41,6 +43,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private void authorize(HttpServletRequest request, String tokenWithBearer) {
         try {
             String accessToken = extractToken(tokenWithBearer);
+
+            validateBlackToken(accessToken);
 
             Authentication authentication = getAuthentication(accessToken);
             SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -67,6 +71,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private void validateAuthType(String authType) {
         if (!authType.equalsIgnoreCase(AUTH_TYPE)) {
             throw new IllegalArgumentException("AUTH_TYPE이 일치하지 않습니다. AUTH_TYPE :: " + authType);
+        }
+    }
+
+    private void validateBlackToken(String accessToken) {
+        if (blackTokenRepository.findById(accessToken).isPresent()) {
+            throw new IllegalStateException("해당 토큰은 로그아웃 처리 된 토큰 입니다.");
         }
     }
 
