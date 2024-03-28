@@ -17,7 +17,7 @@ import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
-class JwtAuthenticationFilterTest {
+class JwtAuthenticationFilterUnitTest {
 
     private JwtAuthenticationFilter jwtAuthenticationFilter;
     private JwtManager jwtManager;
