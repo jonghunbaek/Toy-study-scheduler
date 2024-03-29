@@ -1,35 +1,33 @@
 package toyproject.studyscheduler.common.jwt;
 
-import org.junit.jupiter.api.BeforeEach;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentMatchers;
-import org.mockito.Mockito;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.web.reactive.server.WebTestClient;
-import toyproject.studyscheduler.auth.application.AuthService;
+import org.springframework.test.web.servlet.MockMvc;
 import toyproject.studyscheduler.auth.application.dto.SignUpInfo;
 
-import static org.mockito.ArgumentMatchers.*;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @ActiveProfiles("test")
-//@SpringBootTest
+@AutoConfigureMockMvc
+@SpringBootTest
 class JwtAuthenticationFilterIntegrationTest {
 
-    private WebTestClient client;
-
-    @MockBean
-    AuthService authService;
-
-    @BeforeEach
-    void setUp() {
-        client = WebTestClient.bindToServer().baseUrl("http://localhost:8080").build();
-    }
+    @Autowired
+    MockMvc mockMvc;
+    @Autowired
+    ObjectMapper objectMapper;
 
     @DisplayName("")
     @Test
-    void test() {
+    void test() throws Exception {
         // given
         SignUpInfo info = SignUpInfo.builder()
             .email("abc@gmail.com")
@@ -38,10 +36,10 @@ class JwtAuthenticationFilterIntegrationTest {
             .build();
 
         // when & then
-        client.post()
-            .uri("/auth/sign-up")
-            .bodyValue(info)
-            .exchange()
-            .expectStatus().isOk();
+        mockMvc.perform(post("/auth/sign-up")
+                .content(objectMapper.writeValueAsString(info))
+                .contentType(MediaType.APPLICATION_JSON)
+                .with(csrf())
+        ).andExpect(status().isOk());
     }
 }
