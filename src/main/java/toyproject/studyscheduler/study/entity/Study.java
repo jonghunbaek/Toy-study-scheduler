@@ -2,9 +2,9 @@ package toyproject.studyscheduler.study.entity;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import toyproject.studyscheduler.common.domain.BaseInfoEntity;
 import toyproject.studyscheduler.member.entity.Member;
 
 import java.time.LocalDate;
@@ -14,18 +14,15 @@ import java.time.LocalDate;
 @DiscriminatorColumn(name = "study_type")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @Entity
-public abstract class Study extends BaseInfoEntity {
+public abstract class Study {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name="study_type", insertable = false, updatable = false)
-    private String studyType;
+    private String title;
 
-    protected int totalExpectedPeriod;
-
-    private int totalExpectedMin;
+    private String description;
 
     private int planTimeInWeekday;
 
@@ -35,18 +32,30 @@ public abstract class Study extends BaseInfoEntity {
 
     private LocalDate expectedEndDate;
 
-    private boolean isTermination;
-
     private LocalDate realEndDate;
+
+    private boolean isTermination;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Member member;
 
-    protected Study(String title, String description, int totalExpectedPeriod, int totalExpectedMin, int planTimeInWeekday, int planTimeInWeekend,
+    @Builder
+    protected Study(String title, String description, int planTimeInWeekday, int planTimeInWeekend, LocalDate startDate, LocalDate expectedEndDate, LocalDate realEndDate, boolean isTermination, Member member) {
+        this.title = title;
+        this.description = description;
+        this.planTimeInWeekday = planTimeInWeekday;
+        this.planTimeInWeekend = planTimeInWeekend;
+        this.startDate = startDate;
+        this.expectedEndDate = expectedEndDate;
+        this.realEndDate = realEndDate;
+        this.isTermination = isTermination;
+        this.member = member;
+    }
+
+    protected Study(String title, String description, int totalExpectedPeriod, int planTimeInWeekday, int planTimeInWeekend,
                     LocalDate startDate, boolean isTermination, LocalDate realEndDate, Member member) {
-        super(title, description);
-        this.totalExpectedPeriod = totalExpectedPeriod;
-        this.totalExpectedMin = totalExpectedMin;
+        this.title = title;
+        this.description = description;
         this.planTimeInWeekday = planTimeInWeekday;
         this.planTimeInWeekend = planTimeInWeekend;
         this.startDate = startDate;
@@ -63,9 +72,5 @@ public abstract class Study extends BaseInfoEntity {
     public void terminateStudyIn(LocalDate realEndDate) {
         this.isTermination = true;
         this.realEndDate = realEndDate;
-    }
-
-    protected void updateTotalExpectedMin(int totalExpectedMin) {
-        this.totalExpectedMin = totalExpectedMin;
     }
 }
