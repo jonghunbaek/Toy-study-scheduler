@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import toyproject.studyscheduler.member.entity.Member;
+import toyproject.studyscheduler.study.entity.domain.StudyTimeSchedule;
 
 import java.time.LocalDate;
 
@@ -24,15 +25,8 @@ public abstract class Study {
 
     private String description;
 
-    private int planTimeInWeekday;
-
-    private int planTimeInWeekend;
-
-    private LocalDate startDate;
-
-    private LocalDate expectedEndDate;
-
-    private LocalDate realEndDate;
+    @Embedded
+    private StudyTimeSchedule studyTimeSchedule;
 
     private boolean isTermination;
 
@@ -40,37 +34,24 @@ public abstract class Study {
     private Member member;
 
     @Builder
-    protected Study(String title, String description, int planTimeInWeekday, int planTimeInWeekend, LocalDate startDate, LocalDate expectedEndDate, LocalDate realEndDate, boolean isTermination, Member member) {
+    protected Study(String title, String description, boolean isTermination, Member member,
+                    int planTimeInWeekday, int planTimeInWeekend, LocalDate startDate, LocalDate planEndDate, LocalDate realEndDate) {
         this.title = title;
         this.description = description;
-        this.planTimeInWeekday = planTimeInWeekday;
-        this.planTimeInWeekend = planTimeInWeekend;
-        this.startDate = startDate;
-        this.expectedEndDate = expectedEndDate;
-        this.realEndDate = realEndDate;
         this.isTermination = isTermination;
         this.member = member;
-    }
-
-    protected Study(String title, String description, int totalExpectedPeriod, int planTimeInWeekday, int planTimeInWeekend,
-                    LocalDate startDate, boolean isTermination, LocalDate realEndDate, Member member) {
-        this.title = title;
-        this.description = description;
-        this.planTimeInWeekday = planTimeInWeekday;
-        this.planTimeInWeekend = planTimeInWeekend;
-        this.startDate = startDate;
-        this.expectedEndDate = startDate.plusDays(totalExpectedPeriod - 1);
-        this.member = member;
-        this.isTermination = isTermination;
         if (isTermination) {
-            this.realEndDate = realEndDate;
+            this.studyTimeSchedule = StudyTimeSchedule.fromTerminatedStudy(planTimeInWeekday,planTimeInWeekend, startDate, realEndDate);
             return;
         }
-        this.realEndDate = LocalDate.EPOCH;
+
+        this.studyTimeSchedule = StudyTimeSchedule.fromStartingStudy(planTimeInWeekday,planTimeInWeekend, startDate, planEndDate);
     }
+
+    protected abstract LocalDate calculateExpectedEndDate();
 
     public void terminateStudyIn(LocalDate realEndDate) {
         this.isTermination = true;
-        this.realEndDate = realEndDate;
+//        this.realEndDate = realEndDate;
     }
 }
