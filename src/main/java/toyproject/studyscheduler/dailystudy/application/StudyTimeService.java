@@ -21,16 +21,7 @@ public class StudyTimeService {
         List<StudyTime> studyTimes = studyTimeRepository.findAllByPeriod(startDate, endDate);
 
         return studyTimes.stream()
-            .map(studyTime -> FindStudyTimeResponseDto.of(
-                studyTime.getStudy().getId(),
-                studyTime.getStudy().getTitle(),
-                studyTime.getStudy().getDescription(),
-                studyTime.getStudy().isTermination(),
-                studyTime.getTotalCompleteTime(),
-                studyTime.getTotalLearningRate(),
-                studyTime.getCompleteTimeToday(),
-                studyTime.getDate()
-            ))
+            .map(FindStudyTimeResponseDto::of)
             .toList();
     }
 }

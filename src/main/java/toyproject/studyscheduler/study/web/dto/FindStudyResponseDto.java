@@ -40,37 +40,10 @@ public class FindStudyResponseDto {
     private int totalRuntime;
 
     public static FindStudyResponseDto ofLecture(Lecture lecture) {
-        return FindStudyResponseDto.builder()
-            .title(lecture.getTitle())
-            .description(lecture.getDescription())
-            .studyType(toEnum(lecture.getStudyType()))
-            .totalExpectedPeriod(lecture.getTotalExpectedPeriod())
-            .planTimeInWeekday(lecture.getPlanTimeInWeekday())
-            .planTimeInWeekend(lecture.getPlanTimeInWeekend())
-            .startDate(lecture.getStartDate())
-            .isTermination(lecture.isTermination())
-            .realEndDate(lecture.getRealEndDate())
-            .memberId(lecture.getMember().getId())
-            .teacherName(lecture.getTeacherName())
-            .totalRuntime(lecture.getTotalRuntime())
-            .build();
+        return null;
     }
 
     public static FindStudyResponseDto ofReading(Reading reading) {
-        return FindStudyResponseDto.builder()
-            .title(reading.getTitle())
-            .description(reading.getDescription())
-            .studyType(toEnum(reading.getStudyType()))
-            .totalExpectedPeriod(reading.getTotalExpectedPeriod())
-            .planTimeInWeekday(reading.getPlanTimeInWeekday())
-            .planTimeInWeekend(reading.getPlanTimeInWeekend())
-            .startDate(reading.getStartDate())
-            .isTermination(reading.isTermination())
-            .realEndDate(reading.getRealEndDate())
-            .memberId(reading.getMember().getId())
-            .totalPage(reading.getTotalPage())
-            .readPagePerMin(reading.getReadPagePerMin())
-            .authorName(reading.getAuthorName())
-            .build();
+        return null;
     }
 }

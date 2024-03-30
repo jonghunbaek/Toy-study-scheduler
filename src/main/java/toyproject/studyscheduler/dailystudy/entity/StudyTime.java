@@ -36,10 +36,10 @@ public class StudyTime extends BaseEntity {
         this.completeTimeToday = completeTimeToday;
         this.date = date;
         this.study = study;
-        this.totalLearningRate = calculateLearningRate();
+        this.totalLearningRate = 0;
     }
 
-    private double calculateLearningRate() {
-        return Math.round((((float) totalCompleteTime / study.getTotalExpectedMin())*100)*100)/100.0;
-    }
+//    private double calculateLearningRate() {
+//        return Math.round((((float) totalCompleteTime / study.getTotalExpectedMin())*100)*100)/100.0;
+//    }
 }

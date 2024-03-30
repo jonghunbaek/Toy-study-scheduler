@@ -38,31 +38,10 @@ public class StudySave {
     private int totalRuntime;
 
     public Lecture toLectureEntity(Member member) {
-        return Lecture.builder()
-            .title(title)
-            .description(description)
-            .totalExpectedPeriod(totalExpectedPeriod)
-            .planTimeInWeekday(planTimeInWeekday)
-            .planTimeInWeekend(planTimeInWeekend)
-            .startDate(startDate)
-            .member(member)
-            .teacherName(teacherName)
-            .totalRuntime(totalRuntime)
-            .build();
+        return null;
     }
 
     public Reading toReadingEntity(Member member) {
-        return Reading.builder()
-            .title(title)
-            .description(description)
-            .totalExpectedPeriod(totalExpectedPeriod)
-            .planTimeInWeekday(planTimeInWeekday)
-            .planTimeInWeekend(planTimeInWeekend)
-            .startDate(startDate)
-            .member(member)
-            .authorName(authorName)
-            .totalPage(totalPage)
-            .readPagePerMin(readPagePerMin)
-            .build();
+        return null;
     }
 }

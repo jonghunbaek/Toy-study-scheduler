@@ -3,6 +3,7 @@ package toyproject.studyscheduler.study.web.dto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import toyproject.studyscheduler.dailystudy.entity.StudyTime;
 
 import java.time.LocalDate;
 
@@ -31,17 +32,16 @@ public class FindStudyTimeResponseDto {
         this.date = date;
     }
 
-    public static FindStudyTimeResponseDto of(Long studyId, String title, String description, boolean termination,
-                                              int totalCompleteTime, double totalLearningRate, int completeTimeToday, LocalDate date) {
+    public static FindStudyTimeResponseDto of(StudyTime studyTime) {
         return FindStudyTimeResponseDto.builder()
-            .studyId(studyId)
-            .title(title)
-            .description(description)
-            .isTermination(termination)
-            .totalCompleteTime(totalCompleteTime)
-            .totalLearningRate(totalLearningRate)
-            .completeTimeToday(completeTimeToday)
-            .date(date)
+            .studyId(studyTime.getStudy().getId())
+            .title(studyTime.getStudy().getStudyBaseInfo().getTitle())
+            .description(studyTime.getStudy().getStudyBaseInfo().getDescription())
+            .isTermination(studyTime.getStudy().getStudyBaseInfo().isTermination())
+            .totalCompleteTime(studyTime.getTotalCompleteTime())
+            .totalLearningRate(studyTime.getTotalLearningRate())
+            .completeTimeToday(studyTime.getCompleteTimeToday())
+            .date(studyTime.getDate())
             .build();
     }
 }
