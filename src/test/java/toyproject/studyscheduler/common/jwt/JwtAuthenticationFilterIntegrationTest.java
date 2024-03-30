@@ -135,6 +135,25 @@ class JwtAuthenticationFilterIntegrationTest {
             .andExpect(status().is(401));
     }
 
+    @DisplayName("인가가 필요한 요청 테스트 - 토큰 형식이 잘못된 경우")
+    @Test
+    void necessaryAuthTestWhenTokenMalformed() throws Exception {
+        // given
+        String accessToken = "Bearer " + " " + jwtManager.createAccessToken(1L, Role.ROLE_USER, Instant.now());
+        ResponseForm<Object> response = ResponseForm.of(ResponseCode.E00006);
+        String content = objectMapper.writeValueAsString(response);
+
+        // when & then
+        mockMvc.perform(post("/auth/logout")
+                .header(AUTHORIZATION, accessToken)
+                .cookie(new Cookie("access_token", accessToken), new Cookie("refresh_token", "123456"))
+                .with(csrf())
+            )
+            .andDo(print())
+            .andExpect(content().string(content))
+            .andExpect(status().is(401));
+    }
+
     private void sleep(long time) {
         try {
             Thread.sleep(time);

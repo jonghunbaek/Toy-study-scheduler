@@ -17,6 +17,7 @@ public enum ResponseCode {
     E00003("토큰이 만료됐습니다.", UNAUTHORIZED),
     E00004("토큰이 위조됐습니다.", UNAUTHORIZED),
     E00005("해당 토큰은 사용 불가한 토큰입니다.", UNAUTHORIZED),
+    E00006("토큰의 형식이 잘못됐습니다.", UNAUTHORIZED),
 
 
     // member

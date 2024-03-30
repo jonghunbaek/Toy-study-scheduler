@@ -1,6 +1,7 @@
 package toyproject.studyscheduler.common.jwt;
 
 import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.security.SignatureException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -26,12 +27,16 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
     }
 
     private ResponseForm createExceptionMessage(Exception e) {
-        if (e instanceof ExpiredJwtException) {
-            return ResponseForm.of(E00003);
-        }
-
         if (e instanceof SignatureException) {
             return ResponseForm.of(E00004);
+        }
+
+        if (e instanceof MalformedJwtException) {
+            return ResponseForm.of(E00006);
+        }
+
+        if (e instanceof ExpiredJwtException) {
+            return ResponseForm.of(E00003);
         }
 
         if (e instanceof IllegalStateException) {
