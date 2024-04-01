@@ -35,9 +35,9 @@ public class FindStudyTimeResponseDto {
     public static FindStudyTimeResponseDto of(StudyTime studyTime) {
         return FindStudyTimeResponseDto.builder()
             .studyId(studyTime.getStudy().getId())
-            .title(studyTime.getStudy().getStudyBaseInfo().getTitle())
-            .description(studyTime.getStudy().getStudyBaseInfo().getDescription())
-            .isTermination(studyTime.getStudy().getStudyBaseInfo().isTermination())
+            .title(studyTime.getStudy().getStudyInformation().getTitle())
+            .description(studyTime.getStudy().getStudyInformation().getDescription())
+            .isTermination(studyTime.getStudy().getStudyInformation().isTermination())
             .totalCompleteTime(studyTime.getTotalCompleteTime())
             .totalLearningRate(studyTime.getTotalLearningRate())
             .completeTimeToday(studyTime.getCompleteTimeToday())

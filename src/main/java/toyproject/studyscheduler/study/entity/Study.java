@@ -4,8 +4,9 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import toyproject.studyscheduler.common.domain.BaseEntity;
 import toyproject.studyscheduler.member.entity.Member;
-import toyproject.studyscheduler.study.entity.domain.StudyBaseInfo;
+import toyproject.studyscheduler.study.entity.domain.StudyInformation;
 import toyproject.studyscheduler.study.entity.domain.StudyPeriod;
 
 
@@ -14,14 +15,14 @@ import toyproject.studyscheduler.study.entity.domain.StudyPeriod;
 @DiscriminatorColumn(name = "study_type")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @Entity
-public abstract class Study {
+public abstract class Study extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Embedded
-    private StudyBaseInfo studyBaseInfo;
+    private StudyInformation studyInformation;
 
     @Embedded
     private StudyPeriod studyPeriod;
@@ -29,8 +30,8 @@ public abstract class Study {
     @ManyToOne(fetch = FetchType.LAZY)
     private Member member;
 
-    protected Study(StudyBaseInfo studyBaseInfo, StudyPeriod studyPeriod, Member member) {
-        this.studyBaseInfo = studyBaseInfo;
+    protected Study(StudyInformation studyInformation, StudyPeriod studyPeriod, Member member) {
+        this.studyInformation = studyInformation;
         this.studyPeriod = studyPeriod;
         this.member = member;
     }

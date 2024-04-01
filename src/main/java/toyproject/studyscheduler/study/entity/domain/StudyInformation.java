@@ -9,14 +9,14 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Embeddable
-public class StudyBaseInfo {
+public class StudyInformation {
 
     private String title;
     private String description;
     private boolean isTermination;
 
     @Builder
-    private StudyBaseInfo(String title, String description, boolean isTermination) {
+    private StudyInformation(String title, String description, boolean isTermination) {
         this.title = title;
         this.description = description;
         this.isTermination = isTermination;
