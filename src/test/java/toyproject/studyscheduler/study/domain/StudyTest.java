@@ -1,8 +1,9 @@
-package toyproject.studyscheduler.study.entity;
+package toyproject.studyscheduler.study.domain;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import toyproject.studyscheduler.member.entity.Member;
+import toyproject.studyscheduler.member.domain.entity.Member;
+import toyproject.studyscheduler.study.domain.entity.Lecture;
 
 import java.time.LocalDate;
 

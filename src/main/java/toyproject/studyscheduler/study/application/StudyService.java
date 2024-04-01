@@ -3,7 +3,7 @@ package toyproject.studyscheduler.study.application;
 import toyproject.studyscheduler.study.web.dto.StudySave;
 import toyproject.studyscheduler.study.web.dto.StudyPlanTimeRequestDto;
 import toyproject.studyscheduler.study.web.dto.FindStudyResponseDto;
-import toyproject.studyscheduler.study.entity.domain.StudyType;
+import toyproject.studyscheduler.study.domain.StudyType;
 
 public interface StudyService {
 

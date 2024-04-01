@@ -4,7 +4,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
-import toyproject.studyscheduler.study.entity.domain.StudyType;
+import toyproject.studyscheduler.study.domain.StudyType;
 
 import java.time.LocalDate;
 import java.util.List;

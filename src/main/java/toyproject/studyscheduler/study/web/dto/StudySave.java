@@ -5,10 +5,10 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
-import toyproject.studyscheduler.member.entity.Member;
-import toyproject.studyscheduler.study.entity.domain.StudyType;
-import toyproject.studyscheduler.study.entity.Lecture;
-import toyproject.studyscheduler.study.entity.Reading;
+import toyproject.studyscheduler.member.domain.entity.Member;
+import toyproject.studyscheduler.study.domain.StudyType;
+import toyproject.studyscheduler.study.domain.entity.Lecture;
+import toyproject.studyscheduler.study.domain.entity.Reading;
 
 import java.time.LocalDate;
 

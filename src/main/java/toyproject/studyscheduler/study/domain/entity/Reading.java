@@ -1,4 +1,4 @@
-package toyproject.studyscheduler.study.entity;
+package toyproject.studyscheduler.study.domain.entity;
 
 
 import jakarta.persistence.*;
@@ -6,9 +6,9 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import toyproject.studyscheduler.member.entity.Member;
-import toyproject.studyscheduler.study.entity.domain.StudyInformation;
-import toyproject.studyscheduler.study.entity.domain.StudyPeriod;
+import toyproject.studyscheduler.member.domain.entity.Member;
+import toyproject.studyscheduler.study.domain.StudyInformation;
+import toyproject.studyscheduler.study.domain.StudyPeriod;
 
 @DiscriminatorValue("reading")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

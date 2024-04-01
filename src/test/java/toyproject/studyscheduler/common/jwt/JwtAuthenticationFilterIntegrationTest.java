@@ -8,15 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import toyproject.studyscheduler.auth.application.dto.SignUpInfo;
 import toyproject.studyscheduler.common.response.ResponseCode;
 import toyproject.studyscheduler.common.response.ResponseForm;
-import toyproject.studyscheduler.member.entity.Role;
+import toyproject.studyscheduler.member.domain.Role;
 import toyproject.studyscheduler.token.application.TokenService;
 
 import java.time.Instant;

@@ -9,10 +9,10 @@ import org.springframework.test.context.ActiveProfiles;
 import toyproject.studyscheduler.study.web.dto.StudySave;
 import toyproject.studyscheduler.study.web.dto.StudyPlanTimeRequestDto;
 import toyproject.studyscheduler.study.web.dto.FindStudyResponseDto;
-import toyproject.studyscheduler.member.entity.Member;
+import toyproject.studyscheduler.member.domain.entity.Member;
 import toyproject.studyscheduler.member.repository.MemberRepository;
-import toyproject.studyscheduler.study.entity.Lecture;
-import toyproject.studyscheduler.study.entity.Reading;
+import toyproject.studyscheduler.study.domain.entity.Lecture;
+import toyproject.studyscheduler.study.domain.entity.Reading;
 import toyproject.studyscheduler.study.repository.StudyRepository;
 import toyproject.studyscheduler.dailystudy.repository.StudyTimeRepository;
 import toyproject.studyscheduler.common.util.StudyUtil;
@@ -20,7 +20,7 @@ import toyproject.studyscheduler.common.util.StudyUtil;
 import java.time.LocalDate;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static toyproject.studyscheduler.study.entity.domain.StudyType.*;
+import static toyproject.studyscheduler.study.domain.StudyType.*;
 
 @ActiveProfiles("test")
 @SpringBootTest

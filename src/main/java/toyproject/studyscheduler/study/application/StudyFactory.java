@@ -2,7 +2,7 @@ package toyproject.studyscheduler.study.application;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import toyproject.studyscheduler.study.entity.domain.StudyType;
+import toyproject.studyscheduler.study.domain.StudyType;
 
 import java.util.List;
 

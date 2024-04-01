@@ -1,9 +1,10 @@
-package toyproject.studyscheduler.study.entity;
+package toyproject.studyscheduler.studyplan.domain.entity;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
+import toyproject.studyscheduler.study.domain.entity.Study;
 
 import java.time.LocalDate;
 

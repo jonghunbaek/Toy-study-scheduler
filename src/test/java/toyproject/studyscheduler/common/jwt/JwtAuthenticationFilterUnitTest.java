@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockFilterChain;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
-import toyproject.studyscheduler.token.entity.BlackToken;
+import toyproject.studyscheduler.token.domain.BlackToken;
 import toyproject.studyscheduler.token.repository.redis.BlackTokenRepository;
 
 import java.io.IOException;

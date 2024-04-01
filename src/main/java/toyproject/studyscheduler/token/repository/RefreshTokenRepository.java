@@ -1,7 +1,7 @@
 package toyproject.studyscheduler.token.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import toyproject.studyscheduler.token.entity.RefreshToken;
+import toyproject.studyscheduler.token.domain.entity.RefreshToken;
 
 import java.util.Optional;
 

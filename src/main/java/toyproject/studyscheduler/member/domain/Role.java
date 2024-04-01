@@ -1,4 +1,4 @@
-package toyproject.studyscheduler.member.entity;
+package toyproject.studyscheduler.member.domain;
 
 import lombok.Getter;
 

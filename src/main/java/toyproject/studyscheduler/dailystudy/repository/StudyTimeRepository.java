@@ -4,8 +4,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import toyproject.studyscheduler.study.entity.Study;
-import toyproject.studyscheduler.dailystudy.entity.StudyTime;
+import toyproject.studyscheduler.study.domain.entity.Study;
+import toyproject.studyscheduler.dailystudy.domain.StudyTime;
 
 import java.time.LocalDate;
 import java.util.List;

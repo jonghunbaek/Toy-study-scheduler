@@ -5,8 +5,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import toyproject.studyscheduler.member.entity.Member;
-import toyproject.studyscheduler.member.entity.Role;
+import toyproject.studyscheduler.member.domain.entity.Member;
+import toyproject.studyscheduler.member.domain.Role;
 
 @NoArgsConstructor
 @Getter

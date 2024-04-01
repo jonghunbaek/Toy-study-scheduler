@@ -3,8 +3,8 @@ package toyproject.studyscheduler.token.application.dto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import toyproject.studyscheduler.member.entity.Member;
-import toyproject.studyscheduler.member.entity.Role;
+import toyproject.studyscheduler.member.domain.entity.Member;
+import toyproject.studyscheduler.member.domain.Role;
 
 @NoArgsConstructor
 @Getter

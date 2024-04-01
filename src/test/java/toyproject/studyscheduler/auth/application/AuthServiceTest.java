@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import toyproject.studyscheduler.auth.application.dto.SignInInfo;
 import toyproject.studyscheduler.auth.application.dto.SignUpInfo;
 import toyproject.studyscheduler.auth.exception.AuthException;
-import toyproject.studyscheduler.member.entity.Member;
+import toyproject.studyscheduler.member.domain.entity.Member;
 import toyproject.studyscheduler.member.repository.MemberRepository;
 
 import static org.assertj.core.api.Assertions.*;

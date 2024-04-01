@@ -1,7 +1,7 @@
 package toyproject.studyscheduler.token.repository.redis;
 
 import org.springframework.data.repository.CrudRepository;
-import toyproject.studyscheduler.token.entity.BlackToken;
+import toyproject.studyscheduler.token.domain.BlackToken;
 
 public interface BlackTokenRepository extends CrudRepository<BlackToken, String> {
 }

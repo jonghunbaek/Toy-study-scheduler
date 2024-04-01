@@ -9,7 +9,7 @@ import toyproject.studyscheduler.token.application.dto.TokenCreationInfo;
 import toyproject.studyscheduler.auth.application.dto.SignInInfo;
 import toyproject.studyscheduler.auth.application.dto.SignUpInfo;
 import toyproject.studyscheduler.auth.exception.AuthException;
-import toyproject.studyscheduler.member.entity.Member;
+import toyproject.studyscheduler.member.domain.entity.Member;
 import toyproject.studyscheduler.member.repository.MemberRepository;
 
 import static toyproject.studyscheduler.common.response.ResponseCode.*;

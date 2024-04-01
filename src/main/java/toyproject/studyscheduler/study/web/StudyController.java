@@ -7,7 +7,7 @@ import toyproject.studyscheduler.study.web.dto.StudyPlanTimeRequestDto;
 import toyproject.studyscheduler.study.web.dto.FindStudyResponseDto;
 import toyproject.studyscheduler.study.application.StudyFactory;
 import toyproject.studyscheduler.study.application.StudyService;
-import toyproject.studyscheduler.study.entity.domain.StudyType;
+import toyproject.studyscheduler.study.domain.StudyType;
 
 @RequiredArgsConstructor
 @RestController

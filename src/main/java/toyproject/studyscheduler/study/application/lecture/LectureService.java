@@ -8,14 +8,14 @@ import toyproject.studyscheduler.study.web.dto.StudySave;
 import toyproject.studyscheduler.study.web.dto.StudyPlanTimeRequestDto;
 import toyproject.studyscheduler.study.web.dto.FindStudyResponseDto;
 import toyproject.studyscheduler.study.application.StudyService;
-import toyproject.studyscheduler.member.entity.Member;
+import toyproject.studyscheduler.member.domain.entity.Member;
 import toyproject.studyscheduler.member.repository.MemberRepository;
-import toyproject.studyscheduler.study.entity.domain.StudyType;
-import toyproject.studyscheduler.study.entity.Lecture;
+import toyproject.studyscheduler.study.domain.StudyType;
+import toyproject.studyscheduler.study.domain.entity.Lecture;
 import toyproject.studyscheduler.study.repository.StudyRepository;
 import toyproject.studyscheduler.common.util.StudyUtil;
 
-import static toyproject.studyscheduler.study.entity.domain.StudyType.*;
+import static toyproject.studyscheduler.study.domain.StudyType.*;
 
 @Slf4j
 @Transactional

@@ -3,7 +3,7 @@ package toyproject.studyscheduler.study.web.dto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import toyproject.studyscheduler.dailystudy.entity.StudyTime;
+import toyproject.studyscheduler.dailystudy.domain.StudyTime;
 
 import java.time.LocalDate;
 

@@ -1,8 +1,8 @@
-package toyproject.studyscheduler.dailystudy.entity;
+package toyproject.studyscheduler.dailystudy.domain;
 
-import toyproject.studyscheduler.member.entity.Member;
-import toyproject.studyscheduler.study.entity.Study;
-import toyproject.studyscheduler.study.entity.Lecture;
+import toyproject.studyscheduler.member.domain.entity.Member;
+import toyproject.studyscheduler.study.domain.entity.Study;
+import toyproject.studyscheduler.study.domain.entity.Lecture;
 
 import java.time.LocalDate;
 

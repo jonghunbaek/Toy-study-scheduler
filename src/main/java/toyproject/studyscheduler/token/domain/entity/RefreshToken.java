@@ -1,4 +1,4 @@
-package toyproject.studyscheduler.token.entity;
+package toyproject.studyscheduler.token.domain.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;

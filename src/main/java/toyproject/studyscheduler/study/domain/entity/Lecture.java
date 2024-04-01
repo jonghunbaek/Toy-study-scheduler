@@ -1,10 +1,10 @@
-package toyproject.studyscheduler.study.entity;
+package toyproject.studyscheduler.study.domain.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import toyproject.studyscheduler.member.entity.Member;
-import toyproject.studyscheduler.study.entity.domain.StudyInformation;
-import toyproject.studyscheduler.study.entity.domain.StudyPeriod;
+import toyproject.studyscheduler.member.domain.entity.Member;
+import toyproject.studyscheduler.study.domain.StudyInformation;
+import toyproject.studyscheduler.study.domain.StudyPeriod;
 
 @DiscriminatorValue("lecture")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

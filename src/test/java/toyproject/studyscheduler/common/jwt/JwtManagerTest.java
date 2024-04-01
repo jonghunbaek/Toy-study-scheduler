@@ -5,15 +5,14 @@ import io.jsonwebtoken.security.SignatureException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import toyproject.studyscheduler.member.entity.Role;
+import toyproject.studyscheduler.member.domain.Role;
 
 import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.Date;
 
 import static org.assertj.core.api.Assertions.*;
-import static toyproject.studyscheduler.member.entity.Role.*;
+import static toyproject.studyscheduler.member.domain.Role.*;
 
 class JwtManagerTest {
 

@@ -4,13 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import toyproject.studyscheduler.study.entity.domain.StudyType;
-import toyproject.studyscheduler.study.entity.Lecture;
-import toyproject.studyscheduler.study.entity.Reading;
+import toyproject.studyscheduler.study.domain.StudyType;
+import toyproject.studyscheduler.study.domain.entity.Lecture;
+import toyproject.studyscheduler.study.domain.entity.Reading;
 
 import java.time.LocalDate;
-
-import static toyproject.studyscheduler.study.entity.domain.StudyType.toEnum;
 
 @Builder
 @NoArgsConstructor

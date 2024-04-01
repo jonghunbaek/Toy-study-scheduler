@@ -8,7 +8,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import toyproject.studyscheduler.member.entity.Role;
+import toyproject.studyscheduler.member.domain.Role;
 
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;

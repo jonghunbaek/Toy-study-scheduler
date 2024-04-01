@@ -5,12 +5,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
-import toyproject.studyscheduler.member.entity.Member;
+import toyproject.studyscheduler.member.domain.entity.Member;
 import toyproject.studyscheduler.member.repository.MemberRepository;
-import toyproject.studyscheduler.study.entity.Study;
-import toyproject.studyscheduler.dailystudy.entity.StudyTime;
-import toyproject.studyscheduler.study.entity.Lecture;
-import toyproject.studyscheduler.study.entity.Reading;
+import toyproject.studyscheduler.study.domain.entity.Study;
+import toyproject.studyscheduler.dailystudy.domain.StudyTime;
+import toyproject.studyscheduler.study.domain.entity.Lecture;
+import toyproject.studyscheduler.study.domain.entity.Reading;
 import toyproject.studyscheduler.study.repository.StudyRepository;
 
 import java.time.LocalDate;
