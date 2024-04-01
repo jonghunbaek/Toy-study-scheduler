@@ -22,4 +22,14 @@ public class Lecture extends Study {
         this.teacherName = teacherName;
         this.totalRuntime = totalRuntime;
     }
+
+    @Override
+    public int getTotalQuantity() {
+        return this.totalRuntime;
+    }
+
+    @Override
+    public int calculatePlanQuantityPerDay(int planMinutes) {
+        return planMinutes;
+    }
 }

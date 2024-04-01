@@ -9,6 +9,8 @@ import toyproject.studyscheduler.member.domain.entity.Member;
 import toyproject.studyscheduler.study.domain.StudyInformation;
 import toyproject.studyscheduler.study.domain.StudyPeriod;
 
+import java.time.LocalDate;
+
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
@@ -35,4 +37,12 @@ public abstract class Study extends BaseEntity {
         this.studyPeriod = studyPeriod;
         this.member = member;
     }
+
+    public LocalDate getStartDate() {
+        return this.studyPeriod.getStartDate();
+    }
+
+    public abstract int getTotalQuantity();
+
+    public abstract int calculatePlanQuantityPerDay(int planMinutesInWeekday);
 }

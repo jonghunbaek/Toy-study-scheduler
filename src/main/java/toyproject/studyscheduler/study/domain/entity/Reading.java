@@ -27,4 +27,14 @@ public class Reading extends Study {
         this.totalPage = totalPage;
         this.readPagePerMin = readPagePerMin;
     }
+
+    @Override
+    public int getTotalQuantity() {
+        return this.totalPage;
+    }
+
+    @Override
+    public int calculatePlanQuantityPerDay(int planMinutes) {
+        return readPagePerMin * planMinutes;
+    }
 }
