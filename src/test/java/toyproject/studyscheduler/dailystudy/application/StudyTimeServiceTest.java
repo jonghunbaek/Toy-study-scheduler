@@ -133,32 +133,34 @@ class StudyTimeServiceTest {
     }
 
     private Reading createReading(int planTimeInWeekday, int planTimeInWeekend, LocalDate startDate, int totalExpectedPeriod, int totalPage, int readPagePerMin, Member member) {
-        return Reading.builder()
-            .title("클린 코드")
-            .description("클린 코드를 배우기 위한 도서")
-            .planTimeInWeekday(planTimeInWeekday)
-            .planTimeInWeekend(planTimeInWeekend)
-            .readPagePerMin(2)
-            .totalExpectedPeriod(totalExpectedPeriod)
-            .startDate(startDate)
-            .member(member)
-            .authorName("로버트 c.마틴")
-            .totalPage(totalPage)
-            .readPagePerMin(readPagePerMin)
-            .build();
+        return null;
+//        return Reading.builder()
+//            .title("클린 코드")
+//            .description("클린 코드를 배우기 위한 도서")
+//            .planTimeInWeekday(planTimeInWeekday)
+//            .planTimeInWeekend(planTimeInWeekend)
+//            .readPagePerMin(2)
+//            .totalExpectedPeriod(totalExpectedPeriod)
+//            .startDate(startDate)
+//            .member(member)
+//            .authorName("로버트 c.마틴")
+//            .totalPage(totalPage)
+//            .readPagePerMin(readPagePerMin)
+//            .build();
     }
 
     private static Lecture createLecture(int planTimeInWeekday, int planTimeInWeekend, LocalDate startDate, int totalExpectedPeriod, int totalRuntime, Member member) {
-        return Lecture.builder()
-            .title("김영한의 스프링")
-            .description("스프링 핵심 강의")
-            .teacherName("김영한")
-            .totalExpectedPeriod(totalExpectedPeriod)
-            .planTimeInWeekday(planTimeInWeekday)
-            .planTimeInWeekend(planTimeInWeekend)
-            .startDate(startDate)
-            .member(member)
-            .totalRuntime(totalRuntime)
-            .build();
+        return null;
+//        return Lecture.builder()
+//            .title("김영한의 스프링")
+//            .description("스프링 핵심 강의")
+//            .teacherName("김영한")
+//            .totalExpectedPeriod(totalExpectedPeriod)
+//            .planTimeInWeekday(planTimeInWeekday)
+//            .planTimeInWeekend(planTimeInWeekend)
+//            .startDate(startDate)
+//            .member(member)
+//            .totalRuntime(totalRuntime)
+//            .build();
     }
 }

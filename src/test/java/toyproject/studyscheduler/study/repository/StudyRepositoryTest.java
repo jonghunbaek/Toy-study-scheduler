@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
+import toyproject.studyscheduler.study.domain.StudyInformation;
+import toyproject.studyscheduler.study.domain.StudyPeriod;
 import toyproject.studyscheduler.study.domain.entity.Study;
 import toyproject.studyscheduler.study.domain.entity.Lecture;
 import toyproject.studyscheduler.study.domain.entity.Reading;
@@ -25,6 +27,32 @@ class StudyRepositoryTest {
     StudyRepository studyRepository;
     @Autowired
     MemberRepository memberRepository;
+
+    @DisplayName("학습이 종료된 스터디를 등록한다.")
+    @Test
+    void saveTerminatedStudy() {
+        // given
+        Member member = createMember();
+        memberRepository.save(member);
+        StudyInformation studyInformation = createInformation("클린 코드", "클린 코드를 작성하는 방법", true);
+
+        // when
+
+        // then
+
+    }
+
+    private StudyInformation createInformation(String title, String description, boolean isTermination) {
+        return StudyInformation.builder()
+            .title(title)
+            .description(description)
+            .isTermination(isTermination)
+            .build();
+    }
+
+    private StudyPeriod createPeriod(String title, String description, boolean isTermination) {
+        return null;
+    }
 
     @DisplayName("주어진 여러개의 아이디로 여러개의 학습 상세내용을 조회한다.")
     @Test
@@ -117,32 +145,34 @@ class StudyRepositoryTest {
     }
 
     private Reading createReading(int planTimeInWeekday, int planTimeInWeekend, LocalDate startDate, int totalExpectedPeriod, int totalPage, int readPagePerMin, Member member) {
-        return Reading.builder()
-                .title("클린 코드")
-                .description("클린 코드를 배우기 위한 도서")
-                .planTimeInWeekday(planTimeInWeekday)
-                .planTimeInWeekend(planTimeInWeekend)
-                .readPagePerMin(2)
-                .totalExpectedPeriod(totalExpectedPeriod)
-                .startDate(startDate)
-                .member(member)
-                .authorName("로버트 c.마틴")
-                .totalPage(totalPage)
-                .readPagePerMin(readPagePerMin)
-                .build();
+        return null;
+//        return Reading.builder()
+//                .title("클린 코드")
+//                .description("클린 코드를 배우기 위한 도서")
+//                .planTimeInWeekday(planTimeInWeekday)
+//                .planTimeInWeekend(planTimeInWeekend)
+//                .readPagePerMin(2)
+//                .totalExpectedPeriod(totalExpectedPeriod)
+//                .startDate(startDate)
+//                .member(member)
+//                .authorName("로버트 c.마틴")
+//                .totalPage(totalPage)
+//                .readPagePerMin(readPagePerMin)
+//                .build();
     }
 
     private static Lecture createLecture(int planTimeInWeekday, int planTimeInWeekend, LocalDate startDate, int totalExpectedPeriod, int totalRuntime, Member member) {
-        return Lecture.builder()
-                .title("김영한의 스프링")
-                .description("스프링 핵심 강의")
-                .teacherName("김영한")
-                .totalExpectedPeriod(totalExpectedPeriod)
-                .planTimeInWeekday(planTimeInWeekday)
-                .planTimeInWeekend(planTimeInWeekend)
-                .startDate(startDate)
-                .member(member)
-                .totalRuntime(totalRuntime)
-                .build();
+        return null;
+//        return Lecture.builder()
+//                .title("김영한의 스프링")
+//                .description("스프링 핵심 강의")
+//                .teacherName("김영한")
+//                .totalExpectedPeriod(totalExpectedPeriod)
+//                .planTimeInWeekday(planTimeInWeekday)
+//                .planTimeInWeekend(planTimeInWeekend)
+//                .startDate(startDate)
+//                .member(member)
+//                .totalRuntime(totalRuntime)
+//                .build();
     }
 }

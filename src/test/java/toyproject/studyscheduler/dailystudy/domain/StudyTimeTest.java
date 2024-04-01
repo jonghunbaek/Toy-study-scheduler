@@ -27,14 +27,15 @@ class StudyTimeTest {
     }
 
     private static Lecture createLecture(Member member) {
-        return Lecture.builder()
-            .title("김영한의 스프링")
-            .description("스프링 핵심 강의")
-            .teacherName("김영한")
-            .planTimeInWeekday(30)
-            .planTimeInWeekend(100)
-            .startDate(LocalDate.of(2023,8,12))
-            .member(member)
-            .build();
+        return null;
+//        return Lecture.builder()
+//            .title("김영한의 스프링")
+//            .description("스프링 핵심 강의")
+//            .teacherName("김영한")
+//            .planTimeInWeekday(30)
+//            .planTimeInWeekend(100)
+//            .startDate(LocalDate.of(2023,8,12))
+//            .member(member)
+//            .build();
     }
 }

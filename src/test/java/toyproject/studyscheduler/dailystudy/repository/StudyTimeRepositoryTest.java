@@ -138,30 +138,32 @@ class StudyTimeRepositoryTest {
     }
 
     private Reading createReading(LocalDate startDate, Member member) {
-        return Reading.builder()
-            .title("클린 코드")
-            .authorName("로버트 c.마틴")
-            .description("클린 코드를 배우기 위한 도서")
-            .totalPage(500)
-            .planTimeInWeekday(30)
-            .planTimeInWeekend(30)
-            .readPagePerMin(2)
-            .totalExpectedPeriod(250)
-            .startDate(startDate)
-            .member(member)
-            .build();
+        return null;
+//        return Reading.builder()
+//            .title("클린 코드")
+//            .authorName("로버트 c.마틴")
+//            .description("클린 코드를 배우기 위한 도서")
+//            .totalPage(500)
+//            .planTimeInWeekday(30)
+//            .planTimeInWeekend(30)
+//            .readPagePerMin(2)
+//            .totalExpectedPeriod(250)
+//            .startDate(startDate)
+//            .member(member)
+//            .build();
     }
 
     private static Lecture createLecture(LocalDate startDate, Member member) {
-        return Lecture.builder()
-                .title("김영한의 스프링")
-                .description("스프링 핵심 강의")
-                .teacherName("김영한")
-                .planTimeInWeekday(30)
-                .planTimeInWeekend(100)
-                .startDate(startDate)
-                .member(member)
-                .totalRuntime(600)
-                .build();
+        return null;
+//        return Lecture.builder()
+//                .title("김영한의 스프링")
+//                .description("스프링 핵심 강의")
+//                .teacherName("김영한")
+//                .planTimeInWeekday(30)
+//                .planTimeInWeekend(100)
+//                .startDate(startDate)
+//                .member(member)
+//                .totalRuntime(600)
+//                .build();
     }
 }
