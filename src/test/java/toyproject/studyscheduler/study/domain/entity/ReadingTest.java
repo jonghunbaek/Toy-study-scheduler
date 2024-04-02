@@ -1,37 +1,40 @@
-package toyproject.studyscheduler.studyplan.domain.entity;
+package toyproject.studyscheduler.study.domain.entity;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import toyproject.studyscheduler.member.domain.entity.Member;
 import toyproject.studyscheduler.study.domain.StudyInformation;
 import toyproject.studyscheduler.study.domain.StudyPeriod;
-import toyproject.studyscheduler.study.domain.entity.Reading;
+import toyproject.studyscheduler.study.domain.StudyPlan;
 
 import java.time.LocalDate;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
 
-class StudyPlanTest {
+class ReadingTest {
 
-    @DisplayName("학습 계획 생성시 예상 종료일을 계산하여 저장한다.")
+    @DisplayName("종료되지 않은 학습의 경우 남은 학습 기간을 계산한다.")
     @Test
     void calculateExpectedEndDate() {
         // given
         StudyInformation information = createInformation("클린 코드", "클린 코드 작성", false);
-        StudyPeriod period = StudyPeriod.fromStarting(LocalDate.now());
-        Reading reading = createReading(information, period, null);
+        StudyPeriod period = StudyPeriod.fromStarting(LocalDate.of(2024, 04, 01));
+        StudyPlan plan = new StudyPlan(30, 60);
+        Reading reading = createReading(information, period, plan, null);
 
         // when
-        StudyPlan plan = StudyPlan.from(30, 60, reading);
+        LocalDate expectedDate = reading.calculateExpectedDate();
 
         // then
-        assertThat(plan.getExpectedEndDate()).isEqualTo(LocalDate.of(2024,4,9));
+        assertThat(expectedDate).isEqualTo(LocalDate.of(2024,4,8));
     }
 
-    private static Reading createReading(StudyInformation information, StudyPeriod period, Member member) {
+    private static Reading createReading(StudyInformation information, StudyPeriod period, StudyPlan plan, Member member) {
         return Reading.builder()
             .studyInformation(information)
             .studyPeriod(period)
+            .studyPlan(plan)
             .authorName("로버트 마틴")
             .readPagePerMin(2)
             .totalPage(600)

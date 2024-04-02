@@ -2,6 +2,7 @@ package toyproject.studyscheduler.common.util;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import toyproject.studyscheduler.study.domain.PeriodCalculator;
 
 import java.time.LocalDate;
 

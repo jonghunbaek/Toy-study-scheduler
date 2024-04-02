@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import toyproject.studyscheduler.common.domain.BaseEntity;
 import toyproject.studyscheduler.member.domain.entity.Member;
+import toyproject.studyscheduler.study.domain.PeriodCalculator;
 import toyproject.studyscheduler.study.domain.StudyInformation;
 import toyproject.studyscheduler.study.domain.StudyPeriod;
 import toyproject.studyscheduler.study.domain.StudyPlan;
@@ -43,11 +44,22 @@ public abstract class Study extends BaseEntity {
         this.member = member;
     }
 
-    public LocalDate getStartDate() {
-        return this.studyPeriod.getStartDate();
+    public LocalDate calculateExpectedDate() {
+        PeriodCalculator calculator = createCalculator();
+        int expectedPeriod = calculator.calculateExpectedPeriod(getTotalQuantity());
+
+        return studyPeriod.getStartDate()
+            .plusDays(expectedPeriod - 1);
     }
 
-    public abstract int getTotalQuantity();
+    private PeriodCalculator createCalculator() {
+        int planQuantityInWeekday = calculatePlanQuantityPerDay(studyPlan.getPlanMinutesInWeekday());
+        int planQuantityInWeekend = calculatePlanQuantityPerDay(studyPlan.getPlanMinutesInWeekend());
 
-    public abstract int calculatePlanQuantityPerDay(int planMinutesInWeekday);
+        return new PeriodCalculator(planQuantityInWeekday, planQuantityInWeekend, studyPeriod.getStartDate());
+    }
+
+    protected abstract int getTotalQuantity();
+
+    protected abstract int calculatePlanQuantityPerDay(int planMinutesInWeekday);
 }
