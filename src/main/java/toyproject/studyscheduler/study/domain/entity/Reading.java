@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import toyproject.studyscheduler.member.domain.entity.Member;
 import toyproject.studyscheduler.study.domain.StudyInformation;
 import toyproject.studyscheduler.study.domain.StudyPeriod;
+import toyproject.studyscheduler.study.domain.StudyPlan;
 
 @DiscriminatorValue("reading")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -21,8 +22,9 @@ public class Reading extends Study {
     private int readPagePerMin;
 
     @Builder
-    private Reading(StudyInformation studyInformation, StudyPeriod studyPeriod, Member member, String authorName, int totalPage, int readPagePerMin) {
-        super(studyInformation, studyPeriod, member);
+    private Reading(StudyInformation studyInformation, StudyPeriod studyPeriod, StudyPlan studyPlan, Member member,
+                    String authorName, int totalPage, int readPagePerMin) {
+        super(studyInformation, studyPeriod, studyPlan, member);
         this.authorName = authorName;
         this.totalPage = totalPage;
         this.readPagePerMin = readPagePerMin;

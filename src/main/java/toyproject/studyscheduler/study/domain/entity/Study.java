@@ -8,6 +8,7 @@ import toyproject.studyscheduler.common.domain.BaseEntity;
 import toyproject.studyscheduler.member.domain.entity.Member;
 import toyproject.studyscheduler.study.domain.StudyInformation;
 import toyproject.studyscheduler.study.domain.StudyPeriod;
+import toyproject.studyscheduler.study.domain.StudyPlan;
 
 import java.time.LocalDate;
 
@@ -29,12 +30,16 @@ public abstract class Study extends BaseEntity {
     @Embedded
     private StudyPeriod studyPeriod;
 
+    @Embedded
+    private StudyPlan studyPlan;
+
     @ManyToOne(fetch = FetchType.LAZY)
     private Member member;
 
-    protected Study(StudyInformation studyInformation, StudyPeriod studyPeriod, Member member) {
+    protected Study(StudyInformation studyInformation, StudyPeriod studyPeriod, StudyPlan studyPlan, Member member) {
         this.studyInformation = studyInformation;
         this.studyPeriod = studyPeriod;
+        this.studyPlan = studyPlan;
         this.member = member;
     }
 
