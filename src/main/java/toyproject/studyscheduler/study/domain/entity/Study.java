@@ -44,6 +44,7 @@ public abstract class Study extends BaseEntity {
         this.member = member;
     }
 
+    // TODO :: 계산 전 해당 학습의 종료 여부를 검증 및 관련 테스트 작성
     public LocalDate calculateExpectedDate() {
         PeriodCalculator calculator = createCalculator();
         int expectedPeriod = calculator.calculateExpectedPeriod(getTotalQuantity());

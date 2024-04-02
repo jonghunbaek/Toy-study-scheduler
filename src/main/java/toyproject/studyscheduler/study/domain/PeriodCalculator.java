@@ -8,6 +8,7 @@ import java.util.List;
 
 import static java.time.DayOfWeek.*;
 
+// TODO :: StudyUtil의 삭제에 따라 구조 변경 필요
 @NoArgsConstructor
 @Getter
 public class PeriodCalculator {

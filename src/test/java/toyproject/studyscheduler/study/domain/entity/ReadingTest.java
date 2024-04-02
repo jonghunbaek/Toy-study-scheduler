@@ -10,7 +10,6 @@ import toyproject.studyscheduler.study.domain.StudyPlan;
 import java.time.LocalDate;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 class ReadingTest {
 
@@ -19,7 +18,7 @@ class ReadingTest {
     void calculateExpectedEndDate() {
         // given
         StudyInformation information = createInformation("클린 코드", "클린 코드 작성", false);
-        StudyPeriod period = StudyPeriod.fromStarting(LocalDate.of(2024, 04, 01));
+        StudyPeriod period = StudyPeriod.fromStarting(LocalDate.of(2024, 4, 1));
         StudyPlan plan = new StudyPlan(30, 60);
         Reading reading = createReading(information, period, plan, null);
 
