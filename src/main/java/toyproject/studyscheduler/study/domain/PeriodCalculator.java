@@ -1,4 +1,4 @@
-package toyproject.studyscheduler.common.util;
+package toyproject.studyscheduler.study.domain;
 
 import lombok.*;
 

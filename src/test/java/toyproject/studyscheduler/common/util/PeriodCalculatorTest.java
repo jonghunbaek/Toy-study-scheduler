@@ -2,7 +2,7 @@ package toyproject.studyscheduler.common.util;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import toyproject.studyscheduler.common.util.PeriodCalculator;
+import toyproject.studyscheduler.study.domain.PeriodCalculator;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
