@@ -1,11 +1,8 @@
 package toyproject.studyscheduler.restdocs.auth;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
-import org.springframework.restdocs.headers.ResponseHeadersSnippet;
-import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation;
 import org.springframework.restdocs.payload.JsonFieldType;
 import toyproject.studyscheduler.auth.application.AuthService;
 import toyproject.studyscheduler.auth.application.dto.SignInInfo;
@@ -14,14 +11,11 @@ import toyproject.studyscheduler.auth.web.dto.Tokens;
 import toyproject.studyscheduler.restdocs.RestDocsSupport;
 import toyproject.studyscheduler.token.application.TokenService;
 
-import java.util.ArrayList;
-
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.cookies.CookieDocumentation.cookieWithName;
 import static org.springframework.restdocs.cookies.CookieDocumentation.responseCookies;
-import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
