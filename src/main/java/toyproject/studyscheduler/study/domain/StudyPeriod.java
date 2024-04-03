@@ -20,6 +20,7 @@ public class StudyPeriod {
         this.endDate = endDate;
     }
 
+    // TODO :: 시작일이 항상 종료일 보다 더 빠름을 검증해야함
     public static StudyPeriod fromStarting(LocalDate startDate) {
         return new StudyPeriod(startDate, LocalDate.MAX);
     }
