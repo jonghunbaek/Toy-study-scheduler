@@ -20,7 +20,7 @@ class LectureTest {
         // given
         StudyInformation information = createInformation("김영한의 Spring", "Spring강의", false);
         StudyPeriod period = StudyPeriod.fromStarting(LocalDate.of(2024, 4, 3));
-        StudyPlan plan = new StudyPlan(30, 60);
+        StudyPlan plan = StudyPlan.fromStarting(30, 60);
         Lecture lecture = createLecture(information, period, plan, null);
 
         // when

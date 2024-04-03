@@ -21,7 +21,7 @@ class StudyTest {
     void validateTermination() {
         StudyInformation information = createInformation("클린 코드", "클린 코드 작성", true);
         StudyPeriod period = StudyPeriod.fromStarting(LocalDate.of(2024, 4, 1));
-        StudyPlan plan = new StudyPlan(30, 60);
+        StudyPlan plan = StudyPlan.fromStarting(30, 60);
         Reading reading = createReading(information, period, plan, null);
 
         // when & then

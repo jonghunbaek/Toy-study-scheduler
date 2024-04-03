@@ -21,7 +21,7 @@ public class StudyPeriod {
     }
 
     public static StudyPeriod fromStarting(LocalDate startDate) {
-        return new StudyPeriod(startDate, LocalDate.MIN);
+        return new StudyPeriod(startDate, LocalDate.MAX);
     }
 
     public static StudyPeriod fromTerminated(LocalDate startDate, LocalDate endDate) {
