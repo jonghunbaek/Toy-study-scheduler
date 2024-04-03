@@ -69,11 +69,58 @@ class StudyRepositoryTest {
         assertThat(savedReading.getAuthorName()).isEqualTo("로버트 마틴");
     }
 
+    @DisplayName("특정 기간에 수행한 학습들을 모두 조회 한다.")
+    @Test
+    void findStudiesByPeriod() {
+        // given
+        StudyInformation lectureInformation1 = createInformation("김영한의 JPA", "JPA강의", true);
+        StudyPeriod lecturePeriod1 = StudyPeriod.fromTerminated(LocalDate.of(2024, 3, 3), LocalDate.of(2024, 3, 31));
+        StudyPlan lecturePlan1 = StudyPlan.fromTerminated();
+        Lecture lecture1 = createLecture(lectureInformation1, lecturePeriod1, lecturePlan1, member);
+
+        StudyInformation lectureInformation2 = createInformation("김영한의 Spring", "Spring강의", false);
+        StudyPeriod lecturePeriod2 = StudyPeriod.fromStarting(LocalDate.of(2024, 4, 3));
+        StudyPlan lecturePlan2 = StudyPlan.fromStarting(30, 60);
+        Lecture lecture2 = createLecture(lectureInformation2, lecturePeriod2, lecturePlan2, member);
+
+        StudyInformation readingInformation = createInformation("클린 코드", "클린 코드를 작성하는 방법", true);
+        StudyPeriod readingPeriod = StudyPeriod.fromTerminated(LocalDate.of(2024, 4, 1), LocalDate.of(2024, 04, 10));
+        StudyPlan readingPlan = StudyPlan.fromTerminated();
+        Reading reading = createReading(readingInformation, readingPeriod, readingPlan, member);
+
+        studyRepository.saveAll(List.of(lecture1, lecture2, reading));
+
+        // when
+        LocalDate startDate = LocalDate.of(2024, 4, 1);
+        LocalDate endDate = LocalDate.of(2024, 4, 30);
+
+        List<Study> studies = studyRepository.findAllByPeriod(startDate, endDate);
+
+        // then
+        assertThat(studies).hasSize(2)
+                .extracting("studyInformation.title", "studyInformation.description", "studyPeriod.startDate", "studyPeriod.endDate")
+                .containsExactlyInAnyOrder(
+                        tuple("김영한의 Spring", "Spring강의", LocalDate.of(2024, 4, 3), LocalDate.MAX),
+                        tuple("클린 코드", "클린 코드를 작성하는 방법", LocalDate.of(2024, 4, 1), LocalDate.of(2024, 4, 10))
+                );
+    }
+
     private StudyInformation createInformation(String title, String description, boolean isTermination) {
         return StudyInformation.builder()
             .title(title)
             .description(description)
             .isTermination(isTermination)
+            .build();
+    }
+
+    private Lecture createLecture(StudyInformation information, StudyPeriod period, StudyPlan plan, Member member) {
+        return Lecture.builder()
+            .studyInformation(information)
+            .studyPeriod(period)
+            .studyPlan(plan)
+            .teacherName("김영한")
+            .totalRuntime(447)
+            .member(member)
             .build();
     }
 
@@ -88,88 +135,6 @@ class StudyRepositoryTest {
             .member(member)
             .build();
     }
-
-//    @DisplayName("주어진 여러개의 아이디로 여러개의 학습 상세내용을 조회한다.")
-//    @Test
-//    void findStudiesByIds() {
-//        // given
-//        Member member = createMember();
-//        memberRepository.save(member);
-//
-//        StudyUtil studyUtil = new StudyUtil();
-//
-//        LocalDate lectureStartDate = LocalDate.of(2023, 7, 8);
-//        int lecturePTD = 50;
-//        int lecturePTK = 90;
-//        int totalRuntime = 600;
-//        int lectureExpectedPeriod = studyUtil.setUpPeriodCalCulatorBy(lecturePTD, lecturePTK, lectureStartDate)
-//                .calculatePeriodBy(totalRuntime);
-//        Lecture lecture = createLecture(lecturePTD, lecturePTK, lectureStartDate, lectureExpectedPeriod, totalRuntime, member);
-//
-//        LocalDate readingStartDate = LocalDate.of(2023, 7, 31);
-//        int readingPTD = 40;
-//        int readingPTK = 60;
-//        int totalPage = 500;
-//        int readPagePerMin = 2;
-//        int readingExpectedPeriod = studyUtil.setUpPeriodCalCulatorBy(readingPTD, readingPTK, readingStartDate)
-//                .calculatePeriodBy(totalPage, readPagePerMin);
-//        Reading reading = createReading(readingPTD, readingPTK, readingStartDate, readingExpectedPeriod, totalPage, readPagePerMin, member);
-//
-//        studyRepository.saveAll(List.of(lecture, reading));
-//
-//        // when
-//        List<Study> studies = studyRepository.findAllById(List.of(lecture.getId(), reading.getId()));
-//
-//        // then
-//        assertThat(studies).hasSize(2)
-//                .extracting("title", "description", "startDate", "expectedEndDate")
-//                .containsExactlyInAnyOrder(
-//                        tuple("김영한의 스프링", "스프링 핵심 강의", lectureStartDate, lectureStartDate.plusDays(lectureExpectedPeriod - 1)),
-//                        tuple("클린 코드", "클린 코드를 배우기 위한 도서", readingStartDate, readingStartDate.plusDays(readingExpectedPeriod - 1))
-//                );
-//    }
-//
-//    @DisplayName("특정기간에 수행한 학습들을 모두 조회 한다.")
-//    @Test
-//    void findStudiesByPeriod() {
-//        // given
-//        Member member = createMember();
-//        memberRepository.save(member);
-//
-//        StudyUtil studyUtil = new StudyUtil();
-//
-//        LocalDate lectureStartDate = LocalDate.of(2023, 7, 8);
-//        int lecturePTD = 50;
-//        int lecturePTK = 90;
-//        int totalRuntime = 600;
-//        int lectureExpectedPeriod = studyUtil.setUpPeriodCalCulatorBy(lecturePTD, lecturePTK, lectureStartDate)
-//                .calculatePeriodBy(totalRuntime);
-//        Lecture lecture = createLecture(lecturePTD, lecturePTK, lectureStartDate, lectureExpectedPeriod, totalRuntime, member);
-//
-//        LocalDate readingStartDate = LocalDate.of(2023, 8, 1);
-//        int readingPTD = 40;
-//        int readingPTK = 60;
-//        int totalPage = 500;
-//        int readPagePerMin = 2;
-//        int readingExpectedPeriod = studyUtil.setUpPeriodCalCulatorBy(readingPTD, readingPTK, readingStartDate)
-//                .calculatePeriodBy(totalPage, readPagePerMin);
-//        Reading reading = createReading(readingPTD, readingPTK, readingStartDate, readingExpectedPeriod, totalPage, readPagePerMin, member);
-//
-//        studyRepository.saveAll(List.of(lecture, reading));
-//
-//        // when
-//        LocalDate startDate = LocalDate.of(2023, 7, 1);
-//        LocalDate endDate = LocalDate.of(2023, 7, 31);
-//
-//        List<Study> studies = studyRepository.findAllByPeriod(startDate, endDate);
-//
-//        // then
-//        assertThat(studies).hasSize(1)
-//                .extracting("title", "description", "startDate", "expectedEndDate")
-//                .containsExactlyInAnyOrder(
-//                        tuple("김영한의 스프링", "스프링 핵심 강의", lectureStartDate, lectureStartDate.plusDays(lectureExpectedPeriod - 1))
-//                );
-//    }
 
     private static Member createMember() {
         return Member.builder()
