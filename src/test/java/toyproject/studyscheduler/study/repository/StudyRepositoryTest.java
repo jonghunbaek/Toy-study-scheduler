@@ -1,5 +1,6 @@
 package toyproject.studyscheduler.study.repository;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
 import toyproject.studyscheduler.study.domain.StudyInformation;
 import toyproject.studyscheduler.study.domain.StudyPeriod;
+import toyproject.studyscheduler.study.domain.StudyPlan;
 import toyproject.studyscheduler.study.domain.entity.Study;
 import toyproject.studyscheduler.study.domain.entity.Lecture;
 import toyproject.studyscheduler.study.domain.entity.Reading;
@@ -27,32 +29,66 @@ class StudyRepositoryTest {
     @Autowired
     MemberRepository memberRepository;
 
-//    @DisplayName("학습이 종료된 스터디를 등록한다.")
-//    @Test
-//    void saveTerminatedStudy() {
-//        // given
-//        Member member = createMember();
-//        memberRepository.save(member);
-//        StudyInformation studyInformation = createInformation("클린 코드", "클린 코드를 작성하는 방법", true);
-//
-//        // when
-//
-//        // then
-//
-//    }
-//
-//    private StudyInformation createInformation(String title, String description, boolean isTermination) {
-//        return StudyInformation.builder()
-//            .title(title)
-//            .description(description)
-//            .isTermination(isTermination)
-//            .build();
-//    }
-//
-//    private StudyPeriod createPeriod(String title, String description, boolean isTermination) {
-//        return null;
-//    }
-//
+    private Member member;
+
+    @BeforeEach
+    void setUp() {
+        member = createMember();
+        memberRepository.save(member);
+    }
+
+    @DisplayName("종료된 학습을 저장한다.")
+    @Test
+    void saveTerminatedStudy() {
+        // given
+        StudyInformation studyInformation = createInformation("클린 코드", "클린 코드를 작성하는 방법", true);
+        StudyPeriod period = StudyPeriod.fromTerminated(LocalDate.of(2024, 4, 1), LocalDate.of(2024, 04, 10));
+        StudyPlan plan = StudyPlan.fromTerminated();
+        Reading reading = createReading(studyInformation, period, plan, member);
+
+        // when
+        Reading savedReading = studyRepository.save(reading);
+
+        // then
+        assertThat(savedReading.getAuthorName()).isEqualTo("로버트 마틴");
+    }
+
+    @DisplayName("시작할 학습을 저장한다.")
+    @Test
+    void saveStartingStudy() {
+        // given
+        StudyInformation studyInformation = createInformation("클린 코드", "클린 코드를 작성하는 방법", true);
+        StudyPeriod period = StudyPeriod.fromStarting(LocalDate.of(2024, 4, 1));
+        StudyPlan plan = StudyPlan.fromStarting(30, 60);
+        Reading reading = createReading(studyInformation, period, plan, member);
+
+        // when
+        Reading savedReading = studyRepository.save(reading);
+
+        // then
+        assertThat(savedReading.getAuthorName()).isEqualTo("로버트 마틴");
+    }
+
+    private StudyInformation createInformation(String title, String description, boolean isTermination) {
+        return StudyInformation.builder()
+            .title(title)
+            .description(description)
+            .isTermination(isTermination)
+            .build();
+    }
+
+    private Reading createReading(StudyInformation information, StudyPeriod period, StudyPlan plan, Member member) {
+        return Reading.builder()
+            .studyInformation(information)
+            .studyPeriod(period)
+            .studyPlan(plan)
+            .authorName("로버트 마틴")
+            .readPagePerMin(2)
+            .totalPage(600)
+            .member(member)
+            .build();
+    }
+
 //    @DisplayName("주어진 여러개의 아이디로 여러개의 학습 상세내용을 조회한다.")
 //    @Test
 //    void findStudiesByIds() {
@@ -141,37 +177,5 @@ class StudyRepositoryTest {
                 .password("zxcv1234")
                 .name("hong")
                 .build();
-    }
-
-    private Reading createReading(int planTimeInWeekday, int planTimeInWeekend, LocalDate startDate, int totalExpectedPeriod, int totalPage, int readPagePerMin, Member member) {
-        return null;
-//        return Reading.builder()
-//                .title("클린 코드")
-//                .description("클린 코드를 배우기 위한 도서")
-//                .planTimeInWeekday(planTimeInWeekday)
-//                .planTimeInWeekend(planTimeInWeekend)
-//                .readPagePerMin(2)
-//                .totalExpectedPeriod(totalExpectedPeriod)
-//                .startDate(startDate)
-//                .member(member)
-//                .authorName("로버트 c.마틴")
-//                .totalPage(totalPage)
-//                .readPagePerMin(readPagePerMin)
-//                .build();
-    }
-
-    private static Lecture createLecture(int planTimeInWeekday, int planTimeInWeekend, LocalDate startDate, int totalExpectedPeriod, int totalRuntime, Member member) {
-        return null;
-//        return Lecture.builder()
-//                .title("김영한의 스프링")
-//                .description("스프링 핵심 강의")
-//                .teacherName("김영한")
-//                .totalExpectedPeriod(totalExpectedPeriod)
-//                .planTimeInWeekday(planTimeInWeekday)
-//                .planTimeInWeekend(planTimeInWeekend)
-//                .startDate(startDate)
-//                .member(member)
-//                .totalRuntime(totalRuntime)
-//                .build();
     }
 }
