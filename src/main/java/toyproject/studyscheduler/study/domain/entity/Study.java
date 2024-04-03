@@ -63,5 +63,6 @@ public abstract class Study extends BaseEntity {
 
     protected abstract int getTotalQuantity();
 
+    // TODO :: DailyStudy 잔여 학습양을 조회할 수 있는 메서드 추가 및 아래 메서드 public 변경 필요
     protected abstract int calculatePlanQuantityPerDay(int planMinutesInWeekday);
 }

@@ -13,6 +13,7 @@ import static java.time.DayOfWeek.*;
 @Getter
 public class PeriodCalculator {
 
+    public static final int A_DAY_LATER = 1;
     private int planQuantityInWeekday;
     private int planQuantityInWeekend;
     private LocalDate startDate;
@@ -44,32 +45,26 @@ public class PeriodCalculator {
         return calculateExpectedPeriod(totalPage);
     }
 
-    public int calculateExpectedPeriod(int totalQuantity) {
-        DayOfWeek dayOfWeek = startDate.getDayOfWeek();
+    public int calculateExpectedPeriod(int studyQuantity) {
+        int remainingQuantity = studyQuantity;
+        DayOfWeek studyDayOfWeek = startDate.getDayOfWeek();
         int period = 0;
-        int studyDay = 0;
 
-        while (true) {
-            studyDay = dayOfWeek.getValue();
-            period++;
+        while (remainingQuantity > 0) {
+            remainingQuantity = calculateRemaining(remainingQuantity, studyDayOfWeek);
 
-            totalQuantity = calculateRemaining(totalQuantity, studyDay);
-
-            if (totalQuantity <= 0) {
-                break;
-            }
-
-            dayOfWeek = dayOfWeek.plus(1);
+            period += A_DAY_LATER;
+            studyDayOfWeek = studyDayOfWeek.plus(A_DAY_LATER);
         }
 
         return period;
     }
 
-    private int calculateRemaining(int totalQuantity, int studyDay) {
-        if (studyDay <= FRIDAY.getValue()) {
-            return totalQuantity - planQuantityInWeekday;
+    private int calculateRemaining(int remainingQuantity, DayOfWeek studyDayOfWeek) {
+        if (studyDayOfWeek.getValue() <= FRIDAY.getValue()) {
+            return remainingQuantity - planQuantityInWeekday;
         }
 
-        return totalQuantity - planQuantityInWeekend;
+        return remainingQuantity - planQuantityInWeekend;
     }
 }
