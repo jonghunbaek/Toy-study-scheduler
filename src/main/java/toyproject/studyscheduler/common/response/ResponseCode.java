@@ -25,7 +25,10 @@ public enum ResponseCode {
     E10001("이미 존재하는 이메일이 있습니다.", BAD_REQUEST),
 
     // token
-    E20000("일치하는 리프레쉬 토큰이 없습니다.", BAD_REQUEST);
+    E20000("일치하는 리프레쉬 토큰이 없습니다.", BAD_REQUEST),
+
+    // study
+    E30000("해당 학습은 이미 종료되었습니다.", BAD_REQUEST);
 
     private String message;
     private HttpStatus httpStatus;

@@ -5,6 +5,8 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import toyproject.studyscheduler.common.response.ResponseCode;
+import toyproject.studyscheduler.study.exception.StudyException;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -20,5 +22,11 @@ public class StudyInformation {
         this.title = title;
         this.description = description;
         this.isTermination = isTermination;
+    }
+
+    public void validateTermination() {
+        if (isTermination) {
+            throw new StudyException(ResponseCode.E30000);
+        }
     }
 }

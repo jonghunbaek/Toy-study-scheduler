@@ -6,27 +6,28 @@ import toyproject.studyscheduler.member.domain.entity.Member;
 import toyproject.studyscheduler.study.domain.StudyInformation;
 import toyproject.studyscheduler.study.domain.StudyPeriod;
 import toyproject.studyscheduler.study.domain.StudyPlan;
+import toyproject.studyscheduler.study.exception.StudyException;
 
 import java.time.LocalDate;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.*;
 
-class ReadingTest {
+class StudyTest {
 
-    @DisplayName("종료되지 않은 도서 학습이면 예상 학습 종료일을 계산한다.")
+    @DisplayName("학습 예상 종료일을 계산할 때 학습이 이미 종료된 상태면 예외를 던진다.")
     @Test
-    void calculateExpectedEndDate() {
-        // given
-        StudyInformation information = createInformation("클린 코드", "클린 코드 작성", false);
+    void validateTermination() {
+        StudyInformation information = createInformation("클린 코드", "클린 코드 작성", true);
         StudyPeriod period = StudyPeriod.fromStarting(LocalDate.of(2024, 4, 1));
         StudyPlan plan = new StudyPlan(30, 60);
         Reading reading = createReading(information, period, plan, null);
 
-        // when
-        LocalDate expectedDate = reading.calculateExpectedDate();
-
-        // then
-        assertThat(expectedDate).isEqualTo(LocalDate.of(2024,4,8));
+        // when & then
+        assertThatThrownBy(() -> reading.calculateExpectedDate())
+            .isInstanceOf(StudyException.class)
+            .hasMessage("해당 학습은 이미 종료되었습니다.");
     }
 
     private Reading createReading(StudyInformation information, StudyPeriod period, StudyPlan plan, Member member) {
