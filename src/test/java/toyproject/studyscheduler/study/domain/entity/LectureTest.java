@@ -10,33 +10,33 @@ import toyproject.studyscheduler.study.domain.StudyPlan;
 import java.time.LocalDate;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
 
-class ReadingTest {
+class LectureTest {
 
-    @DisplayName("종료되지 않은 도서 학습이면 예상 학습 종료일을 계산한다.")
+    @DisplayName("종료되지 않은 강의 학습이면 예상 학습 종료일을 계산한다.")
     @Test
     void calculateExpectedEndDate() {
         // given
-        StudyInformation information = createInformation("클린 코드", "클린 코드 작성", false);
-        StudyPeriod period = StudyPeriod.fromStarting(LocalDate.of(2024, 4, 1));
+        StudyInformation information = createInformation("김영한의 Spring", "Spring강의", false);
+        StudyPeriod period = StudyPeriod.fromStarting(LocalDate.of(2024, 4, 3));
         StudyPlan plan = new StudyPlan(30, 60);
-        Reading reading = createReading(information, period, plan, null);
+        Lecture lecture = createLecture(information, period, plan, null);
 
         // when
-        LocalDate expectedDate = reading.calculateExpectedDate();
+        LocalDate expectedDate = lecture.calculateExpectedDate();
 
         // then
-        assertThat(expectedDate).isEqualTo(LocalDate.of(2024,4,8));
+        assertThat(expectedDate).isEqualTo(LocalDate.of(2024,4,14));
     }
 
-    private static Reading createReading(StudyInformation information, StudyPeriod period, StudyPlan plan, Member member) {
-        return Reading.builder()
+    private Lecture createLecture(StudyInformation information, StudyPeriod period, StudyPlan plan, Member member) {
+        return Lecture.builder()
             .studyInformation(information)
             .studyPeriod(period)
             .studyPlan(plan)
-            .authorName("로버트 마틴")
-            .readPagePerMin(2)
-            .totalPage(600)
+            .teacherName("김영한")
+            .totalRuntime(447)
             .member(member)
             .build();
     }
