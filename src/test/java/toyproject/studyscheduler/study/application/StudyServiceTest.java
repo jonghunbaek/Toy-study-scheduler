@@ -8,7 +8,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import toyproject.studyscheduler.study.application.dto.LectureSaveDto;
 import toyproject.studyscheduler.study.application.dto.ReadingSaveDto;
+import toyproject.studyscheduler.study.domain.entity.Lecture;
 import toyproject.studyscheduler.study.domain.entity.Study;
+import toyproject.studyscheduler.study.web.dto.LectureCreationDto;
+import toyproject.studyscheduler.study.web.dto.ReadingCreationDto;
+import toyproject.studyscheduler.study.web.dto.StudyCreationSpec;
 
 import java.time.LocalDate;
 
@@ -39,10 +43,10 @@ class StudyServiceTest {
             .build();
 
         // when
-        Study savedStudy = studyService.createStudy(lectureSaveDto);
+        LectureCreationDto studyDto = (LectureCreationDto) studyService.createStudy(lectureSaveDto);
 
         // then
-        assertThat(savedStudy.getStudyInformation().getTitle()).isEqualTo("김영한의 Spring");
+        assertThat(studyDto.getTeacherName()).isEqualTo("김영한");
     }
 
     @DisplayName("시작할 강의 학습을 생성한다.")
@@ -61,11 +65,11 @@ class StudyServiceTest {
             .build();
 
         // when
-        Study savedStudy = studyService.createStudy(lectureSaveDto);
+        LectureCreationDto studyDto = (LectureCreationDto) studyService.createStudy(lectureSaveDto);
 
         // then
-        assertThat(savedStudy.getStudyInformation().getTitle()).isEqualTo("김영한의 Spring");
-        assertThat(savedStudy.getStudyPeriod().getEndDate()).isEqualTo(LocalDate.MAX);
+        assertThat(studyDto.getTitle()).isEqualTo("김영한의 Spring");
+        assertThat(studyDto.getExpectedEndDate()).isEqualTo(LocalDate.of(2024, 4,8));
     }
 
     @DisplayName("종료된 강의 학습을 생성한다.")
@@ -86,10 +90,10 @@ class StudyServiceTest {
             .build();
 
         // when
-        Study savedStudy = studyService.createStudy(lectureSaveDto);
+        ReadingCreationDto studyDto = (ReadingCreationDto) studyService.createStudy(lectureSaveDto);
 
         // then
-        assertThat(savedStudy.getStudyInformation().getTitle()).isEqualTo("클린 코드");
+        assertThat(studyDto.getAuthorName()).isEqualTo("로버트 마틴");
     }
 
     @DisplayName("시작할 강의 학습을 생성한다.")
@@ -108,11 +112,10 @@ class StudyServiceTest {
             .readPagePerMin(2)
             .build();
 
-        // when
-        Study savedStudy = studyService.createStudy(lectureSaveDto);
+        ReadingCreationDto studyDto = (ReadingCreationDto) studyService.createStudy(lectureSaveDto);
 
         // then
-        assertThat(savedStudy.getStudyInformation().getTitle()).isEqualTo("클린 코드");
-        assertThat(savedStudy.getStudyPeriod().getEndDate()).isEqualTo(LocalDate.MAX);
+        assertThat(studyDto.getAuthorName()).isEqualTo("로버트 마틴");
+        assertThat(studyDto.getExpectedEndDate()).isEqualTo(LocalDate.of(2024, 4, 10));
     }
 }

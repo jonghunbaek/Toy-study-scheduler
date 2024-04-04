@@ -8,6 +8,7 @@ import toyproject.studyscheduler.study.application.dto.LectureSaveDto;
 import toyproject.studyscheduler.study.application.dto.StudySaveSpec;
 import toyproject.studyscheduler.study.domain.entity.Study;
 import toyproject.studyscheduler.study.repository.StudyRepository;
+import toyproject.studyscheduler.study.web.dto.StudyCreationSpec;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -18,9 +19,9 @@ public class StudyService {
     private final StudyRepository studyRepository;
 
     // TODO :: 학습 저장시 다형성 활용할 수 있는지 시도해보기
-    public Study createStudy(StudySaveSpec studySaveDto) {
-        Study entity = studySaveDto.toStudy();
+    public StudyCreationSpec createStudy(StudySaveSpec studySaveDto) {
+        Study savedStudy = studyRepository.save(studySaveDto.toStudy());
 
-        return studyRepository.save(entity);
+        return StudyCreationSpec.of(savedStudy);
     }
 }
