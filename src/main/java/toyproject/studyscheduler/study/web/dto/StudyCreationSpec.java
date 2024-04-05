@@ -42,27 +42,18 @@ public abstract class StudyCreationSpec {
         int planMinutesInWeekend = study.getStudyPlan().getPlanMinutesInWeekend();
 
         LocalDate expectedEndDate = LocalDate.MAX;
-        if (isTermination) {
+        if (!isTermination) {
             expectedEndDate = study.calculateExpectedDate();
         }
 
         if (study instanceof Lecture) {
-            Lecture lecture = (Lecture) study;
-            return LectureCreationDto.builder()
-                .title(title)
-                .description(description)
-                .isTermination(isTermination)
-                .startDate(startDate)
-                .endDate(endDate)
-                .expectedEndDate(expectedEndDate)
-                .planMinutesInWeekday(planMinutesInWeekday)
-                .planMinutesInWeekend(planMinutesInWeekend)
-                .totalRuntime(lecture.getTotalRuntime())
-                .teacherName(lecture.getTeacherName())
-                .build();
+            return createLecture((Lecture) study, title, description, isTermination, startDate, endDate, planMinutesInWeekday, planMinutesInWeekend, expectedEndDate);
         }
 
-        Reading reading = (Reading) study;
+        return createReading((Reading) study, title, description, isTermination, startDate, endDate, planMinutesInWeekday, planMinutesInWeekend, expectedEndDate);
+    }
+
+    private static ReadingCreationDto createReading(Reading reading, String title, String description, boolean isTermination, LocalDate startDate, LocalDate endDate, int planMinutesInWeekday, int planMinutesInWeekend, LocalDate expectedEndDate) {
         return ReadingCreationDto.builder()
             .title(title)
             .description(description)
@@ -75,6 +66,21 @@ public abstract class StudyCreationSpec {
             .totalPage(reading.getTotalPage())
             .authorName(reading.getAuthorName())
             .readPagePerMin(reading.getReadPagePerMin())
+            .build();
+    }
+
+    private static LectureCreationDto createLecture(Lecture lecture, String title, String description, boolean isTermination, LocalDate startDate, LocalDate endDate, int planMinutesInWeekday, int planMinutesInWeekend, LocalDate expectedEndDate) {
+        return LectureCreationDto.builder()
+            .title(title)
+            .description(description)
+            .isTermination(isTermination)
+            .startDate(startDate)
+            .endDate(endDate)
+            .expectedEndDate(expectedEndDate)
+            .planMinutesInWeekday(planMinutesInWeekday)
+            .planMinutesInWeekend(planMinutesInWeekend)
+            .totalRuntime(lecture.getTotalRuntime())
+            .teacherName(lecture.getTeacherName())
             .build();
     }
 }

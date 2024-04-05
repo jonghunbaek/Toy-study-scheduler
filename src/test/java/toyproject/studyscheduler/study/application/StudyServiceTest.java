@@ -68,8 +68,8 @@ class StudyServiceTest {
         LectureCreationDto studyDto = (LectureCreationDto) studyService.createStudy(lectureSaveDto);
 
         // then
-        assertThat(studyDto.getTitle()).isEqualTo("김영한의 Spring");
-        assertThat(studyDto.getExpectedEndDate()).isEqualTo(LocalDate.of(2024, 4,8));
+        assertThat(studyDto.getTeacherName()).isEqualTo("김영한");
+        assertThat(studyDto.getExpectedEndDate()).isEqualTo(LocalDate.of(2024, 4,14));
     }
 
     @DisplayName("종료된 강의 학습을 생성한다.")
@@ -116,6 +116,6 @@ class StudyServiceTest {
 
         // then
         assertThat(studyDto.getAuthorName()).isEqualTo("로버트 마틴");
-        assertThat(studyDto.getExpectedEndDate()).isEqualTo(LocalDate.of(2024, 4, 10));
+        assertThat(studyDto.getExpectedEndDate()).isEqualTo(LocalDate.of(2024, 4, 8));
     }
 }
