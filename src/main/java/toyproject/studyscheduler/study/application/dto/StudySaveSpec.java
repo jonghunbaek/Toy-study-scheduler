@@ -1,5 +1,8 @@
 package toyproject.studyscheduler.study.application.dto;
 
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import toyproject.studyscheduler.study.domain.StudyInformation;
 import toyproject.studyscheduler.study.domain.StudyPeriod;
 import toyproject.studyscheduler.study.domain.StudyPlan;
@@ -9,12 +12,26 @@ import java.time.LocalDate;
 
 public abstract class StudySaveSpec {
 
+    @NotBlank
     private String title;
+
+    @NotBlank
+    @Max(100)
     private String description;
+
     private boolean isTermination;
+
+    @NotBlank
     private LocalDate startDate;
+
     private LocalDate endDate = LocalDate.MAX;
+
+    @NotBlank
+    @Size(min = 1, max = 720)
     private int planMinutesInWeekday;
+
+    @NotBlank
+    @Size(min = 1, max = 720)
     private int planMinutesInWeekend;
 
     protected StudySaveSpec(String title, String description, boolean isTermination, LocalDate startDate, LocalDate endDate, int planMinutesInWeekday, int planMinutesInWeekend) {

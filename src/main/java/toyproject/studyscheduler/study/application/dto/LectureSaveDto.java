@@ -1,5 +1,7 @@
 package toyproject.studyscheduler.study.application.dto;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,8 +16,11 @@ import java.time.LocalDate;
 @Getter
 public class LectureSaveDto extends StudySaveSpec {
 
+    @NotBlank
     private String teacherName;
 
+    @NotBlank
+    @Size(min = 1, max = 6000)
     private int totalRuntime;
 
     @Builder
