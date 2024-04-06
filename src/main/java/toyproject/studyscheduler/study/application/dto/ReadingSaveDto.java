@@ -1,5 +1,6 @@
 package toyproject.studyscheduler.study.application.dto;
 
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Builder;
@@ -8,11 +9,14 @@ import lombok.NoArgsConstructor;
 import toyproject.studyscheduler.study.domain.StudyInformation;
 import toyproject.studyscheduler.study.domain.StudyPeriod;
 import toyproject.studyscheduler.study.domain.StudyPlan;
+import toyproject.studyscheduler.study.domain.StudyType;
 import toyproject.studyscheduler.study.domain.entity.Reading;
 import toyproject.studyscheduler.study.domain.entity.Study;
 
 import java.time.LocalDate;
 
+@JsonTypeName(StudyType.Values.READING)
+@NoArgsConstructor
 @Getter
 public class ReadingSaveDto extends StudySaveSpec {
 
@@ -28,12 +32,12 @@ public class ReadingSaveDto extends StudySaveSpec {
     private int readPagePerMin;
 
     @Builder
-    private ReadingSaveDto(String title, String description, boolean isTermination,
+    private ReadingSaveDto(String studyType, String title, String description, boolean isTermination,
                            LocalDate startDate, LocalDate endDate,
                            int planMinutesInWeekday, int planMinutesInWeekend,
                            String authorName, int totalPage, int readPagePerMin) {
 
-        super(title, description, isTermination, startDate, endDate, planMinutesInWeekday, planMinutesInWeekend);
+        super(studyType, title, description, isTermination, startDate, endDate, planMinutesInWeekday, planMinutesInWeekend);
         this.authorName = authorName;
         this.totalPage = totalPage;
         this.readPagePerMin = readPagePerMin;
