@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import toyproject.studyscheduler.study.domain.StudyInformation;
 import toyproject.studyscheduler.study.domain.StudyPeriod;
@@ -24,6 +25,7 @@ import java.time.LocalDate;
         @JsonSubTypes.Type(value = LectureSaveDto.class, name = StudyType.Values.LECTURE),
         @JsonSubTypes.Type(value = ReadingSaveDto.class, name = StudyType.Values.READING)
 })
+@Getter
 @NoArgsConstructor
 public abstract class StudySaveSpec {
 
@@ -42,7 +44,7 @@ public abstract class StudySaveSpec {
 //    @NotBlank
     private LocalDate startDate;
 
-    private LocalDate endDate = LocalDate.MAX;
+    private LocalDate endDate;
 
 //    @NotNull
 //    @Size(min = 1, max = 720)
