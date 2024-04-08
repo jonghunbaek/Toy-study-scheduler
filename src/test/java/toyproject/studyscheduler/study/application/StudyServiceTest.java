@@ -1,6 +1,5 @@
 package toyproject.studyscheduler.study.application;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,16 +7,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import toyproject.studyscheduler.study.application.dto.LectureSaveDto;
 import toyproject.studyscheduler.study.application.dto.ReadingSaveDto;
-import toyproject.studyscheduler.study.domain.entity.Lecture;
-import toyproject.studyscheduler.study.domain.entity.Study;
 import toyproject.studyscheduler.study.web.dto.LectureCreationDto;
 import toyproject.studyscheduler.study.web.dto.ReadingCreationDto;
-import toyproject.studyscheduler.study.web.dto.StudyCreationSpec;
 
 import java.time.LocalDate;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 @ActiveProfiles("test")
 @SpringBootTest

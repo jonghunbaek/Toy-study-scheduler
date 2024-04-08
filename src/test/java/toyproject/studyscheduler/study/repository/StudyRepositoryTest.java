@@ -100,7 +100,7 @@ class StudyRepositoryTest {
         assertThat(studies).hasSize(2)
                 .extracting("studyInformation.title", "studyInformation.description", "studyPeriod.startDate", "studyPeriod.endDate")
                 .containsExactlyInAnyOrder(
-                        tuple("김영한의 Spring", "Spring강의", LocalDate.of(2024, 4, 3), LocalDate.MAX),
+                        tuple("김영한의 Spring", "Spring강의", LocalDate.of(2024, 4, 3), LocalDate.of(9999,12,31)),
                         tuple("클린 코드", "클린 코드를 작성하는 방법", LocalDate.of(2024, 4, 1), LocalDate.of(2024, 4, 10))
                 );
     }

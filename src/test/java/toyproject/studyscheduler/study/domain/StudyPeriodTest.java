@@ -14,6 +14,6 @@ class StudyPeriodTest {
     void fromStarting() {
         StudyPeriod studyPeriod = StudyPeriod.fromStarting(LocalDate.now());
 
-        assertThat(studyPeriod.getEndDate()).isEqualTo(LocalDate.MAX);
+        assertThat(studyPeriod.getEndDate()).isEqualTo(LocalDate.of(9999,12,31));
     }
 }
