@@ -16,7 +16,7 @@ class StudyPeriodTest {
     void fromStarting() {
         StudyPeriod studyPeriod = StudyPeriod.fromStarting(LocalDate.now());
 
-        assertThat(studyPeriod.getEndDate()).isEqualTo(LocalDate.of(9999,12,31));
+        assertThat(studyPeriod.getEndDate()).isEqualTo(LocalDate.parse(StudyPeriod.TEMP_END_DATE));
     }
 
     @DisplayName("새로운 학습 기간을 생성할 때 시작일이 종료일보다 앞서 있는지 검증한다.")
