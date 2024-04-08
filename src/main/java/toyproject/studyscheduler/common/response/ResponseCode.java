@@ -28,6 +28,7 @@ public enum ResponseCode {
 
     // study
     E30000("해당 학습은 이미 종료되었습니다.", BAD_REQUEST),
+    E30001("종료일이 시작일보다 앞서있습니다.", BAD_REQUEST),
 
     // input validation
     E90000("잘못된 입력 값이 존재합니다.", BAD_REQUEST);
