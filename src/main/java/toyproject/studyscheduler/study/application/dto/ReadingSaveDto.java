@@ -1,6 +1,8 @@
 package toyproject.studyscheduler.study.application.dto;
 
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Builder;
@@ -15,7 +17,6 @@ import toyproject.studyscheduler.study.domain.entity.Study;
 
 import java.time.LocalDate;
 
-@JsonTypeName(StudyType.Values.READING)
 @NoArgsConstructor
 @Getter
 public class ReadingSaveDto extends StudySaveSpec {
@@ -23,12 +24,12 @@ public class ReadingSaveDto extends StudySaveSpec {
     @NotBlank
     private String authorName;
 
-    @NotBlank
-    @Size(min = 1, max = 5000)
+    @Max(5000)
+    @Min(1)
     private int totalPage;
 
-    @NotBlank
-    @Size(min = 1, max = 30)
+    @Max(30)
+    @Min(1)
     private int readPagePerMin;
 
     @Builder

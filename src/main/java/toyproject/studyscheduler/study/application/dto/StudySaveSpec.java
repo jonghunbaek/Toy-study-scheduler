@@ -2,10 +2,7 @@ package toyproject.studyscheduler.study.application.dto;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import toyproject.studyscheduler.study.domain.StudyInformation;
@@ -18,7 +15,7 @@ import java.time.LocalDate;
 
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
+        include = JsonTypeInfo.As.EXISTING_PROPERTY,
         property = "studyType"
 )
 @JsonSubTypes({
@@ -29,29 +26,28 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public abstract class StudySaveSpec {
 
-    @NotBlank
     private String studyType;
 
     @NotBlank
     private String title;
 
     @NotBlank
-    @Max(100)
+    @Size(max = 500)
     private String description;
 
     private boolean isTermination;
 
-//    @NotBlank
+    @NotNull
     private LocalDate startDate;
 
     private LocalDate endDate;
 
-//    @NotNull
-//    @Size(min = 1, max = 720)
+    @Max(720)
+    @Min(1)
     private int planMinutesInWeekday;
 
-//    @NotNull
-//    @Size(min = 1, max = 720)
+    @Max(720)
+    @Min(1)
     private int planMinutesInWeekend;
 
     protected StudySaveSpec(String studyType, String title, String description, boolean isTermination, LocalDate startDate, LocalDate endDate, int planMinutesInWeekday, int planMinutesInWeekend) {

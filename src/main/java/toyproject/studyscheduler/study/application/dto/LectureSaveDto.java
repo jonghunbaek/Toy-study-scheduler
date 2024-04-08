@@ -1,9 +1,7 @@
 package toyproject.studyscheduler.study.application.dto;
 
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,7 +14,6 @@ import toyproject.studyscheduler.study.domain.entity.Study;
 
 import java.time.LocalDate;
 
-@JsonTypeName(StudyType.Values.LECTURE)
 @NoArgsConstructor
 @Getter
 public class LectureSaveDto extends StudySaveSpec {
@@ -24,7 +21,8 @@ public class LectureSaveDto extends StudySaveSpec {
     @NotBlank
     private String teacherName;
 
-//    @Size(min = 1, max = 6000)
+    @Max(6000)
+    @Min(1)
     private int totalRuntime;
 
     @Builder
