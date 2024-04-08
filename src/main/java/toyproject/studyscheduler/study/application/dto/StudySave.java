@@ -24,7 +24,7 @@ import java.time.LocalDate;
 })
 @Getter
 @NoArgsConstructor
-public abstract class StudySaveSpec {
+public abstract class StudySave {
 
     private String studyType;
 
@@ -49,7 +49,7 @@ public abstract class StudySaveSpec {
     @Min(message = "학습 계획 시간은 최소 1분 이상이어야 합니다.", value = 1)
     private int planMinutesInWeekend;
 
-    protected StudySaveSpec(String studyType, String title, String description, boolean isTermination, LocalDate startDate, LocalDate endDate, int planMinutesInWeekday, int planMinutesInWeekend) {
+    protected StudySave(String studyType, String title, String description, boolean isTermination, LocalDate startDate, LocalDate endDate, int planMinutesInWeekday, int planMinutesInWeekend) {
         this.studyType = studyType;
         this.title = title;
         this.description = description;

@@ -10,7 +10,7 @@ import java.time.LocalDate;
 
 @Getter
 @NoArgsConstructor
-public abstract class StudyCreationSpec {
+public abstract class StudyCreation {
 
     private String title;
     private String description;
@@ -21,7 +21,7 @@ public abstract class StudyCreationSpec {
     private int planMinutesInWeekday;
     private int planMinutesInWeekend;
 
-    protected StudyCreationSpec(String title, String description, boolean isTermination, LocalDate startDate, LocalDate endDate, LocalDate expectedEndDate, int planMinutesInWeekday, int planMinutesInWeekend) {
+    protected StudyCreation(String title, String description, boolean isTermination, LocalDate startDate, LocalDate endDate, LocalDate expectedEndDate, int planMinutesInWeekday, int planMinutesInWeekend) {
         this.title = title;
         this.description = description;
         this.isTermination = isTermination;
@@ -32,7 +32,7 @@ public abstract class StudyCreationSpec {
         this.planMinutesInWeekend = planMinutesInWeekend;
     }
 
-    public static StudyCreationSpec of(Study study) {
+    public static StudyCreation of(Study study) {
         String title = study.getStudyInformation().getTitle();
         String description = study.getStudyInformation().getDescription();
         boolean isTermination = study.getStudyInformation().isTermination();

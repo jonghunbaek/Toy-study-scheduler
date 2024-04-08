@@ -67,7 +67,7 @@ class StudyServiceTest {
         assertThat(studyDto.getExpectedEndDate()).isEqualTo(LocalDate.of(2024, 4,14));
     }
 
-    @DisplayName("종료된 강의 학습을 생성한다.")
+    @DisplayName("종료된 독서 학습을 생성한다.")
     @Test
     void createReadingWhenTerminated() {
         // given
@@ -91,7 +91,7 @@ class StudyServiceTest {
         assertThat(studyDto.getAuthorName()).isEqualTo("로버트 마틴");
     }
 
-    @DisplayName("시작할 강의 학습을 생성한다.")
+    @DisplayName("시작할 독서 학습을 생성한다.")
     @Test
     void createReadingWhenStarting() {
         // given

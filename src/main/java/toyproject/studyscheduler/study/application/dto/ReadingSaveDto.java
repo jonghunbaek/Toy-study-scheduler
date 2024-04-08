@@ -15,7 +15,7 @@ import java.time.LocalDate;
 
 @NoArgsConstructor
 @Getter
-public class ReadingSaveDto extends StudySaveSpec {
+public class ReadingSaveDto extends StudySave {
 
     private String authorName;
 

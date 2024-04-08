@@ -6,7 +6,7 @@ import lombok.Getter;
 import java.time.LocalDate;
 
 @Getter
-public class ReadingCreationDto extends StudyCreationSpec {
+public class ReadingCreationDto extends StudyCreation {
 
     private String authorName;
     private int totalPage;
