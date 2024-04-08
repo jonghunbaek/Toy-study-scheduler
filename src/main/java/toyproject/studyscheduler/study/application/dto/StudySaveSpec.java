@@ -28,26 +28,25 @@ public abstract class StudySaveSpec {
 
     private String studyType;
 
-    @NotBlank
+    @NotBlank(message = "제목은 필수 값입니다.")
     private String title;
 
-    @NotBlank
-    @Size(max = 500)
+    @Size(message = "학습에 대한 설명은 최대 500글자 까지 작성할 수 있습니다.",max = 500)
     private String description;
 
     private boolean isTermination;
 
-    @NotNull
+    @NotNull(message = "시작일은 필수 값입니다.")
     private LocalDate startDate;
 
     private LocalDate endDate;
 
-    @Max(720)
-    @Min(1)
+    @Max(message = "학습 계획 시간은 최대 720분 이하여야 합니다.", value = 720)
+    @Min(message = "학습 계획 시간은 최소 1분 이상이어야 합니다.", value = 1)
     private int planMinutesInWeekday;
 
-    @Max(720)
-    @Min(1)
+    @Max(message = "학습 계획 시간은 최대 720분 이하여야 합니다.", value = 720)
+    @Min(message = "학습 계획 시간은 최소 1분 이상이어야 합니다.", value = 1)
     private int planMinutesInWeekend;
 
     protected StudySaveSpec(String studyType, String title, String description, boolean isTermination, LocalDate startDate, LocalDate endDate, int planMinutesInWeekday, int planMinutesInWeekend) {
