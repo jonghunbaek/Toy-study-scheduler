@@ -4,15 +4,15 @@ import lombok.Getter;
 import toyproject.studyscheduler.study.application.dto.Period;
 import toyproject.studyscheduler.study.domain.entity.Study;
 
-import java.time.LocalDate;
-
 @Getter
 public class StudyInAction {
 
+    private long studyId;
     private String title;
     private Period period;
 
-    private StudyInAction(String title, Period period) {
+    private StudyInAction(long studyId, String title, Period period) {
+        this.studyId = studyId;
         this.title = title;
         this.period = period;
     }
@@ -20,6 +20,6 @@ public class StudyInAction {
     public static StudyInAction of(Study study) {
         Period period = Period.of(study.getStudyPeriod());
 
-        return new StudyInAction(study.getStudyInformation().getTitle(), period);
+        return new StudyInAction(study.getId(), study.getStudyInformation().getTitle(), period);
     }
 }
