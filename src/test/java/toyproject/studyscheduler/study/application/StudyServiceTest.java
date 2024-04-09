@@ -7,13 +7,19 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 import toyproject.studyscheduler.study.application.dto.LectureSaveDto;
+import toyproject.studyscheduler.study.application.dto.Period;
 import toyproject.studyscheduler.study.application.dto.ReadingSaveDto;
+import toyproject.studyscheduler.study.domain.StudyPeriod;
 import toyproject.studyscheduler.study.web.dto.LectureCreationDto;
 import toyproject.studyscheduler.study.web.dto.ReadingCreationDto;
+import toyproject.studyscheduler.study.web.dto.StudyCreation;
+import toyproject.studyscheduler.study.web.dto.StudyInAction;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
+import static toyproject.studyscheduler.study.domain.StudyPeriod.*;
 
 @Transactional
 @ActiveProfiles("test")
@@ -94,12 +100,19 @@ class StudyServiceTest {
 
         LocalDate startDate = LocalDate.of(2024, 4, 1);
         LocalDate endDate = LocalDate.of(2024, 4, 30);
+        Period period = new Period(startDate, endDate);
 
         // when
-        
+        List<StudyInAction> studiesInAction = studyService.findStudiesByPeriod(period, 1L);
 
         // then
-
+        assertThat(studiesInAction).hasSize(3)
+            .extracting("title", "period.startDate", "period.endDate")
+            .containsExactlyInAnyOrder(
+                tuple("김영한의 Spring", LocalDate.of(2024, 4, 1), LocalDate.of(2024, 4, 21)),
+                tuple("김영한의 JPA", LocalDate.of(2024, 4, 30), LocalDate.of(2024, 5, 21)),
+                tuple("클린 코드", LocalDate.of(2024, 3, 1), TEMP_END_DATE)
+            );
     }
 
     private ReadingSaveDto createReadingSaveDto(String title, boolean isTermination, LocalDate startDate, LocalDate endDate) {
