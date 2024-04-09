@@ -2,11 +2,14 @@ package toyproject.studyscheduler.study.web.dto;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import toyproject.studyscheduler.study.domain.StudyPeriod;
 import toyproject.studyscheduler.study.domain.entity.Lecture;
 import toyproject.studyscheduler.study.domain.entity.Reading;
 import toyproject.studyscheduler.study.domain.entity.Study;
 
 import java.time.LocalDate;
+
+import static toyproject.studyscheduler.study.domain.StudyPeriod.*;
 
 @Getter
 @NoArgsConstructor
@@ -41,7 +44,7 @@ public abstract class StudyCreation {
         int planMinutesInWeekday = study.getStudyPlan().getPlanMinutesInWeekday();
         int planMinutesInWeekend = study.getStudyPlan().getPlanMinutesInWeekend();
 
-        LocalDate expectedEndDate = LocalDate.MAX;
+        LocalDate expectedEndDate = TEMP_END_DATE;
         if (!isTermination) {
             expectedEndDate = study.calculateExpectedDate();
         }

@@ -16,7 +16,7 @@ import static toyproject.studyscheduler.common.response.ResponseCode.*;
 @Embeddable
 public class StudyPeriod {
 
-    public static final String TEMP_END_DATE = "9999-12-31";
+    public static final LocalDate TEMP_END_DATE = LocalDate.parse("9999-12-31");
 
     private LocalDate startDate;
     private LocalDate endDate;
@@ -35,7 +35,7 @@ public class StudyPeriod {
     }
 
     public static StudyPeriod fromStarting(LocalDate startDate) {
-        return new StudyPeriod(startDate, LocalDate.parse(TEMP_END_DATE));
+        return new StudyPeriod(startDate, TEMP_END_DATE);
     }
 
     public static StudyPeriod fromTerminated(LocalDate startDate, LocalDate endDate) {
