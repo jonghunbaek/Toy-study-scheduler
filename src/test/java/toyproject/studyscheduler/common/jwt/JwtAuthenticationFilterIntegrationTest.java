@@ -11,7 +11,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
-import toyproject.studyscheduler.auth.application.dto.SignUpInfo;
+import toyproject.studyscheduler.member.application.dto.SignUpInfo;
 import toyproject.studyscheduler.common.response.ResponseCode;
 import toyproject.studyscheduler.common.response.ResponseForm;
 import toyproject.studyscheduler.member.domain.Role;
@@ -50,7 +50,7 @@ class JwtAuthenticationFilterIntegrationTest {
             .build();
 
         // when & then
-        mockMvc.perform(post("/auth/sign-up")
+        mockMvc.perform(post("/member/sign-up")
                 .content(objectMapper.writeValueAsString(info))
                 .contentType(MediaType.APPLICATION_JSON)
                 .with(csrf())

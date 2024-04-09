@@ -10,7 +10,6 @@ import toyproject.studyscheduler.auth.application.AuthService;
 import toyproject.studyscheduler.token.application.TokenService;
 import toyproject.studyscheduler.token.application.dto.TokenCreationInfo;
 import toyproject.studyscheduler.auth.application.dto.SignInInfo;
-import toyproject.studyscheduler.auth.application.dto.SignUpInfo;
 import toyproject.studyscheduler.auth.web.dto.Tokens;
 
 import static org.springframework.http.HttpHeaders.*;
@@ -22,11 +21,6 @@ public class AuthController {
 
     private final AuthService authService;
     private final TokenService tokenService;
-
-    @PostMapping("/auth/sign-up")
-    public void signUp(@RequestBody SignUpInfo signUpInfo) {
-        authService.saveNewMember(signUpInfo);
-    }
 
     @PostMapping("/auth/sign-in")
     public void signIn(@RequestBody SignInInfo signInInfo, HttpServletResponse response) {

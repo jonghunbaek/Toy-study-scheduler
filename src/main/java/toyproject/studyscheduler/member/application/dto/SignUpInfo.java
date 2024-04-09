@@ -1,4 +1,4 @@
-package toyproject.studyscheduler.auth.application.dto;
+package toyproject.studyscheduler.member.application.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
