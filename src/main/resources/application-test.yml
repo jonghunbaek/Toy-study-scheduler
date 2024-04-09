@@ -10,6 +10,7 @@ spring:
     properties:
       hibernate:
         format_sql: true
+    defer-datasource-initialization: true # (2.5~) Hibernate 초기화 이후 data.sql 실행
   #Redis 설정
   data:
     redis:
@@ -18,7 +19,7 @@ spring:
 
   sql:
     init:
-      mode: never
+      mode: always
 
 #JWT
 secret-key: NiOeyFbN1Gqo10bPgUyTFsRMkJpGLXSvGP04eFqj5B30r5TcrtlSXfQ7TndvYjNvfkEKLqILn0j1SmKODO6Yw3JpBBgI6nVPEbhqxeY1qbPSFGyzyEVxnl4bQcrnVneI
