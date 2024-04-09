@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import toyproject.studyscheduler.common.resolver.LoginMember;
+import toyproject.studyscheduler.common.resolver.MemberInfo;
 import toyproject.studyscheduler.study.application.StudyService;
 import toyproject.studyscheduler.study.application.dto.StudySave;
 import toyproject.studyscheduler.study.web.dto.StudyCreation;
@@ -22,7 +24,7 @@ public class StudyController {
      * 종료되지 않은 스터디는 예상 종료일을 계산해 같이 반환한다.
      */
     @PostMapping
-    public StudyCreation createStudy(@RequestBody @Valid StudySave studySave) {
-        return studyService.createStudy(studySave);
+    public StudyCreation createStudy(@RequestBody @Valid StudySave studySave, @LoginMember MemberInfo memberInfo) {
+        return studyService.createStudy(studySave, memberInfo.getMemberId());
     }
 }

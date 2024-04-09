@@ -31,8 +31,7 @@ public class ExceptionHandlerAdvice {
                 error -> error.getDefaultMessage()
             ));
 
-        ResponseForm<Map<String, String>> responseForm = ResponseForm.from(E90000, errors);
         return ResponseEntity.badRequest()
-            .body(responseForm);
+            .body(ResponseForm.from(E90000, errors));
     }
 }

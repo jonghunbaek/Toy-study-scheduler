@@ -5,6 +5,7 @@ import jakarta.validation.constraints.Min;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import toyproject.studyscheduler.member.domain.entity.Member;
 import toyproject.studyscheduler.study.domain.StudyInformation;
 import toyproject.studyscheduler.study.domain.StudyPeriod;
 import toyproject.studyscheduler.study.domain.StudyPlan;
@@ -40,7 +41,7 @@ public class ReadingSaveDto extends StudySave {
     }
 
     @Override
-    protected Study createStudy(StudyInformation information, StudyPeriod period, StudyPlan plan) {
+    protected Study createStudy(StudyInformation information, StudyPeriod period, StudyPlan plan, Member member) {
         return Reading.builder()
             .studyInformation(information)
             .studyPeriod(period)
@@ -48,6 +49,7 @@ public class ReadingSaveDto extends StudySave {
             .authorName(this.authorName)
             .totalPage(this.totalPage)
             .readPagePerMin(this.readPagePerMin)
+            .member(member)
             .build();
     }
 }

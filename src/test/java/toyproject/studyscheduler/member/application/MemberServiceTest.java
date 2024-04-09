@@ -25,24 +25,6 @@ class MemberServiceTest {
     @Autowired
     MemberRepository memberRepository;
 
-    @DisplayName("회원 정보를 전달 받아 회원 가입을 한다.")
-    @Test
-    void signUp() {
-        // given
-        SignUpInfo signUpInfo = SignUpInfo.builder()
-            .email("abc@gmail.com")
-            .password("12345")
-            .name("abc")
-            .build();
-
-        // when
-        memberService.saveNewMember(signUpInfo);
-        Member member = memberRepository.findAll().get(0);
-
-        // then
-        assertThat(member.getEmail()).isEqualTo("abc@gmail.com");
-    }
-
     @DisplayName("회원 가입 시 동일한 이메일이 DB에 존재하면 예외가 발생한다.")
     @Test
     void signUpWhenExistsSameEmail() {

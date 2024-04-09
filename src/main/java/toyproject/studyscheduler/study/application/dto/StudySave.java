@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import toyproject.studyscheduler.member.domain.entity.Member;
 import toyproject.studyscheduler.study.domain.StudyInformation;
 import toyproject.studyscheduler.study.domain.StudyPeriod;
 import toyproject.studyscheduler.study.domain.StudyPlan;
@@ -60,15 +61,15 @@ public abstract class StudySave {
         this.planMinutesInWeekend = planMinutesInWeekend;
     }
 
-    public Study toStudy() {
+    public Study toStudy(Member member) {
         StudyInformation information = createStudyInfo();
         StudyPeriod period = createStudyPeriod();
         StudyPlan plan = createStudyPlan();
 
-        return createStudy(information, period, plan);
+        return createStudy(information, period, plan, member);
     }
 
-    protected abstract Study createStudy(StudyInformation information, StudyPeriod period, StudyPlan plan);
+    protected abstract Study createStudy(StudyInformation information, StudyPeriod period, StudyPlan plan, Member member);
 
     private StudyInformation createStudyInfo() {
         return StudyInformation.builder()
