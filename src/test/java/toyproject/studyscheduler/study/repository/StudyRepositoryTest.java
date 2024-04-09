@@ -42,7 +42,7 @@ class StudyRepositoryTest {
     void saveTerminatedStudy() {
         // given
         StudyInformation studyInformation = createInformation("클린 코드", "클린 코드를 작성하는 방법", true);
-        StudyPeriod period = StudyPeriod.fromTerminated(LocalDate.of(2024, 4, 1), LocalDate.of(2024, 04, 10));
+        StudyPeriod period = StudyPeriod.fromTerminated(LocalDate.of(2024, 4, 1), LocalDate.of(2024, 4, 10));
         StudyPlan plan = StudyPlan.fromTerminated();
         Reading reading = createReading(studyInformation, period, plan, member);
 
@@ -84,7 +84,7 @@ class StudyRepositoryTest {
         Lecture lecture2 = createLecture(lectureInformation2, lecturePeriod2, lecturePlan2, member);
 
         StudyInformation readingInformation = createInformation("클린 코드", "클린 코드를 작성하는 방법", true);
-        StudyPeriod readingPeriod = StudyPeriod.fromTerminated(LocalDate.of(2024, 4, 1), LocalDate.of(2024, 04, 10));
+        StudyPeriod readingPeriod = StudyPeriod.fromTerminated(LocalDate.of(2024, 4, 1), LocalDate.of(2024, 4, 10));
         StudyPlan readingPlan = StudyPlan.fromTerminated();
         Reading reading = createReading(readingInformation, readingPeriod, readingPlan, member);
 

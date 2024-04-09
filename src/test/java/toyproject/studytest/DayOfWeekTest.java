@@ -1,4 +1,4 @@
-package toyproject.studyscheduler.studytest;
+package toyproject.studytest;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
