@@ -46,7 +46,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
             validateBlackToken(accessToken);
 
-            Authentication authentication = getAuthentication(accessToken);
+            Authentication authentication = createAuthentication(accessToken);
             SecurityContextHolder.getContext().setAuthentication(authentication);
         } catch (JwtException | IllegalArgumentException | IllegalStateException e) {
             request.setAttribute(EXCEPTION_KEY, e);
@@ -80,7 +80,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
     }
 
-    private Authentication getAuthentication(String accessToken) {
+    private Authentication createAuthentication(String accessToken) {
         String[] idAndRole = jwtManager.parseAccessToken(accessToken);
 
         return new UsernamePasswordAuthenticationToken(
