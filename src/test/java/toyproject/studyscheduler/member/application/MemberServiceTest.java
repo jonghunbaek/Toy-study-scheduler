@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
+import toyproject.studyscheduler.common.exception.GlobalException;
 import toyproject.studyscheduler.member.application.dto.SignUpInfo;
 import toyproject.studyscheduler.member.domain.entity.Member;
 import toyproject.studyscheduler.member.exception.MemberException;
@@ -13,6 +14,7 @@ import toyproject.studyscheduler.member.repository.MemberRepository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static toyproject.studyscheduler.common.exception.GlobalException.*;
 
 @ActiveProfiles("test")
 @Transactional
@@ -53,7 +55,7 @@ class MemberServiceTest {
         assertThat(findMember.getId()).isEqualTo(1L);
         assertThatThrownBy(() -> memberService.findMemberBy(2L))
             .isInstanceOf(MemberException.class)
-            .hasMessage("존재하는 회원이 없습니다. detail => id :: 2");
+            .hasMessage("존재하는 회원이 없습니다." + DETAIL_DELIMITER + "id :: 2");
     }
 
     @DisplayName("이메일로 회원을 조회한다. 존재하지 않으면 예외를 발생시킨다.")
@@ -61,6 +63,6 @@ class MemberServiceTest {
     void findByEmail() {
         assertThatThrownBy(() -> memberService.findMemberBy("1234@gmail.com"))
             .isInstanceOf(MemberException.class)
-            .hasMessage("존재하는 회원이 없습니다. detail => email :: 1234@gmail.com");
+            .hasMessage("존재하는 회원이 없습니다." + DETAIL_DELIMITER + "email :: 1234@gmail.com");
     }
 }
