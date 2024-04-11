@@ -82,7 +82,7 @@ class StudyControllerTest {
             Arguments.of(
                 "2024-04-11",
                 "2024-04-10",
-                ResponseForm.of(E30001)
+                ResponseForm.from(E90000, Map.of("period", "종료일은 시작일보다 나중이어야 합니다."))
             )
         );
     }

@@ -45,6 +45,8 @@ class MemberRepositoryTest {
         // then
         Assertions.assertThat(result.getName()).isEqualTo("hong");
     }
+    
+    // TODO :: existsEmail 테스트 작성 필요
 
     private Member createMember() {
         return Member.builder()

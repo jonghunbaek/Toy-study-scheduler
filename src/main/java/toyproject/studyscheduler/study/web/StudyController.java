@@ -2,7 +2,6 @@ package toyproject.studyscheduler.study.web;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import toyproject.studyscheduler.common.resolver.LoginMember;
 import toyproject.studyscheduler.common.resolver.MemberInfo;
@@ -16,7 +15,6 @@ import java.util.List;
 
 @RequestMapping("/studies")
 @RequiredArgsConstructor
-//@Validated
 @RestController
 public class StudyController {
 

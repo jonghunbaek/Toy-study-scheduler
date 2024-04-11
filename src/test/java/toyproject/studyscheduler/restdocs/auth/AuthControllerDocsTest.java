@@ -2,6 +2,7 @@ package toyproject.studyscheduler.restdocs.auth;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
 import toyproject.studyscheduler.auth.application.AuthService;
@@ -27,7 +28,6 @@ public class AuthControllerDocsTest extends RestDocsSupport {
 
     private final AuthService authService = mock(AuthService.class);
     private final TokenService tokenService = mock(TokenService.class);
-
 
     @Override
     protected Object initController() {
