@@ -2,7 +2,7 @@ package toyproject.studyscheduler.study.application.dto;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
-import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.format.annotation.DateTimeFormat;
 import toyproject.studyscheduler.study.domain.StudyPeriod;
 import toyproject.studyscheduler.study.exception.StudyException;
 
@@ -14,10 +14,15 @@ import static toyproject.studyscheduler.common.response.ResponseCode.E30001;
 public class Period {
 
     @NotNull(message = "시작일은 필수 입력 값입니다.")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate startDate;
 
     @NotNull(message = "종료일은 필수 입력 값입니다.")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate endDate;
+
+//    @NotNull(message = "test")
+//    private String testMessage;
 
     public Period(LocalDate startDate, LocalDate endDate) {
         validateStartDtEarlierEndDt(startDate, endDate);

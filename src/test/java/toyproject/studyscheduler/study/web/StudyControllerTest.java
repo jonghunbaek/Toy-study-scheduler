@@ -1,5 +1,6 @@
 package toyproject.studyscheduler.study.web;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -13,21 +14,23 @@ import org.springframework.context.annotation.FilterType;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.web.context.WebApplicationContext;
 import toyproject.studyscheduler.common.jwt.JwtAuthenticationFilter;
 import toyproject.studyscheduler.common.response.ResponseForm;
 import toyproject.studyscheduler.study.application.StudyService;
 import toyproject.studyscheduler.study.application.dto.LectureSave;
+import toyproject.studyscheduler.study.application.dto.Period;
 
 import java.time.LocalDate;
 import java.util.Map;
 import java.util.stream.Stream;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static toyproject.studyscheduler.common.response.ResponseCode.E30001;
 import static toyproject.studyscheduler.common.response.ResponseCode.E90000;
 
 @WebMvcTest(
@@ -40,18 +43,54 @@ class StudyControllerTest {
     MockMvc mockMvc;
 
     @Autowired
-    WebApplicationContext context;
-
-    @Autowired
     ObjectMapper objectMapper;
 
     @MockBean
     StudyService studyService;
 
     @WithMockUser
+    @DisplayName("특정 기간동안 수행한 모든 학습을 조회시 입력에 대한 검증을 수행한다.")
+    @ParameterizedTest
+    @MethodSource("argumentsWhenStudiesDuringPeriod")
+    void getStudiesByPeriod(String startDate, String endDate, ResponseForm response) throws Exception {
+        // given
+        String jsonResponse = objectMapper.writeValueAsString(response);
+
+        // when & then
+        mockMvc.perform(get("/studies/period")
+                .queryParam("startDate", startDate)
+                .queryParam("endDate", endDate)
+                .with(csrf())
+        )
+            .andDo(print())
+            .andExpect(status().isBadRequest())
+            .andExpect(content().json(jsonResponse));
+    }
+
+    private static Stream<Arguments> argumentsWhenStudiesDuringPeriod() {
+        return Stream.of(
+            Arguments.of(
+                "",
+                "2024-04-01",
+                ResponseForm.from(E90000, Map.of("startDate", "시작일은 필수 값입니다."))
+            ),
+            Arguments.of(
+                "2024-04-01",
+                "",
+                ResponseForm.from(E90000, Map.of("endDate", "종료일은 필수 값입니다."))
+            ),
+            Arguments.of(
+                "2024-04-11",
+                "2024-04-10",
+                ResponseForm.of(E30001)
+            )
+        );
+    }
+
+    @WithMockUser
     @DisplayName("학습 저장 요청시 입력에 대한 검증을 수행한다.")
     @ParameterizedTest
-    @MethodSource("provideArguments")
+    @MethodSource("argumentsWhenStudySave")
     void createStudyTerminated(LectureSave lectureSave, ResponseForm response) throws Exception {
         // given
         String jsonResponse = objectMapper.writeValueAsString(response);
@@ -67,7 +106,7 @@ class StudyControllerTest {
             .andExpect(content().json(jsonResponse));
     }
 
-    private static Stream<Arguments> provideArguments() {
+    private static Stream<Arguments> argumentsWhenStudySave() {
         return Stream.of(
             Arguments.of(
                 LectureSave.builder()
