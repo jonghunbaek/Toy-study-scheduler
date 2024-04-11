@@ -6,13 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
-import toyproject.studyscheduler.study.application.dto.LectureSaveDto;
+import toyproject.studyscheduler.study.application.dto.LectureSave;
 import toyproject.studyscheduler.study.application.dto.Period;
-import toyproject.studyscheduler.study.application.dto.ReadingSaveDto;
-import toyproject.studyscheduler.study.domain.StudyPeriod;
-import toyproject.studyscheduler.study.web.dto.LectureCreationDto;
-import toyproject.studyscheduler.study.web.dto.ReadingCreationDto;
-import toyproject.studyscheduler.study.web.dto.StudyCreation;
+import toyproject.studyscheduler.study.application.dto.ReadingSave;
+import toyproject.studyscheduler.study.web.dto.LectureCreation;
+import toyproject.studyscheduler.study.web.dto.ReadingCreation;
 import toyproject.studyscheduler.study.web.dto.StudyInAction;
 
 import java.time.LocalDate;
@@ -33,10 +31,10 @@ class StudyServiceTest {
     @Test
     void createLectureWhenTerminated() {
         // given
-        LectureSaveDto lectureSaveDto = createLectureSaveDto("김영한의 Spring", true, LocalDate.of(2024,4,1),LocalDate.of(2024,4,21));
+        LectureSave lectureSave = createLectureSaveDto("김영한의 Spring", true, LocalDate.of(2024,4,1),LocalDate.of(2024,4,21));
 
         // when
-        LectureCreationDto studyDto = (LectureCreationDto) studyService.createStudy(lectureSaveDto, 1L);
+        LectureCreation studyDto = (LectureCreation) studyService.createStudy(lectureSave, 1L);
 
         // then
         assertThat(studyDto.getTeacherName()).isEqualTo("김영한");
@@ -46,10 +44,10 @@ class StudyServiceTest {
     @Test
     void createLectureWhenStarting() {
         // given
-        LectureSaveDto lectureSaveDto = createLectureSaveDto("김영한의 Spring", false, LocalDate.of(2024, 4, 1), null);
+        LectureSave lectureSave = createLectureSaveDto("김영한의 Spring", false, LocalDate.of(2024, 4, 1), null);
 
         // when
-        LectureCreationDto studyDto = (LectureCreationDto) studyService.createStudy(lectureSaveDto, 1L);
+        LectureCreation studyDto = (LectureCreation) studyService.createStudy(lectureSave, 1L);
 
         // then
         assertThat(studyDto.getTeacherName()).isEqualTo("김영한");
@@ -60,10 +58,10 @@ class StudyServiceTest {
     @Test
     void createReadingWhenTerminated() {
         // given
-        ReadingSaveDto readingSaveDto = createReadingSaveDto("클린 코드", true, LocalDate.of(2024,4,1),LocalDate.of(2024,4,21));
+        ReadingSave readingSave = createReadingSaveDto("클린 코드", true, LocalDate.of(2024,4,1),LocalDate.of(2024,4,21));
 
         // when
-        ReadingCreationDto studyDto = (ReadingCreationDto) studyService.createStudy(readingSaveDto, 1L);
+        ReadingCreation studyDto = (ReadingCreation) studyService.createStudy(readingSave, 1L);
 
         // then
         assertThat(studyDto.getAuthorName()).isEqualTo("로버트 마틴");
@@ -73,9 +71,9 @@ class StudyServiceTest {
     @Test
     void createReadingWhenStarting() {
         // given
-        ReadingSaveDto readingSaveDto = createReadingSaveDto("클린 코드", false, LocalDate.of(2024,4,1), null);
+        ReadingSave readingSave = createReadingSaveDto("클린 코드", false, LocalDate.of(2024,4,1), null);
 
-        ReadingCreationDto studyDto = (ReadingCreationDto) studyService.createStudy(readingSaveDto, 1L);
+        ReadingCreation studyDto = (ReadingCreation) studyService.createStudy(readingSave, 1L);
 
         // then
         assertThat(studyDto.getAuthorName()).isEqualTo("로버트 마틴");
@@ -86,16 +84,16 @@ class StudyServiceTest {
     @Test
     void getStudiesByPeriod() {
         // given
-        LectureSaveDto lecture1 = createLectureSaveDto("김영한의 Spring", true, LocalDate.of(2024, 4, 1), LocalDate.of(2024, 4, 21));
+        LectureSave lecture1 = createLectureSaveDto("김영한의 Spring", true, LocalDate.of(2024, 4, 1), LocalDate.of(2024, 4, 21));
         studyService.createStudy(lecture1, 1L);
 
-        LectureSaveDto lecture2 = createLectureSaveDto("김영한의 JPA", true, LocalDate.of(2024, 4, 30), LocalDate.of(2024, 5, 21));
+        LectureSave lecture2 = createLectureSaveDto("김영한의 JPA", true, LocalDate.of(2024, 4, 30), LocalDate.of(2024, 5, 21));
         studyService.createStudy(lecture2, 1L);
 
-        ReadingSaveDto reading1 = createReadingSaveDto("클린 코드", false, LocalDate.of(2024, 3, 1), null);
+        ReadingSave reading1 = createReadingSaveDto("클린 코드", false, LocalDate.of(2024, 3, 1), null);
         studyService.createStudy(reading1, 1L);
 
-        ReadingSaveDto reading2 = createReadingSaveDto("모던 자바 인액션", true, LocalDate.of(2024, 3, 1), LocalDate.of(2024, 3,21));
+        ReadingSave reading2 = createReadingSaveDto("모던 자바 인액션", true, LocalDate.of(2024, 3, 1), LocalDate.of(2024, 3,21));
         studyService.createStudy(reading2, 1L);
 
         LocalDate startDate = LocalDate.of(2024, 4, 1);
@@ -115,8 +113,8 @@ class StudyServiceTest {
             );
     }
 
-    private ReadingSaveDto createReadingSaveDto(String title, boolean isTermination, LocalDate startDate, LocalDate endDate) {
-        return ReadingSaveDto.builder()
+    private ReadingSave createReadingSaveDto(String title, boolean isTermination, LocalDate startDate, LocalDate endDate) {
+        return ReadingSave.builder()
             .title(title)
             .description("클린 코드 작성 방법")
             .isTermination(isTermination)
@@ -130,8 +128,8 @@ class StudyServiceTest {
             .build();
     }
 
-    private LectureSaveDto createLectureSaveDto(String title, boolean isTermination, LocalDate startDate, LocalDate endDate) {
-        return LectureSaveDto.builder()
+    private LectureSave createLectureSaveDto(String title, boolean isTermination, LocalDate startDate, LocalDate endDate) {
+        return LectureSave.builder()
             .title(title)
             .description("Spring강의")
             .isTermination(isTermination)

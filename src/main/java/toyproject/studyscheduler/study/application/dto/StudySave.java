@@ -20,8 +20,8 @@ import java.time.LocalDate;
         property = "studyType"
 )
 @JsonSubTypes({
-        @JsonSubTypes.Type(value = LectureSaveDto.class, name = StudyType.Values.LECTURE),
-        @JsonSubTypes.Type(value = ReadingSaveDto.class, name = StudyType.Values.READING)
+        @JsonSubTypes.Type(value = LectureSave.class, name = StudyType.Values.LECTURE),
+        @JsonSubTypes.Type(value = ReadingSave.class, name = StudyType.Values.READING)
 })
 @Getter
 @NoArgsConstructor

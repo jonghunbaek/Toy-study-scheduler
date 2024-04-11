@@ -16,7 +16,7 @@ import java.time.LocalDate;
 
 @NoArgsConstructor
 @Getter
-public class ReadingSaveDto extends StudySave {
+public class ReadingSave extends StudySave {
 
     private String authorName;
 
@@ -29,10 +29,10 @@ public class ReadingSaveDto extends StudySave {
     private int readPagePerMin;
 
     @Builder
-    private ReadingSaveDto(String studyType, String title, String description, boolean isTermination,
-                           LocalDate startDate, LocalDate endDate,
-                           int planMinutesInWeekday, int planMinutesInWeekend,
-                           String authorName, int totalPage, int readPagePerMin) {
+    private ReadingSave(String studyType, String title, String description, boolean isTermination,
+                        LocalDate startDate, LocalDate endDate,
+                        int planMinutesInWeekday, int planMinutesInWeekend,
+                        String authorName, int totalPage, int readPagePerMin) {
 
         super(studyType, title, description, isTermination, startDate, endDate, planMinutesInWeekday, planMinutesInWeekend);
         this.authorName = authorName;

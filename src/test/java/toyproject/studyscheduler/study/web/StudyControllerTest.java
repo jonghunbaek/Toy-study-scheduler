@@ -17,7 +17,7 @@ import org.springframework.web.context.WebApplicationContext;
 import toyproject.studyscheduler.common.jwt.JwtAuthenticationFilter;
 import toyproject.studyscheduler.common.response.ResponseForm;
 import toyproject.studyscheduler.study.application.StudyService;
-import toyproject.studyscheduler.study.application.dto.LectureSaveDto;
+import toyproject.studyscheduler.study.application.dto.LectureSave;
 
 import java.time.LocalDate;
 import java.util.Map;
@@ -52,13 +52,13 @@ class StudyControllerTest {
     @DisplayName("학습 저장 요청시 입력에 대한 검증을 수행한다.")
     @ParameterizedTest
     @MethodSource("provideArguments")
-    void createStudyTerminated(LectureSaveDto lectureSaveDto, ResponseForm response) throws Exception {
+    void createStudyTerminated(LectureSave lectureSave, ResponseForm response) throws Exception {
         // given
         String jsonResponse = objectMapper.writeValueAsString(response);
 
         // when & then
         mockMvc.perform(post("/studies")
-                .content(objectMapper.writeValueAsString(lectureSaveDto))
+                .content(objectMapper.writeValueAsString(lectureSave))
                 .contentType(MediaType.APPLICATION_JSON)
                 .with(csrf())
             )
@@ -70,7 +70,7 @@ class StudyControllerTest {
     private static Stream<Arguments> provideArguments() {
         return Stream.of(
             Arguments.of(
-                LectureSaveDto.builder()
+                LectureSave.builder()
                     .studyType("lecture")
                     .title("") // title 빈 값에 대한 검증
                     .description("Spring강의")
@@ -85,7 +85,7 @@ class StudyControllerTest {
                 ResponseForm.from(E90000, Map.of("title", "제목은 필수 값입니다."))
             ),
             Arguments.of(
-                LectureSaveDto.builder()
+                LectureSave.builder()
                     .studyType("lecture")
                     .title("김영한의 Spring")
                     .description("Spring강의")
@@ -99,7 +99,7 @@ class StudyControllerTest {
                 ResponseForm.from(E90000, Map.of("startDate", "시작일은 필수 값입니다."))
             ),
             Arguments.of(
-                LectureSaveDto.builder()
+                LectureSave.builder()
                     .studyType("lecture")
                     .title("김영한의 Spring")
                     .description("Spring강의")
@@ -114,7 +114,7 @@ class StudyControllerTest {
                 ResponseForm.from(E90000, Map.of("planMinutesInWeekend", "학습 계획 시간은 최대 720분 이하여야 합니다."))
             ),
             Arguments.of(
-                LectureSaveDto.builder()
+                LectureSave.builder()
                     .studyType("lecture")
                     .title("김영한의 Spring")
                     .description("Spring강의")

@@ -2,7 +2,6 @@ package toyproject.studyscheduler.study.web.dto;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import toyproject.studyscheduler.study.domain.StudyPeriod;
 import toyproject.studyscheduler.study.domain.entity.Lecture;
 import toyproject.studyscheduler.study.domain.entity.Reading;
 import toyproject.studyscheduler.study.domain.entity.Study;
@@ -56,8 +55,8 @@ public abstract class StudyCreation {
         return createReading((Reading) study, title, description, isTermination, startDate, endDate, planMinutesInWeekday, planMinutesInWeekend, expectedEndDate);
     }
 
-    private static ReadingCreationDto createReading(Reading reading, String title, String description, boolean isTermination, LocalDate startDate, LocalDate endDate, int planMinutesInWeekday, int planMinutesInWeekend, LocalDate expectedEndDate) {
-        return ReadingCreationDto.builder()
+    private static ReadingCreation createReading(Reading reading, String title, String description, boolean isTermination, LocalDate startDate, LocalDate endDate, int planMinutesInWeekday, int planMinutesInWeekend, LocalDate expectedEndDate) {
+        return ReadingCreation.builder()
             .title(title)
             .description(description)
             .isTermination(isTermination)
@@ -72,8 +71,8 @@ public abstract class StudyCreation {
             .build();
     }
 
-    private static LectureCreationDto createLecture(Lecture lecture, String title, String description, boolean isTermination, LocalDate startDate, LocalDate endDate, int planMinutesInWeekday, int planMinutesInWeekend, LocalDate expectedEndDate) {
-        return LectureCreationDto.builder()
+    private static LectureCreation createLecture(Lecture lecture, String title, String description, boolean isTermination, LocalDate startDate, LocalDate endDate, int planMinutesInWeekday, int planMinutesInWeekend, LocalDate expectedEndDate) {
+        return LectureCreation.builder()
             .title(title)
             .description(description)
             .isTermination(isTermination)

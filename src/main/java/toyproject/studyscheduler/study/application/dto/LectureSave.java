@@ -15,7 +15,7 @@ import java.time.LocalDate;
 
 @NoArgsConstructor
 @Getter
-public class LectureSaveDto extends StudySave {
+public class LectureSave extends StudySave {
 
     private String teacherName;
 
@@ -24,10 +24,10 @@ public class LectureSaveDto extends StudySave {
     private int totalRuntime;
 
     @Builder
-    private LectureSaveDto(String studyType, String title, String description, boolean isTermination,
-                           LocalDate startDate, LocalDate endDate,
-                           int planMinutesInWeekday, int planMinutesInWeekend,
-                           String teacherName, int totalRuntime) {
+    private LectureSave(String studyType, String title, String description, boolean isTermination,
+                        LocalDate startDate, LocalDate endDate,
+                        int planMinutesInWeekday, int planMinutesInWeekend,
+                        String teacherName, int totalRuntime) {
 
         super(studyType, title, description, isTermination, startDate, endDate, planMinutesInWeekday, planMinutesInWeekend);
         this.teacherName = teacherName;
