@@ -4,8 +4,6 @@ import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import toyproject.studyscheduler.study.application.dto.Period;
 
-import java.time.LocalDate;
-
 public class PeriodValidator implements ConstraintValidator<EndDateLaterThanStartDate, Period> {
 
     @Override
