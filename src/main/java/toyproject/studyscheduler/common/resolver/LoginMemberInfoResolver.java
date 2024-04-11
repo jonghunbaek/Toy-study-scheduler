@@ -19,9 +19,9 @@ public class LoginMemberInfoResolver implements HandlerMethodArgumentResolver {
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
                                   NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
 
-        Long memberId = (Long) SecurityContextHolder.getContext()
+        Long memberId = Long.parseLong((String) SecurityContextHolder.getContext()
             .getAuthentication()
-            .getPrincipal();
+            .getPrincipal());
 
         return new MemberInfo(memberId);
     }

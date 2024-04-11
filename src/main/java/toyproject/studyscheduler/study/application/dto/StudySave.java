@@ -1,5 +1,6 @@
 package toyproject.studyscheduler.study.application.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import jakarta.validation.constraints.*;
@@ -35,7 +36,8 @@ public abstract class StudySave {
     @Size(message = "학습에 대한 설명은 최대 500글자 까지 작성할 수 있습니다.",max = 500)
     private String description;
 
-    private boolean isTermination;
+    @JsonProperty("isTermination")
+    private Boolean isTermination;
 
     @NotNull(message = "시작일은 필수 값입니다.")
     private LocalDate startDate;
