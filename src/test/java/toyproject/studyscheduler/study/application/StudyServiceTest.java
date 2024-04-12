@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import toyproject.studyscheduler.study.application.dto.LectureSave;
 import toyproject.studyscheduler.study.application.dto.Period;
 import toyproject.studyscheduler.study.application.dto.ReadingSave;
+import toyproject.studyscheduler.study.exception.StudyException;
 import toyproject.studyscheduler.study.web.dto.LectureDetail;
 import toyproject.studyscheduler.study.web.dto.ReadingDetail;
 import toyproject.studyscheduler.study.web.dto.StudyInAction;
@@ -111,6 +112,15 @@ class StudyServiceTest {
                 tuple("김영한의 JPA", LocalDate.of(2024, 4, 30), LocalDate.of(2024, 5, 21)),
                 tuple("클린 코드", LocalDate.of(2024, 3, 1), TEMP_END_DATE)
             );
+    }
+
+    @DisplayName("학습 아이디에 해당하는 학습을 조회할 때 존재하지 않으면 예외를 던진다.")
+    @Test
+    void findByIdWhenNotExists() {
+        // when & then
+        assertThatThrownBy(() -> studyService.findStudyById(1L))
+            .isInstanceOf(StudyException.class)
+            .hasMessage("일치하는 학습을 찾을 수 없습니다. detail => studyId :: 1");
     }
 
     private ReadingSave createReadingSaveDto(String title, boolean isTermination, LocalDate startDate, LocalDate endDate) {
