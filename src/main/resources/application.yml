@@ -37,6 +37,6 @@ spring:
 
 # JWT
 secret-key: ${ACCESS_SECRET_KEY}
-access-expiration-hours: 86400
-refresh-expiration-hours: 86400
+access-expiration-hours: 86400 
+refresh-expiration-hours: 86400 # 1일
 issuer: jonghun

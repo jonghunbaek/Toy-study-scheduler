@@ -2,9 +2,11 @@ package toyproject.studyscheduler.study.web;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import toyproject.studyscheduler.common.resolver.LoginMember;
 import toyproject.studyscheduler.common.resolver.MemberInfo;
+import toyproject.studyscheduler.common.validator.period.ValidatorGroupSequence;
 import toyproject.studyscheduler.study.application.StudyService;
 import toyproject.studyscheduler.study.application.dto.Period;
 import toyproject.studyscheduler.study.application.dto.StudySave;
@@ -30,7 +32,10 @@ public class StudyController {
     }
 
     @GetMapping("/period")
-    public List<StudyInAction> studiesInActionDuringPeriod(@Valid Period period, @LoginMember MemberInfo memberInfo) {
+    public List<StudyInAction> studiesInActionDuringPeriod(
+        @Validated(ValidatorGroupSequence.class) Period period,
+        @LoginMember MemberInfo memberInfo) {
+
         return studyService.findStudiesByPeriod(period, memberInfo.getMemberId());
     }
 }
