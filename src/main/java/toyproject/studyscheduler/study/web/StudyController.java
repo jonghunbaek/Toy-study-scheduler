@@ -1,6 +1,8 @@
 package toyproject.studyscheduler.study.web;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +17,7 @@ import toyproject.studyscheduler.study.web.dto.StudyInAction;
 
 import java.util.List;
 
+@Validated
 @RequestMapping("/studies")
 @RequiredArgsConstructor
 @RestController
@@ -31,6 +34,15 @@ public class StudyController {
         return studyService.createStudy(studySave, memberInfo.getMemberId());
     }
 
+    @GetMapping
+    public StudyDetail studyFind(@RequestParam @Positive(message = "id 값은 양의 정수이어야 합니다.") Long studyId) {
+        return studyService.findStudyById(studyId);
+    }
+
+    // TODO :: 날짜 형식이 잘못된 경우에 대한 예외 처리 필요
+    /**
+     * 특정 기간 동안 수행한 학습 전체를 조회한다.
+     */
     @GetMapping("/period")
     public List<StudyInAction> studiesInActionDuringPeriod(
         @Validated(ValidatorGroupSequence.class) Period period,

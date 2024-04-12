@@ -21,6 +21,7 @@ import toyproject.studyscheduler.study.application.dto.LectureSave;
 import toyproject.studyscheduler.study.application.dto.Period;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
@@ -30,8 +31,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static toyproject.studyscheduler.common.response.ResponseCode.E30001;
-import static toyproject.studyscheduler.common.response.ResponseCode.E90000;
+import static toyproject.studyscheduler.common.response.ResponseCode.*;
 
 @WebMvcTest(
     controllers = StudyController.class,
@@ -47,45 +47,6 @@ class StudyControllerTest {
 
     @MockBean
     StudyService studyService;
-
-    @WithMockUser
-    @DisplayName("특정 기간동안 수행한 모든 학습을 조회시 입력에 대한 검증을 수행한다.")
-    @ParameterizedTest
-    @MethodSource("argumentsWhenStudiesDuringPeriod")
-    void getStudiesByPeriod(String startDate, String endDate, ResponseForm response) throws Exception {
-        // given
-        String jsonResponse = objectMapper.writeValueAsString(response);
-
-        // when & then
-        mockMvc.perform(get("/studies/period")
-                .queryParam("startDate", startDate)
-                .queryParam("endDate", endDate)
-                .with(csrf())
-        )
-            .andDo(print())
-            .andExpect(status().isBadRequest())
-            .andExpect(content().json(jsonResponse));
-    }
-
-    private static Stream<Arguments> argumentsWhenStudiesDuringPeriod() {
-        return Stream.of(
-            Arguments.of(
-                "",
-                "2024-04-01",
-                ResponseForm.from(E90000, Map.of("startDate", "시작일은 필수 입력 값입니다."))
-            ),
-            Arguments.of(
-                "2024-04-01",
-                "",
-                ResponseForm.from(E90000, Map.of("endDate", "종료일은 필수 입력 값입니다."))
-            ),
-            Arguments.of(
-                "2024-04-11",
-                "2024-04-10",
-                ResponseForm.from(E90000, Map.of("period", "종료일은 시작일보다 나중이어야 합니다."))
-            )
-        );
-    }
 
     @WithMockUser
     @DisplayName("학습 저장 요청시 입력에 대한 검증을 수행한다.")
@@ -166,6 +127,80 @@ class StudyControllerTest {
                     .totalRuntime(500)
                     .build(),
                 ResponseForm.from(E90000, Map.of("planMinutesInWeekend", "학습 계획 시간은 최소 1분 이상이어야 합니다."))
+            )
+        );
+    }
+
+    @WithMockUser
+    @DisplayName("특정 기간동안 수행한 모든 학습을 조회시 입력에 대한 검증을 수행한다.")
+    @ParameterizedTest
+    @MethodSource("argumentsWhenStudiesDuringPeriod")
+    void getStudiesByPeriod(String startDate, String endDate, ResponseForm response) throws Exception {
+        // given
+        String jsonResponse = objectMapper.writeValueAsString(response);
+
+        // when & then
+        mockMvc.perform(get("/studies/period")
+                .queryParam("startDate", startDate)
+                .queryParam("endDate", endDate)
+                .with(csrf())
+            )
+            .andDo(print())
+            .andExpect(status().isBadRequest())
+            .andExpect(content().json(jsonResponse));
+    }
+
+    private static Stream<Arguments> argumentsWhenStudiesDuringPeriod() {
+        return Stream.of(
+            Arguments.of(
+                "",
+                "2024-04-01",
+                ResponseForm.from(E90000, Map.of("startDate", "시작일은 필수 입력 값입니다."))
+            ),
+            Arguments.of(
+                "2024-04-01",
+                "",
+                ResponseForm.from(E90000, Map.of("endDate", "종료일은 필수 입력 값입니다."))
+            ),
+            Arguments.of(
+                "2024-04-11",
+                "2024-04-10",
+                ResponseForm.from(E90000, Map.of("period", "종료일은 시작일보다 나중이어야 합니다."))
+            )
+        );
+    }
+
+    @WithMockUser
+    @DisplayName("학습 ID로 학습 단건 조회시 입력에 대한 검증을 수행한다.")
+    @ParameterizedTest
+    @MethodSource("argumentsWhenStudyFindById")
+    void getStudyById(String studyId, ResponseForm response) throws Exception {
+        // given
+        String jsonResponse = objectMapper.writeValueAsString(response);
+
+        // when & then
+        mockMvc.perform(get("/studies")
+                .queryParam("studyId", studyId)
+                .with(csrf())
+            )
+            .andDo(print())
+            .andExpect(status().isBadRequest())
+            .andExpect(content().json(jsonResponse));
+    }
+
+    private static Stream<Arguments> argumentsWhenStudyFindById() {
+        return Stream.of(
+            Arguments.of(
+                "",
+                ResponseForm.of(E90002)
+            ),
+            Arguments.of(
+                "-1",
+                ResponseForm.from(E90000, List.of("id 값은 양의 정수이어야 합니다."))
+            ),
+            Arguments.of(
+                "TEST",
+                ResponseForm.of(E90001)
             )
         );
     }

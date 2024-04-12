@@ -33,7 +33,9 @@ public enum ResponseCode {
     E30002("일치하는 학습을 찾을 수 없습니다.", BAD_REQUEST),
 
     // input validation
-    E90000("잘못된 입력 값이 존재합니다.", BAD_REQUEST);
+    E90000("잘못된 입력 값이 존재합니다.", BAD_REQUEST),
+    E90001("입력 값을 파싱할 수 없습니다.", BAD_REQUEST),
+    E90002("요청 파라미터가 존재하지 않습니다.", BAD_REQUEST);
 
     private String message;
     private HttpStatus httpStatus;
