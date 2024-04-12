@@ -9,8 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 import toyproject.studyscheduler.study.application.dto.LectureSave;
 import toyproject.studyscheduler.study.application.dto.Period;
 import toyproject.studyscheduler.study.application.dto.ReadingSave;
-import toyproject.studyscheduler.study.web.dto.LectureCreation;
-import toyproject.studyscheduler.study.web.dto.ReadingCreation;
+import toyproject.studyscheduler.study.web.dto.LectureDetail;
+import toyproject.studyscheduler.study.web.dto.ReadingDetail;
 import toyproject.studyscheduler.study.web.dto.StudyInAction;
 
 import java.time.LocalDate;
@@ -34,7 +34,7 @@ class StudyServiceTest {
         LectureSave lectureSave = createLectureSaveDto("김영한의 Spring", true, LocalDate.of(2024,4,1),LocalDate.of(2024,4,21));
 
         // when
-        LectureCreation studyDto = (LectureCreation) studyService.createStudy(lectureSave, 1L);
+        LectureDetail studyDto = (LectureDetail) studyService.createStudy(lectureSave, 1L);
 
         // then
         assertThat(studyDto.getTeacherName()).isEqualTo("김영한");
@@ -47,7 +47,7 @@ class StudyServiceTest {
         LectureSave lectureSave = createLectureSaveDto("김영한의 Spring", false, LocalDate.of(2024, 4, 1), null);
 
         // when
-        LectureCreation studyDto = (LectureCreation) studyService.createStudy(lectureSave, 1L);
+        LectureDetail studyDto = (LectureDetail) studyService.createStudy(lectureSave, 1L);
 
         // then
         assertThat(studyDto.getTeacherName()).isEqualTo("김영한");
@@ -61,7 +61,7 @@ class StudyServiceTest {
         ReadingSave readingSave = createReadingSaveDto("클린 코드", true, LocalDate.of(2024,4,1),LocalDate.of(2024,4,21));
 
         // when
-        ReadingCreation studyDto = (ReadingCreation) studyService.createStudy(readingSave, 1L);
+        ReadingDetail studyDto = (ReadingDetail) studyService.createStudy(readingSave, 1L);
 
         // then
         assertThat(studyDto.getAuthorName()).isEqualTo("로버트 마틴");
@@ -73,7 +73,7 @@ class StudyServiceTest {
         // given
         ReadingSave readingSave = createReadingSaveDto("클린 코드", false, LocalDate.of(2024,4,1), null);
 
-        ReadingCreation studyDto = (ReadingCreation) studyService.createStudy(readingSave, 1L);
+        ReadingDetail studyDto = (ReadingDetail) studyService.createStudy(readingSave, 1L);
 
         // then
         assertThat(studyDto.getAuthorName()).isEqualTo("로버트 마틴");

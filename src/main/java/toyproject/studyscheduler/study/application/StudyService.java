@@ -10,10 +10,9 @@ import toyproject.studyscheduler.study.application.dto.Period;
 import toyproject.studyscheduler.study.application.dto.StudySave;
 import toyproject.studyscheduler.study.domain.entity.Study;
 import toyproject.studyscheduler.study.repository.StudyRepository;
-import toyproject.studyscheduler.study.web.dto.StudyCreation;
+import toyproject.studyscheduler.study.web.dto.StudyDetail;
 import toyproject.studyscheduler.study.web.dto.StudyInAction;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Slf4j
@@ -26,11 +25,11 @@ public class StudyService {
 
     private final StudyRepository studyRepository;
 
-    public StudyCreation createStudy(StudySave studySaveDto, Long memberId) {
+    public StudyDetail createStudy(StudySave studySaveDto, Long memberId) {
         Member member = memberService.findMemberBy(memberId);
         Study savedStudy = studyRepository.save(studySaveDto.toStudy(member));
 
-        return StudyCreation.of(savedStudy);
+        return StudyDetail.of(savedStudy);
     }
 
     public List<StudyInAction> findStudiesByPeriod(Period period, long memberId) {

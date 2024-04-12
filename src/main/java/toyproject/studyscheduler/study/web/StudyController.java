@@ -10,7 +10,7 @@ import toyproject.studyscheduler.common.validator.period.ValidatorGroupSequence;
 import toyproject.studyscheduler.study.application.StudyService;
 import toyproject.studyscheduler.study.application.dto.Period;
 import toyproject.studyscheduler.study.application.dto.StudySave;
-import toyproject.studyscheduler.study.web.dto.StudyCreation;
+import toyproject.studyscheduler.study.web.dto.StudyDetail;
 import toyproject.studyscheduler.study.web.dto.StudyInAction;
 
 import java.util.List;
@@ -27,7 +27,7 @@ public class StudyController {
      * 종료되지 않은 스터디는 예상 종료일을 계산해 같이 반환한다.
      */
     @PostMapping
-    public StudyCreation studySave(@RequestBody @Valid StudySave studySave, @LoginMember MemberInfo memberInfo) {
+    public StudyDetail studySave(@RequestBody @Valid StudySave studySave, @LoginMember MemberInfo memberInfo) {
         return studyService.createStudy(studySave, memberInfo.getMemberId());
     }
 
