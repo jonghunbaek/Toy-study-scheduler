@@ -72,12 +72,12 @@ class StudyControllerTest {
             Arguments.of(
                 "",
                 "2024-04-01",
-                ResponseForm.from(E90000, Map.of("startDate", "시작일은 필수 값입니다."))
+                ResponseForm.from(E90000, Map.of("startDate", "시작일은 필수 입력 값입니다."))
             ),
             Arguments.of(
                 "2024-04-01",
                 "",
-                ResponseForm.from(E90000, Map.of("endDate", "종료일은 필수 값입니다."))
+                ResponseForm.from(E90000, Map.of("endDate", "종료일은 필수 입력 값입니다."))
             ),
             Arguments.of(
                 "2024-04-11",
