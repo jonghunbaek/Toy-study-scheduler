@@ -39,7 +39,6 @@ public class StudyController {
         return studyService.findStudyById(studyId);
     }
 
-    // TODO :: 날짜 형식이 잘못된 경우에 대한 예외 처리 필요
     /**
      * 특정 기간 동안 수행한 학습 전체를 조회한다.
      */
