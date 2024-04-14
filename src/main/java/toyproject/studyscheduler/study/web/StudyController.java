@@ -12,6 +12,7 @@ import toyproject.studyscheduler.common.validator.period.ValidatorGroupSequence;
 import toyproject.studyscheduler.study.application.StudyService;
 import toyproject.studyscheduler.study.application.dto.Period;
 import toyproject.studyscheduler.study.application.dto.StudySave;
+import toyproject.studyscheduler.study.application.dto.StudyUpdate;
 import toyproject.studyscheduler.study.web.dto.StudyDetail;
 import toyproject.studyscheduler.study.web.dto.StudyInAction;
 
@@ -48,5 +49,10 @@ public class StudyController {
         @LoginMember MemberInfo memberInfo) {
 
         return studyService.findStudiesByPeriod(period, memberInfo.getMemberId());
+    }
+
+    @PutMapping("/{studyId}")
+    public void studyUpdate(@PathVariable Long studyId, @RequestBody @Valid StudyUpdate studyUpdate) {
+        studyService.updateStudy(studyId, studyUpdate);
     }
 }
