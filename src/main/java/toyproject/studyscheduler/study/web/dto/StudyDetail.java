@@ -14,6 +14,7 @@ import static toyproject.studyscheduler.study.domain.StudyPeriod.*;
 @NoArgsConstructor
 public abstract class StudyDetail {
 
+    private Long studyId;
     private String title;
     private String description;
     private boolean isTermination;
@@ -23,7 +24,8 @@ public abstract class StudyDetail {
     private int planMinutesInWeekday;
     private int planMinutesInWeekend;
 
-    protected StudyDetail(String title, String description, boolean isTermination, LocalDate startDate, LocalDate endDate, LocalDate expectedEndDate, int planMinutesInWeekday, int planMinutesInWeekend) {
+    protected StudyDetail(Long studyId, String title, String description, boolean isTermination, LocalDate startDate, LocalDate endDate, LocalDate expectedEndDate, int planMinutesInWeekday, int planMinutesInWeekend) {
+        this.studyId = studyId;
         this.title = title;
         this.description = description;
         this.isTermination = isTermination;
@@ -35,6 +37,7 @@ public abstract class StudyDetail {
     }
 
     public static StudyDetail of(Study study) {
+        Long studyId = study.getId();
         String title = study.getStudyInformation().getTitle();
         String description = study.getStudyInformation().getDescription();
         boolean isTermination = study.getStudyInformation().isTermination();
@@ -49,14 +52,15 @@ public abstract class StudyDetail {
         }
 
         if (study instanceof Lecture) {
-            return createLecture((Lecture) study, title, description, isTermination, startDate, endDate, planMinutesInWeekday, planMinutesInWeekend, expectedEndDate);
+            return createLecture((Lecture) study, studyId, title, description, isTermination, startDate, endDate, planMinutesInWeekday, planMinutesInWeekend, expectedEndDate);
         }
 
-        return createReading((Reading) study, title, description, isTermination, startDate, endDate, planMinutesInWeekday, planMinutesInWeekend, expectedEndDate);
+        return createReading((Reading) study, studyId, title, description, isTermination, startDate, endDate, planMinutesInWeekday, planMinutesInWeekend, expectedEndDate);
     }
 
-    private static ReadingDetail createReading(Reading reading, String title, String description, boolean isTermination, LocalDate startDate, LocalDate endDate, int planMinutesInWeekday, int planMinutesInWeekend, LocalDate expectedEndDate) {
+    private static ReadingDetail createReading(Reading reading, Long studyId, String title, String description, boolean isTermination, LocalDate startDate, LocalDate endDate, int planMinutesInWeekday, int planMinutesInWeekend, LocalDate expectedEndDate) {
         return ReadingDetail.builder()
+            .studyId(studyId)
             .title(title)
             .description(description)
             .isTermination(isTermination)
@@ -71,8 +75,9 @@ public abstract class StudyDetail {
             .build();
     }
 
-    private static LectureDetail createLecture(Lecture lecture, String title, String description, boolean isTermination, LocalDate startDate, LocalDate endDate, int planMinutesInWeekday, int planMinutesInWeekend, LocalDate expectedEndDate) {
+    private static LectureDetail createLecture(Lecture lecture, Long studyId, String title, String description, boolean isTermination, LocalDate startDate, LocalDate endDate, int planMinutesInWeekday, int planMinutesInWeekend, LocalDate expectedEndDate) {
         return LectureDetail.builder()
+            .studyId(studyId)
             .title(title)
             .description(description)
             .isTermination(isTermination)
