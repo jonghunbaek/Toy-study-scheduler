@@ -138,7 +138,7 @@ class StudyServiceTest {
         LectureUpdate lectureUpdate = createLectureUpdate(LocalDate.of(2024, 4, 11), null, 10, 30);
 
         // when
-        studyService.updateStudy(lectureUpdate);
+        studyService.updateStudy(studyDetail.getStudyId(), lectureUpdate);
         StudyDetail updatedStudy = studyService.findStudyById(studyDetail.getStudyId());
 
         // then

@@ -3,7 +3,6 @@ package toyproject.studyscheduler.study.application.dto;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import jakarta.validation.constraints.*;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 import toyproject.studyscheduler.study.domain.StudyInformation;
 import toyproject.studyscheduler.study.domain.StudyPeriod;
@@ -29,11 +28,6 @@ public abstract class StudyUpdate {
 
     private String studyType;
 
-    @Getter
-    @NotNull(message = "학습 id는 필수 값입니다.")
-    @Min(1)
-    private Long studyId;
-
     @NotBlank(message = "제목은 필수 값입니다.")
     private String title;
 
@@ -53,9 +47,8 @@ public abstract class StudyUpdate {
     @Min(message = "학습 계획 시간은 최소 1분 이상이어야 합니다.", value = 1)
     private int planMinutesInWeekend;
 
-    protected StudyUpdate(String studyType, Long studyId, String title, String description, LocalDate startDate, LocalDate endDate, int planMinutesInWeekday, int planMinutesInWeekend) {
+    protected StudyUpdate(String studyType, String title, String description, LocalDate startDate, LocalDate endDate, int planMinutesInWeekday, int planMinutesInWeekend) {
         this.studyType = studyType;
-        this.studyId = studyId;
         this.title = title;
         this.description = description;
         this.startDate = startDate;

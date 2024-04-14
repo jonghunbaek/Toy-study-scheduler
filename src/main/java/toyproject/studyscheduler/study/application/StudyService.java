@@ -50,8 +50,8 @@ public class StudyService {
             .toList();
     }
 
-    public void updateStudy(StudyUpdate studyUpdate) {
-        Study study = findById(studyUpdate.getStudyId());
+    public void updateStudy(Long studyId, StudyUpdate studyUpdate) {
+        Study study = findById(studyId);
 
         studyUpdate.update(study);
     }

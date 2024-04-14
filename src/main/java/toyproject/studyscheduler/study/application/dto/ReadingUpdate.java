@@ -3,7 +3,6 @@ package toyproject.studyscheduler.study.application.dto;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import lombok.Builder;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 import toyproject.studyscheduler.study.domain.StudyInformation;
 import toyproject.studyscheduler.study.domain.StudyPeriod;
@@ -28,7 +27,7 @@ public class ReadingUpdate extends StudyUpdate {
 
     @Builder
     private ReadingUpdate(String studyType, Long studyId, String title, String description, LocalDate startDate, LocalDate endDate, int planMinutesInWeekday, int planMinutesInWeekend, String authorName, int totalPage, int readPagePerMin) {
-        super(studyType, studyId, title, description, startDate, endDate, planMinutesInWeekday, planMinutesInWeekend);
+        super(studyType, title, description, startDate, endDate, planMinutesInWeekday, planMinutesInWeekend);
         this.authorName = authorName;
         this.totalPage = totalPage;
         this.readPagePerMin = readPagePerMin;
