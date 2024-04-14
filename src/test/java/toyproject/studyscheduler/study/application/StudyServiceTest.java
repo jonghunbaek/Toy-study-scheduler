@@ -1,5 +1,6 @@
 package toyproject.studyscheduler.study.application;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,17 +8,21 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 import toyproject.studyscheduler.study.application.dto.LectureSave;
+import toyproject.studyscheduler.study.application.dto.LectureUpdate;
 import toyproject.studyscheduler.study.application.dto.Period;
 import toyproject.studyscheduler.study.application.dto.ReadingSave;
+import toyproject.studyscheduler.study.domain.StudyPeriod;
 import toyproject.studyscheduler.study.exception.StudyException;
 import toyproject.studyscheduler.study.web.dto.LectureDetail;
 import toyproject.studyscheduler.study.web.dto.ReadingDetail;
+import toyproject.studyscheduler.study.web.dto.StudyDetail;
 import toyproject.studyscheduler.study.web.dto.StudyInAction;
 
 import java.time.LocalDate;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
 import static toyproject.studyscheduler.study.domain.StudyPeriod.*;
 
 @Transactional
@@ -32,7 +37,7 @@ class StudyServiceTest {
     @Test
     void createLectureWhenTerminated() {
         // given
-        LectureSave lectureSave = createLectureSaveDto("김영한의 Spring", true, LocalDate.of(2024,4,1),LocalDate.of(2024,4,21));
+        LectureSave lectureSave = createLectureSave("김영한의 Spring", true, LocalDate.of(2024,4,1),LocalDate.of(2024,4,21));
 
         // when
         LectureDetail studyDto = (LectureDetail) studyService.createStudy(lectureSave, 1L);
@@ -45,7 +50,7 @@ class StudyServiceTest {
     @Test
     void createLectureWhenStarting() {
         // given
-        LectureSave lectureSave = createLectureSaveDto("김영한의 Spring", false, LocalDate.of(2024, 4, 1), null);
+        LectureSave lectureSave = createLectureSave("김영한의 Spring", false, LocalDate.of(2024, 4, 1), null);
 
         // when
         LectureDetail studyDto = (LectureDetail) studyService.createStudy(lectureSave, 1L);
@@ -59,7 +64,7 @@ class StudyServiceTest {
     @Test
     void createReadingWhenTerminated() {
         // given
-        ReadingSave readingSave = createReadingSaveDto("클린 코드", true, LocalDate.of(2024,4,1),LocalDate.of(2024,4,21));
+        ReadingSave readingSave = createReadingSave("클린 코드", true, LocalDate.of(2024,4,1),LocalDate.of(2024,4,21));
 
         // when
         ReadingDetail studyDto = (ReadingDetail) studyService.createStudy(readingSave, 1L);
@@ -72,7 +77,7 @@ class StudyServiceTest {
     @Test
     void createReadingWhenStarting() {
         // given
-        ReadingSave readingSave = createReadingSaveDto("클린 코드", false, LocalDate.of(2024,4,1), null);
+        ReadingSave readingSave = createReadingSave("클린 코드", false, LocalDate.of(2024,4,1), null);
 
         ReadingDetail studyDto = (ReadingDetail) studyService.createStudy(readingSave, 1L);
 
@@ -85,16 +90,16 @@ class StudyServiceTest {
     @Test
     void getStudiesByPeriod() {
         // given
-        LectureSave lecture1 = createLectureSaveDto("김영한의 Spring", true, LocalDate.of(2024, 4, 1), LocalDate.of(2024, 4, 21));
+        LectureSave lecture1 = createLectureSave("김영한의 Spring", true, LocalDate.of(2024, 4, 1), LocalDate.of(2024, 4, 21));
         studyService.createStudy(lecture1, 1L);
 
-        LectureSave lecture2 = createLectureSaveDto("김영한의 JPA", true, LocalDate.of(2024, 4, 30), LocalDate.of(2024, 5, 21));
+        LectureSave lecture2 = createLectureSave("김영한의 JPA", true, LocalDate.of(2024, 4, 30), LocalDate.of(2024, 5, 21));
         studyService.createStudy(lecture2, 1L);
 
-        ReadingSave reading1 = createReadingSaveDto("클린 코드", false, LocalDate.of(2024, 3, 1), null);
+        ReadingSave reading1 = createReadingSave("클린 코드", false, LocalDate.of(2024, 3, 1), null);
         studyService.createStudy(reading1, 1L);
 
-        ReadingSave reading2 = createReadingSaveDto("모던 자바 인액션", true, LocalDate.of(2024, 3, 1), LocalDate.of(2024, 3,21));
+        ReadingSave reading2 = createReadingSave("모던 자바 인액션", true, LocalDate.of(2024, 3, 1), LocalDate.of(2024, 3,21));
         studyService.createStudy(reading2, 1L);
 
         LocalDate startDate = LocalDate.of(2024, 4, 1);
@@ -123,7 +128,44 @@ class StudyServiceTest {
             .hasMessage("일치하는 학습을 찾을 수 없습니다. detail => studyId :: 1");
     }
 
-    private ReadingSave createReadingSaveDto(String title, boolean isTermination, LocalDate startDate, LocalDate endDate) {
+    @DisplayName("종료되지 않은 학습 내용을 수정한다.")
+    @Test
+    void updateLecture() {
+        // given
+        LectureSave lectureSave = createLectureSave("변경 전 제목", false, LocalDate.of(2024, 4, 1), null);
+        StudyDetail studyDetail = studyService.createStudy(lectureSave, 1L);
+
+        LectureUpdate lectureUpdate = createLectureUpdate(LocalDate.of(2024, 4, 11), null, 10, 30);
+
+        // when
+        studyService.updateStudy(lectureUpdate);
+        StudyDetail updatedStudy = studyService.findStudyById(studyDetail.getStudyId());
+
+        // then
+        assertAll(
+                () -> assertEquals("변경 후 제목", updatedStudy.getTitle()),
+                () -> assertEquals(LocalDate.of(2024, 4, 11), updatedStudy.getStartDate()),
+                () -> assertEquals(10, updatedStudy.getPlanMinutesInWeekday()),
+                () -> assertEquals(30, updatedStudy.getPlanMinutesInWeekend()),
+                () -> assertEquals(TEMP_END_DATE, studyDetail.getEndDate())
+        );
+    }
+
+    private LectureUpdate createLectureUpdate(LocalDate startDate, LocalDate endDate, int planMinutesInWeekday, int planMinutesInWeekend) {
+        return LectureUpdate.builder()
+                .studyId(1L)
+                .title("변경 후 제목")
+                .description("변경 후 내용")
+                .startDate(startDate)
+                .endDate(endDate)
+                .planMinutesInWeekday(planMinutesInWeekday)
+                .planMinutesInWeekend(planMinutesInWeekend)
+                .teacherName("강사 이름 변경 후")
+                .totalRuntime(500)
+                .build();
+    }
+
+    private ReadingSave createReadingSave(String title, boolean isTermination, LocalDate startDate, LocalDate endDate) {
         return ReadingSave.builder()
             .title(title)
             .description("클린 코드 작성 방법")
@@ -138,7 +180,7 @@ class StudyServiceTest {
             .build();
     }
 
-    private LectureSave createLectureSaveDto(String title, boolean isTermination, LocalDate startDate, LocalDate endDate) {
+    private LectureSave createLectureSave(String title, boolean isTermination, LocalDate startDate, LocalDate endDate) {
         return LectureSave.builder()
             .title(title)
             .description("Spring강의")

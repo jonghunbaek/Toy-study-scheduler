@@ -34,4 +34,11 @@ public class Lecture extends Study {
     public int calculatePlanQuantityPerDay(int planMinutes) {
         return planMinutes;
     }
+
+    public void updateLecture(StudyInformation information, StudyPeriod period, StudyPlan plan, String teacherName, int totalRuntime) {
+        super.updateStudy(information, period, plan);
+
+        this.teacherName = teacherName;
+        this.totalRuntime = totalRuntime;
+    }
 }

@@ -53,6 +53,7 @@ public class StudyService {
     public void updateStudy(StudyUpdate studyUpdate) {
         Study study = findById(studyUpdate.getStudyId());
 
+        studyUpdate.update(study);
     }
 
     private Study findById(Long studyId) {
