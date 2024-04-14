@@ -5,11 +5,15 @@ import jakarta.validation.constraints.Min;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import toyproject.studyscheduler.study.domain.StudyInformation;
+import toyproject.studyscheduler.study.domain.StudyPeriod;
+import toyproject.studyscheduler.study.domain.StudyPlan;
+import toyproject.studyscheduler.study.domain.entity.Reading;
+import toyproject.studyscheduler.study.domain.entity.Study;
 
 import java.time.LocalDate;
 
 @NoArgsConstructor
-@Getter
 public class ReadingUpdate extends StudyUpdate {
 
     private String authorName;
@@ -28,5 +32,12 @@ public class ReadingUpdate extends StudyUpdate {
         this.authorName = authorName;
         this.totalPage = totalPage;
         this.readPagePerMin = readPagePerMin;
+    }
+
+    @Override
+    protected void updateStudy(Study study, StudyInformation information, StudyPeriod period, StudyPlan plan) {
+        Reading reading = (Reading) study;
+
+        reading.updateReading(information, period, plan, authorName, totalPage, readPagePerMin);
     }
 }

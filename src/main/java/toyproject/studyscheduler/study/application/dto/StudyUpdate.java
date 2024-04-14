@@ -5,9 +5,15 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import toyproject.studyscheduler.study.domain.StudyInformation;
+import toyproject.studyscheduler.study.domain.StudyPeriod;
+import toyproject.studyscheduler.study.domain.StudyPlan;
 import toyproject.studyscheduler.study.domain.StudyType;
+import toyproject.studyscheduler.study.domain.entity.Study;
 
 import java.time.LocalDate;
+
+import static toyproject.studyscheduler.study.domain.StudyPeriod.*;
 
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
@@ -16,14 +22,14 @@ import java.time.LocalDate;
 )
 @JsonSubTypes({
         @JsonSubTypes.Type(value = LectureUpdate.class, name = StudyType.Values.LECTURE),
-        @JsonSubTypes.Type(value = ReadingSave.class, name = StudyType.Values.READING)
+        @JsonSubTypes.Type(value = ReadingUpdate.class, name = StudyType.Values.READING)
 })
-@Getter
 @NoArgsConstructor
 public abstract class StudyUpdate {
 
     private String studyType;
 
+    @Getter
     @NotNull(message = "학습 id는 필수 값입니다.")
     @Min(1)
     private Long studyId;
@@ -37,8 +43,7 @@ public abstract class StudyUpdate {
     @NotNull(message = "시작일은 필수 값입니다.")
     private LocalDate startDate;
 
-    @NotNull(message = "시작일은 필수 값입니다.")
-    private LocalDate endDate;
+    private LocalDate endDate = TEMP_END_DATE;
 
     @Max(message = "학습 계획 시간은 최대 720분 이하여야 합니다.", value = 720)
     @Min(message = "학습 계획 시간은 최소 1분 이상이어야 합니다.", value = 1)
@@ -58,4 +63,38 @@ public abstract class StudyUpdate {
         this.planMinutesInWeekday = planMinutesInWeekday;
         this.planMinutesInWeekend = planMinutesInWeekend;
     }
+
+    public void update(Study study) {
+        boolean isTermination = study.getStudyInformation().isTermination();
+        StudyInformation information = createStudyInfo();
+        StudyPeriod period = createStudyPeriod(isTermination);
+        StudyPlan plan = createStudyPlan(isTermination);
+
+        updateStudy(study, information, period, plan);
+    }
+
+    private StudyInformation createStudyInfo() {
+        return StudyInformation.builder()
+                .title(this.title)
+                .description(this.description)
+                .build();
+    }
+
+    private StudyPeriod createStudyPeriod(boolean isTermination) {
+        if (isTermination) {
+            return fromTerminated(this.startDate, this.endDate);
+        }
+
+        return fromStarting(this.startDate);
+    }
+
+    private StudyPlan createStudyPlan(boolean isTermination) {
+        if (isTermination) {
+            return StudyPlan.fromTerminated();
+        }
+
+        return StudyPlan.fromStarting(this.planMinutesInWeekday, this.planMinutesInWeekend);
+    }
+
+    protected abstract void updateStudy(Study study, StudyInformation information, StudyPeriod period, StudyPlan plan);
 }

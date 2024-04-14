@@ -5,11 +5,16 @@ import jakarta.validation.constraints.Min;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import toyproject.studyscheduler.study.domain.StudyInformation;
+import toyproject.studyscheduler.study.domain.StudyPeriod;
+import toyproject.studyscheduler.study.domain.StudyPlan;
+import toyproject.studyscheduler.study.domain.entity.Lecture;
+import toyproject.studyscheduler.study.domain.entity.Reading;
+import toyproject.studyscheduler.study.domain.entity.Study;
 
 import java.time.LocalDate;
 
 @NoArgsConstructor
-@Getter
 public class LectureUpdate extends StudyUpdate {
 
     private String teacherName;
@@ -23,5 +28,12 @@ public class LectureUpdate extends StudyUpdate {
         super(studyType, studyId, title, description, startDate, endDate, planMinutesInWeekday, planMinutesInWeekend);
         this.teacherName = teacherName;
         this.totalRuntime = totalRuntime;
+    }
+
+    @Override
+    protected void updateStudy(Study study, StudyInformation information, StudyPeriod period, StudyPlan plan) {
+        Lecture lecture = (Lecture) study;
+
+        lecture.updateLecture(information, period, plan, teacherName, totalRuntime);
     }
 }
