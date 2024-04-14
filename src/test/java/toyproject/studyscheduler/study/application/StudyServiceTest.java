@@ -1,6 +1,5 @@
 package toyproject.studyscheduler.study.application;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +10,6 @@ import toyproject.studyscheduler.study.application.dto.LectureSave;
 import toyproject.studyscheduler.study.application.dto.LectureUpdate;
 import toyproject.studyscheduler.study.application.dto.Period;
 import toyproject.studyscheduler.study.application.dto.ReadingSave;
-import toyproject.studyscheduler.study.domain.StudyPeriod;
 import toyproject.studyscheduler.study.exception.StudyException;
 import toyproject.studyscheduler.study.web.dto.LectureDetail;
 import toyproject.studyscheduler.study.web.dto.ReadingDetail;
