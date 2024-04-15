@@ -3,6 +3,7 @@ package toyproject.studyscheduler.study.application.dto;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import toyproject.studyscheduler.study.domain.StudyInformation;
 import toyproject.studyscheduler.study.domain.StudyPeriod;
@@ -12,6 +13,7 @@ import toyproject.studyscheduler.study.domain.entity.Study;
 
 import java.time.LocalDate;
 
+@Getter
 @NoArgsConstructor
 public class ReadingUpdate extends StudyUpdate {
 

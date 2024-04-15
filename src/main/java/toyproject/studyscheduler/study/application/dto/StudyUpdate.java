@@ -3,6 +3,7 @@ package toyproject.studyscheduler.study.application.dto;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import jakarta.validation.constraints.*;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import toyproject.studyscheduler.study.domain.StudyInformation;
 import toyproject.studyscheduler.study.domain.StudyPeriod;
@@ -23,6 +24,7 @@ import static toyproject.studyscheduler.study.domain.StudyPeriod.*;
         @JsonSubTypes.Type(value = LectureUpdate.class, name = StudyType.Values.LECTURE),
         @JsonSubTypes.Type(value = ReadingUpdate.class, name = StudyType.Values.READING)
 })
+@Getter
 @NoArgsConstructor
 public abstract class StudyUpdate {
 

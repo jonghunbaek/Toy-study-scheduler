@@ -3,9 +3,11 @@ package toyproject.studyscheduler.study.web;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -18,6 +20,7 @@ import toyproject.studyscheduler.common.jwt.JwtAuthenticationFilter;
 import toyproject.studyscheduler.common.response.ResponseForm;
 import toyproject.studyscheduler.study.application.StudyService;
 import toyproject.studyscheduler.study.application.dto.LectureSave;
+import toyproject.studyscheduler.study.application.dto.LectureUpdate;
 import toyproject.studyscheduler.study.application.dto.Period;
 
 import java.time.LocalDate;
@@ -25,9 +28,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
+import static org.mockito.Mockito.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -203,5 +206,36 @@ class StudyControllerTest {
                 ResponseForm.of(E90001)
             )
         );
+    }
+
+    @WithMockUser
+    @DisplayName("학습 수정 api 요청을 테스트한다.")
+    @Test
+    void studyUpdate() throws Exception {
+        // given
+        LectureUpdate lectureUpdate = LectureUpdate.builder()
+            .studyType("lecture")
+            .title("김영한의 Spring")
+            .description("Spring강의")
+            .startDate(LocalDate.of(2024, 4, 1))
+            .endDate(LocalDate.of(2024, 4, 21))
+            .planMinutesInWeekday(30)
+            .planMinutesInWeekend(60) // planMinutesInWeekend의 min값에 대한 검증
+            .teacherName("김영한")
+            .totalRuntime(500)
+            .build();
+
+        String jsonRequest = objectMapper.writeValueAsString(lectureUpdate);
+
+        // when & then
+        mockMvc.perform(put("/studies/1")
+                .content(jsonRequest)
+                .contentType(MediaType.APPLICATION_JSON)
+                .with(csrf())
+            )
+            .andDo(print())
+            .andExpect(status().isOk());
+
+        verify(studyService, times(1)).updateStudy(any(), any());
     }
 }
