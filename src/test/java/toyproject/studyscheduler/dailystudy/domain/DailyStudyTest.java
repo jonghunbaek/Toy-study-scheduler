@@ -1,5 +1,6 @@
 package toyproject.studyscheduler.dailystudy.domain;
 
+import toyproject.studyscheduler.dailystudy.domain.entity.DailyStudy;
 import toyproject.studyscheduler.member.domain.entity.Member;
 import toyproject.studyscheduler.study.domain.entity.Study;
 import toyproject.studyscheduler.study.domain.entity.Lecture;

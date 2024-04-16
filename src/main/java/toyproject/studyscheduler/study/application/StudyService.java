@@ -56,7 +56,7 @@ public class StudyService {
         studyUpdate.update(study);
     }
 
-    private Study findById(Long studyId) {
+    public Study findById(Long studyId) {
         return studyRepository.findById(studyId)
             .orElseThrow(() -> new StudyException("studyId :: " + studyId, E30002));
     }

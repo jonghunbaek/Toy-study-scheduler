@@ -6,7 +6,7 @@ import org.springframework.test.context.ActiveProfiles;
 import toyproject.studyscheduler.member.domain.entity.Member;
 import toyproject.studyscheduler.member.repository.MemberRepository;
 import toyproject.studyscheduler.study.domain.entity.Study;
-import toyproject.studyscheduler.dailystudy.domain.DailyStudy;
+import toyproject.studyscheduler.dailystudy.domain.entity.DailyStudy;
 import toyproject.studyscheduler.study.domain.entity.Lecture;
 import toyproject.studyscheduler.study.domain.entity.Reading;
 import toyproject.studyscheduler.study.repository.StudyRepository;
