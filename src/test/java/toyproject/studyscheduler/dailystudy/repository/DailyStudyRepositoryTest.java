@@ -1,14 +1,12 @@
 package toyproject.studyscheduler.dailystudy.repository;
 
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
 import toyproject.studyscheduler.member.domain.entity.Member;
 import toyproject.studyscheduler.member.repository.MemberRepository;
 import toyproject.studyscheduler.study.domain.entity.Study;
-import toyproject.studyscheduler.dailystudy.domain.StudyTime;
+import toyproject.studyscheduler.dailystudy.domain.DailyStudy;
 import toyproject.studyscheduler.study.domain.entity.Lecture;
 import toyproject.studyscheduler.study.domain.entity.Reading;
 import toyproject.studyscheduler.study.repository.StudyRepository;
@@ -18,17 +16,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.tuple;
 
 
 @ActiveProfiles("test")
 @DataJpaTest
-class StudyTimeRepositoryTest {
+class DailyStudyRepositoryTest {
 
     @Autowired
     MemberRepository memberRepository;
     @Autowired
-    StudyTimeRepository studyTimeRepository;
+    DailyStudyRepository dailyStudyRepository;
     @Autowired
     StudyRepository studyRepository;
 
@@ -111,20 +108,19 @@ class StudyTimeRepositoryTest {
 //            );
 //    }
 
-    private List<StudyTime> createStudyTimes(Study study, List<LocalDate> dates, List<Integer> totalCompleteTimes, List<Integer> completeTimeTodays) {
-        List<StudyTime> studyTimes = new ArrayList<>();
+    private List<DailyStudy> createStudyTimes(Study study, List<LocalDate> dates, List<Integer> totalCompleteTimes, List<Integer> completeTimeTodays) {
+        List<DailyStudy> dailyStudies = new ArrayList<>();
         for (int i=0; i<dates.size(); i++) {
-            studyTimes.add(createStudyTime(study, dates.get(i), totalCompleteTimes.get(i), completeTimeTodays.get(i)));
+            dailyStudies.add(createStudyTime(study, dates.get(i), totalCompleteTimes.get(i), completeTimeTodays.get(i)));
         }
 
-        return studyTimes;
+        return dailyStudies;
     }
 
-    private StudyTime createStudyTime(Study study, LocalDate today, int totalCompleteTime, int completeTimeToday) {
-        return StudyTime.builder()
-                .totalCompleteTime(totalCompleteTime)
-                .date(today)
-                .completeTimeToday(completeTimeToday)
+    private DailyStudy createStudyTime(Study study, LocalDate today, int totalCompleteTime, int completeTimeToday) {
+        return DailyStudy.builder()
+                .studyDate(today)
+                .completeMinutesToday(completeTimeToday)
                 .study(study)
                 .build();
     }

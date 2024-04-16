@@ -7,13 +7,12 @@ import toyproject.studyscheduler.study.domain.entity.Lecture;
 import java.time.LocalDate;
 
 
-class StudyTimeTest {
+class DailyStudyTest {
 
-    private StudyTime createStudyTime(Study lecture, LocalDate today, int completeTimeToday, int totalCompleteTime) {
-        return StudyTime.builder()
-                .totalCompleteTime(totalCompleteTime)
-                .date(today)
-                .completeTimeToday(completeTimeToday)
+    private DailyStudy createStudyTime(Study lecture, LocalDate today, int completeTimeToday, int totalCompleteTime) {
+        return DailyStudy.builder()
+                .studyDate(today)
+                .completeMinutesToday(completeTimeToday)
                 .study(lecture)
                 .build();
     }
