@@ -13,4 +13,10 @@ public class DailyStudies {
     public DailyStudies(List<DailyStudy> dailyStudies) {
         this.dailyStudies = dailyStudies;
     }
+
+    public int calculateTotalStudyMinutes() {
+        return dailyStudies.stream()
+                .mapToInt(DailyStudy::getCompleteMinutesToday)
+                .sum();
+    }
 }
