@@ -23,12 +23,20 @@ public class DailyStudyService {
     private final DailyStudyRepository dailyStudyRepository;
 
     // TODO :: 일일 학습 생성 시 일일 학습일이 학습 시작일 이전인지 검증해야 함.
-    // TODO :: 일일 학습 생성 시 잔여 학습량 확인 후 학습 종료 여부를 확인해야 함.
     public DailyStudyCreation createDailyStudy(DailyStudySave dailyStudySave) {
         Study study = studyService.findById(dailyStudySave.getStudyId());
-        DailyStudies dailyStudies = new DailyStudies(dailyStudyRepository.findAllByStudy(study));
+        study.getStudyInformation().validateTermination();
+
         DailyStudy dailyStudy = dailyStudyRepository.save(dailyStudySave.toEntity(study));
 
-        return DailyStudyCreation.of(dailyStudy);
+        return DailyStudyCreation.of(dailyStudy, isStudyTerminated(study));
+    }
+
+    private boolean isStudyTerminated(Study study) {
+        DailyStudies dailyStudies = new DailyStudies(dailyStudyRepository.findAllByStudy(study));
+
+        int totalMinutes = dailyStudies.calculateTotalStudyMinutes();
+
+        return study.terminateIfSatisfiedStudyQuantity(totalMinutes);
     }
 }

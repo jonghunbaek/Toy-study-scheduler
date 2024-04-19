@@ -17,14 +17,17 @@ public class DailyStudyCreation {
 
     private LocalDate studyDate;
 
-    private DailyStudyCreation(Long dailyStudyId, String content, int completeMinutesToday, LocalDate studyDate) {
+    private boolean isTermination;
+
+    private DailyStudyCreation(Long dailyStudyId, String content, int completeMinutesToday, LocalDate studyDate, boolean isTermination) {
         this.dailyStudyId = dailyStudyId;
         this.content = content;
         this.completeMinutesToday = completeMinutesToday;
         this.studyDate = studyDate;
+        this.isTermination = isTermination;
     }
 
-    public static DailyStudyCreation of(DailyStudy dailyStudy) {
-        return new DailyStudyCreation(dailyStudy.getId(), dailyStudy.getContent(), dailyStudy.getCompleteMinutesToday(), dailyStudy.getStudyDate());
+    public static DailyStudyCreation of(DailyStudy dailyStudy, boolean isTermination) {
+        return new DailyStudyCreation(dailyStudy.getId(), dailyStudy.getContent(), dailyStudy.getCompleteMinutesToday(), dailyStudy.getStudyDate(), isTermination);
     }
 }
