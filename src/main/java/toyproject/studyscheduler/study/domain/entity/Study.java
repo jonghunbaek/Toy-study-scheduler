@@ -66,6 +66,12 @@ public abstract class Study extends BaseEntity {
     // TODO :: DailyStudy 잔여 학습양을 조회할 수 있는 메서드 추가 및 아래 메서드 public 변경 필요
     protected abstract int calculatePlanQuantityPerDay(int planMinutesInWeekday);
 
+    public abstract boolean terminateIfSatisfiedStudyQuantity(int totalMinutes);
+
+    protected void terminate() {
+        studyInformation.terminate();
+    }
+
     protected void updateStudy(StudyInformation information, StudyPeriod period, StudyPlan plan) {
         this.studyInformation = information;
         this.studyPeriod = period;

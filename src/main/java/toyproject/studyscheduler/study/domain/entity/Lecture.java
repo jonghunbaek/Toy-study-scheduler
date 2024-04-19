@@ -41,4 +41,14 @@ public class Lecture extends Study {
         this.teacherName = teacherName;
         this.totalRuntime = totalRuntime;
     }
+
+    @Override
+    public boolean terminateIfSatisfiedStudyQuantity(int totalMinutes) {
+        if (totalMinutes >= totalRuntime) {
+            terminate();
+            return true;
+        }
+
+        return false;
+    }
 }

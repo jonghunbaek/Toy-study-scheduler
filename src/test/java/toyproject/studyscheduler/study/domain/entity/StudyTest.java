@@ -30,6 +30,22 @@ class StudyTest {
             .hasMessage("해당 학습은 이미 종료되었습니다.");
     }
 
+    @DisplayName("실제 수행한 총 학습 시간이 예정된 학습량 이상이면 학습을 종료한다.")
+    @Test
+    void terminateIfSatisfiedStudyQuantity() {
+        // given
+        StudyInformation information = createInformation("클린 코드", "클린 코드 작성", false);
+        StudyPeriod period = StudyPeriod.fromStarting(LocalDate.of(2024, 4, 1));
+        StudyPlan plan = StudyPlan.fromStarting(30, 60);
+        Reading reading = createReading(information, period, plan, null);
+
+        // when
+        boolean isTermination = reading.terminateIfSatisfiedStudyQuantity(300);
+
+        // then
+        assertThat(isTermination).isEqualTo(reading.getStudyInformation().isTermination());
+    }
+
     private Reading createReading(StudyInformation information, StudyPeriod period, StudyPlan plan, Member member) {
         return Reading.builder()
             .studyInformation(information)

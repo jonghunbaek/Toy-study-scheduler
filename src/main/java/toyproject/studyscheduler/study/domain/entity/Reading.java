@@ -47,4 +47,16 @@ public class Reading extends Study {
         this.totalPage = totalPage;
         this.readPagePerMin = readPagePerMin;
     }
+
+    @Override
+    public boolean terminateIfSatisfiedStudyQuantity(int totalMinutes) {
+        int pagesRead = readPagePerMin * totalMinutes;
+
+        if (pagesRead >= totalPage) {
+            terminate();
+            return true;
+        }
+
+        return false;
+    }
 }
