@@ -29,4 +29,8 @@ public class StudyInformation {
             throw new StudyException(ResponseCode.E30000);
         }
     }
+
+    public void terminate() {
+        this.isTermination = true;
+    }
 }
