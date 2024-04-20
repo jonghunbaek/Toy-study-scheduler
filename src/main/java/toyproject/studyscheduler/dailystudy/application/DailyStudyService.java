@@ -12,7 +12,6 @@ import toyproject.studyscheduler.dailystudy.web.dto.RemainingStudyDays;
 import toyproject.studyscheduler.study.application.StudyService;
 import toyproject.studyscheduler.study.domain.entity.Study;
 
-import java.time.Duration;
 import java.time.LocalDate;
 import java.time.Period;
 
