@@ -10,8 +10,11 @@ import toyproject.studyscheduler.study.domain.PeriodCalculator;
 import toyproject.studyscheduler.study.domain.StudyInformation;
 import toyproject.studyscheduler.study.domain.StudyPeriod;
 import toyproject.studyscheduler.study.domain.StudyPlan;
+import toyproject.studyscheduler.study.exception.StudyException;
 
 import java.time.LocalDate;
+
+import static toyproject.studyscheduler.common.response.ResponseCode.*;
 
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -76,5 +79,11 @@ public abstract class Study extends BaseEntity {
         this.studyInformation = information;
         this.studyPeriod = period;
         this.studyPlan = plan;
+    }
+
+    public void validateStudyDateEarlierThanStartDate(LocalDate studyDate) {
+        if (studyDate.isBefore(studyPeriod.getStartDate())) {
+            throw new StudyException("studyDate :: " + studyDate, E30003);
+        }
     }
 }

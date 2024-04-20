@@ -12,7 +12,7 @@ import java.time.LocalDate;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
+import static toyproject.studyscheduler.common.exception.GlobalException.*;
 
 class StudyTest {
 
@@ -44,6 +44,22 @@ class StudyTest {
 
         // then
         assertThat(isTermination).isEqualTo(reading.getStudyInformation().isTermination());
+    }
+
+    @DisplayName("일일 학습 수행일이 학습 시작일 보다 빠르면 예외를 발생한다.")
+    @Test
+    void validateStudyDateEarlierThanStartDate() {
+        // given
+        StudyInformation information = createInformation("클린 코드", "클린 코드 작성", false);
+        StudyPeriod period = StudyPeriod.fromStarting(LocalDate.of(2024, 4, 1));
+        StudyPlan plan = StudyPlan.fromStarting(30, 60);
+        Reading reading = createReading(information, period, plan, null);
+
+        // when & then
+        assertThatThrownBy(() -> reading.validateStudyDateEarlierThanStartDate(LocalDate.of(2024,3,31)))
+            .isInstanceOf(StudyException.class)
+            .hasMessage("학습 수행일이 학습 시작일 보다 빠릅니다." + DETAIL_DELIMITER + "studyDate :: " + "2024-03-31");
+
     }
 
     private Reading createReading(StudyInformation information, StudyPeriod period, StudyPlan plan, Member member) {
