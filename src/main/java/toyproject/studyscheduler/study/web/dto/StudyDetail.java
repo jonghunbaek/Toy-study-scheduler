@@ -48,7 +48,7 @@ public abstract class StudyDetail {
 
         LocalDate expectedEndDate = TEMP_END_DATE;
         if (!isTermination) {
-            expectedEndDate = study.calculateExpectedDate();
+            expectedEndDate = study.calculateExpectedDate(0, startDate);
         }
 
         if (study instanceof Lecture) {

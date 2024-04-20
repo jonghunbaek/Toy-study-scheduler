@@ -24,7 +24,7 @@ class LectureTest {
         Lecture lecture = createLecture(information, period, plan, null);
 
         // when
-        LocalDate expectedDate = lecture.calculateExpectedDate();
+        LocalDate expectedDate = lecture.calculateExpectedDate(0, period.getStartDate());
 
         // then
         assertThat(expectedDate).isEqualTo(LocalDate.of(2024,4,14));

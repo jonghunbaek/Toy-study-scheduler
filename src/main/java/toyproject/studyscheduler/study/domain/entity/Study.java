@@ -47,14 +47,13 @@ public abstract class Study extends BaseEntity {
         this.member = member;
     }
 
-    public LocalDate calculateExpectedDate() {
+    public LocalDate calculateExpectedDate(int totalStudyMinutes, LocalDate calculationStartDate) {
         studyInformation.validateTermination();
 
-        PeriodCalculator calculator = PeriodCalculator.from(studyPlan, studyPeriod.getStartDate());
-        int expectedPeriod = calculator.calculateExpectedPeriod(getTotalMinutes());
+        PeriodCalculator calculator = PeriodCalculator.from(studyPlan, calculationStartDate);
+        int expectedPeriod = calculator.calculateExpectedPeriod(getTotalMinutes() - totalStudyMinutes);
 
-        return studyPeriod.getStartDate()
-            .plusDays(expectedPeriod - 1);
+        return calculationStartDate.plusDays(expectedPeriod - 1);
     }
 
     protected abstract int getTotalMinutes();

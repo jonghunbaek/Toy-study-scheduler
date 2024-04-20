@@ -23,7 +23,7 @@ class ReadingTest {
         Reading reading = createReading(information, period, plan, null);
 
         // when
-        LocalDate expectedDate = reading.calculateExpectedDate();
+        LocalDate expectedDate = reading.calculateExpectedDate(0, period.getStartDate());
 
         // then
         assertThat(expectedDate).isEqualTo(LocalDate.of(2024,4,8));

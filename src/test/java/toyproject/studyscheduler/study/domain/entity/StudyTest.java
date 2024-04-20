@@ -25,7 +25,7 @@ class StudyTest {
         Reading reading = createReading(information, period, plan, null);
 
         // when & then
-        assertThatThrownBy(() -> reading.calculateExpectedDate())
+        assertThatThrownBy(() -> reading.calculateExpectedDate(0, null))
             .isInstanceOf(StudyException.class)
             .hasMessage("해당 학습은 이미 종료되었습니다.");
     }
