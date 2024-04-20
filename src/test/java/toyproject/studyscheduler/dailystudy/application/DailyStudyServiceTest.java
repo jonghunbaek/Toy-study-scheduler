@@ -1,6 +1,5 @@
 package toyproject.studyscheduler.dailystudy.application;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +7,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 import toyproject.studyscheduler.dailystudy.application.dto.DailyStudySave;
+import toyproject.studyscheduler.dailystudy.domain.entity.DailyStudy;
+import toyproject.studyscheduler.dailystudy.repository.DailyStudyRepository;
 import toyproject.studyscheduler.dailystudy.web.dailystudy.DailyStudyCreation;
 import toyproject.studyscheduler.study.application.StudyService;
 import toyproject.studyscheduler.study.application.dto.LectureSave;
@@ -28,6 +29,28 @@ class DailyStudyServiceTest {
     StudyService studyService;
     @Autowired
     DailyStudyService dailyStudyService;
+    @Autowired
+    DailyStudyRepository dailyStudyRepository;
+
+    @DisplayName("일일 학습을 생성할 때 실제 수행한 총 학습시간이 예정된 학습량 이상이 되면 학습을 종료처리한다.")
+    @Test
+    void creatDailyStudyWhenSatisfiedTerminationCondition() {
+        // given
+        LectureSave lectureSave = createLectureSave("김영한의 Spring", false, LocalDate.of(2024, 4, 1), null);
+        studyService.createStudy(lectureSave, 1L);
+        DailyStudySave dailyStudySave = new DailyStudySave(1L, "오늘 학습한 내용", 500, LocalDate.of(2024, 4, 20));
+
+        // when
+        DailyStudyCreation dailyStudyCreation = dailyStudyService.createDailyStudy(dailyStudySave);
+        DailyStudy dailyStudy = dailyStudyRepository.findById(dailyStudyCreation.getDailyStudyId())
+            .orElseThrow();
+
+        // then
+        assertAll(
+            () -> assertTrue(dailyStudyCreation.isTermination()),
+            () -> assertEquals(LocalDate.of(2024, 4, 20), dailyStudy.getStudy().getStudyPeriod().getEndDate())
+        );
+    }
 
     @DisplayName("종료된 학습의 일일 학습을 생성하면 예외가 발생한다.")
     @Test

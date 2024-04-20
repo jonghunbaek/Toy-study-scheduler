@@ -11,6 +11,8 @@ import toyproject.studyscheduler.dailystudy.web.dailystudy.DailyStudyCreation;
 import toyproject.studyscheduler.study.application.StudyService;
 import toyproject.studyscheduler.study.domain.entity.Study;
 
+import java.time.LocalDate;
+
 @RequiredArgsConstructor
 @Transactional
 @Service
@@ -20,11 +22,12 @@ public class DailyStudyService {
 
     private final DailyStudyRepository dailyStudyRepository;
 
+    // TODO :: 일일 학습 등록 후 남은 학습일을 계산해서 반환해줘야함
     public DailyStudyCreation createDailyStudy(DailyStudySave dailyStudySave) {
         Study study = getStudyAndValidateTermination(dailyStudySave.getStudyId());
         DailyStudy dailyStudy = createDailyStudyAfterValidation(dailyStudySave, study);
 
-        return DailyStudyCreation.of(dailyStudy, isStudyTerminated(study));
+        return DailyStudyCreation.of(dailyStudy, isStudyTerminated(study, dailyStudy.getStudyDate()));
     }
 
     private Study getStudyAndValidateTermination(Long studyId) {
@@ -41,11 +44,11 @@ public class DailyStudyService {
         return dailyStudyRepository.save(dailyStudySave.toEntity(study));
     }
 
-    private boolean isStudyTerminated(Study study) {
+    private boolean isStudyTerminated(Study study, LocalDate studyDate) {
         DailyStudies dailyStudies = new DailyStudies(dailyStudyRepository.findAllByStudy(study));
 
         int totalMinutes = dailyStudies.calculateTotalStudyMinutes();
 
-        return study.terminateIfSatisfiedStudyQuantity(totalMinutes);
+        return study.terminateIfSatisfiedStudyQuantity(totalMinutes, studyDate);
     }
 }
