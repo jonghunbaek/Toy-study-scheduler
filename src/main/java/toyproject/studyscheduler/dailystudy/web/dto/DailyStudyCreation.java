@@ -1,6 +1,5 @@
-package toyproject.studyscheduler.dailystudy.web.dailystudy;
+package toyproject.studyscheduler.dailystudy.web.dto;
 
-import lombok.Builder;
 import lombok.Getter;
 import toyproject.studyscheduler.dailystudy.domain.entity.DailyStudy;
 

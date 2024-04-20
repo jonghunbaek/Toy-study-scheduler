@@ -9,7 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 import toyproject.studyscheduler.dailystudy.application.dto.DailyStudySave;
 import toyproject.studyscheduler.dailystudy.domain.entity.DailyStudy;
 import toyproject.studyscheduler.dailystudy.repository.DailyStudyRepository;
-import toyproject.studyscheduler.dailystudy.web.dailystudy.DailyStudyCreation;
+import toyproject.studyscheduler.dailystudy.web.dto.DailyStudyCreation;
+import toyproject.studyscheduler.dailystudy.web.dto.RemainingStudyDays;
 import toyproject.studyscheduler.study.application.StudyService;
 import toyproject.studyscheduler.study.application.dto.LectureSave;
 import toyproject.studyscheduler.study.exception.StudyException;
@@ -79,6 +80,32 @@ class DailyStudyServiceTest {
         assertThatThrownBy(() -> dailyStudyService.createDailyStudy(dailyStudySave))
             .isInstanceOf(StudyException.class)
             .hasMessage("학습 수행일이 학습 시작일 보다 빠릅니다." + DETAIL_DELIMITER + "studyDate :: " + "2024-03-31");
+    }
+
+    @DisplayName("오늘 날짜를 기준으로 남은 학습 기간, 예상 종료일을 구한다.")
+    @Test
+    void calculateExpectedEndDate() {
+        // given
+        LectureSave lecture = createLectureSave("김영한의 Spring", false, LocalDate.of(2024, 4, 1), null);
+        StudyDetail studyDetail = studyService.createStudy(lecture, 1L);
+
+        DailyStudySave dailyStudySave1 = new DailyStudySave(studyDetail.getStudyId(), "오늘 학습한 내용", 30, LocalDate.of(2024, 4, 1));
+        DailyStudySave dailyStudySave2 = new DailyStudySave(studyDetail.getStudyId(), "오늘 학습한 내용", 20, LocalDate.of(2024, 4, 3));
+        DailyStudySave dailyStudySave3 = new DailyStudySave(studyDetail.getStudyId(), "오늘 학습한 내용", 50, LocalDate.of(2024, 4, 5));
+        dailyStudyService.createDailyStudy(dailyStudySave1);
+        dailyStudyService.createDailyStudy(dailyStudySave2);
+        dailyStudyService.createDailyStudy(dailyStudySave3);
+
+        LocalDate now = LocalDate.of(2024, 4, 6);
+
+        // when
+        RemainingStudyDays remainingStudyDays = dailyStudyService.calculateExpectedEndDate(studyDetail.getStudyId(), now);
+
+        // then
+        assertAll(
+            () -> assertEquals(LocalDate.of(2024,4,14), studyDetail.getExpectedEndDate()), // 최초 예상 종료일
+            () -> assertEquals(LocalDate.of(2024,4,15), remainingStudyDays.getExpectedEndDate())  // 학습 중 예상 종료일
+        );
     }
 
     private LectureSave createLectureSave(String title, boolean isTermination, LocalDate startDate, LocalDate endDate) {
