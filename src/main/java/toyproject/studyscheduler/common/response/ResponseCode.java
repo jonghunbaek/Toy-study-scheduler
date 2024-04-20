@@ -31,6 +31,7 @@ public enum ResponseCode {
     E30000("해당 학습은 이미 종료되었습니다.", BAD_REQUEST),
     E30001("종료일이 시작일보다 앞서있습니다.", BAD_REQUEST),
     E30002("일치하는 학습을 찾을 수 없습니다.", BAD_REQUEST),
+    E30003("학습 수행일이 학습 시작일 보다 빠릅니다.", BAD_REQUEST),
 
     // input validation
     E90000("잘못된 입력 값이 존재합니다.", BAD_REQUEST),

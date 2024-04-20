@@ -11,6 +11,7 @@ import toyproject.studyscheduler.dailystudy.application.dto.DailyStudySave;
 import toyproject.studyscheduler.dailystudy.web.dailystudy.DailyStudyCreation;
 import toyproject.studyscheduler.study.application.StudyService;
 import toyproject.studyscheduler.study.application.dto.LectureSave;
+import toyproject.studyscheduler.study.exception.StudyException;
 
 import java.time.LocalDate;
 
@@ -27,7 +28,7 @@ class DailyStudyServiceTest {
     @Autowired
     DailyStudyService dailyStudyService;
 
-    @DisplayName("일일 학습을 생성한다.")
+    @DisplayName("종료된 학습의 일일 학습을 생성하면 예외가 발생한다.")
     @Test
     void createDailyStudy() {
         // given
@@ -35,11 +36,10 @@ class DailyStudyServiceTest {
         studyService.createStudy(lecture1, 1L);
         DailyStudySave dailyStudySave = new DailyStudySave(1L, "오늘 학습한 내용", 30, LocalDate.now());
 
-        // when
-        DailyStudyCreation dailyStudyCreation = dailyStudyService.createDailyStudy(dailyStudySave);
-
-        // then
-        assertThat(dailyStudyCreation.getCompleteMinutesToday()).isEqualTo(30);
+        // when & then
+        assertThatThrownBy(() -> dailyStudyService.createDailyStudy(dailyStudySave))
+            .isInstanceOf(StudyException.class)
+            .hasMessage("해당 학습은 이미 종료되었습니다.");
     }
 
     private LectureSave createLectureSave(String title, boolean isTermination, LocalDate startDate, LocalDate endDate) {

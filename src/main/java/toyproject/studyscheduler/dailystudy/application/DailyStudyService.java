@@ -11,8 +11,6 @@ import toyproject.studyscheduler.dailystudy.web.dailystudy.DailyStudyCreation;
 import toyproject.studyscheduler.study.application.StudyService;
 import toyproject.studyscheduler.study.domain.entity.Study;
 
-import java.util.List;
-
 @RequiredArgsConstructor
 @Transactional
 @Service
@@ -22,14 +20,25 @@ public class DailyStudyService {
 
     private final DailyStudyRepository dailyStudyRepository;
 
-    // TODO :: 일일 학습 생성 시 일일 학습일이 학습 시작일 이전인지 검증해야 함.
     public DailyStudyCreation createDailyStudy(DailyStudySave dailyStudySave) {
-        Study study = studyService.findById(dailyStudySave.getStudyId());
-        study.getStudyInformation().validateTermination();
-
-        DailyStudy dailyStudy = dailyStudyRepository.save(dailyStudySave.toEntity(study));
+        Study study = getStudyAndValidateTermination(dailyStudySave.getStudyId());
+        DailyStudy dailyStudy = createDailyStudyAfterValidation(dailyStudySave, study);
 
         return DailyStudyCreation.of(dailyStudy, isStudyTerminated(study));
+    }
+
+    private Study getStudyAndValidateTermination(Long studyId) {
+        Study study = studyService.findById(studyId);
+
+        study.getStudyInformation().validateTermination();
+
+        return study;
+    }
+
+    private DailyStudy createDailyStudyAfterValidation(DailyStudySave dailyStudySave, Study study) {
+        study.validateStudyDateEarlierThanStartDate(dailyStudySave.getStudyDate());
+
+        return dailyStudyRepository.save(dailyStudySave.toEntity(study));
     }
 
     private boolean isStudyTerminated(Study study) {
