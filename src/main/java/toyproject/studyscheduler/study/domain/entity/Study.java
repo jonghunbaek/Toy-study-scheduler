@@ -50,23 +50,15 @@ public abstract class Study extends BaseEntity {
     public LocalDate calculateExpectedDate() {
         studyInformation.validateTermination();
 
-        PeriodCalculator calculator = createCalculator();
-        int expectedPeriod = calculator.calculateExpectedPeriod(getTotalQuantity());
+        PeriodCalculator calculator = PeriodCalculator.from(studyPlan, studyPeriod.getStartDate());
+        int expectedPeriod = calculator.calculateExpectedPeriod(getTotalMinutes());
 
         return studyPeriod.getStartDate()
             .plusDays(expectedPeriod - 1);
     }
 
-    private PeriodCalculator createCalculator() {
-        int planQuantityInWeekday = calculatePlanQuantityPerDay(studyPlan.getPlanMinutesInWeekday());
-        int planQuantityInWeekend = calculatePlanQuantityPerDay(studyPlan.getPlanMinutesInWeekend());
+    protected abstract int getTotalMinutes();
 
-        return new PeriodCalculator(planQuantityInWeekday, planQuantityInWeekend, studyPeriod.getStartDate());
-    }
-
-    protected abstract int getTotalQuantity();
-
-    // TODO :: DailyStudy 잔여 학습양을 조회할 수 있는 메서드 추가 및 아래 메서드 public 변경 필요
     protected abstract int calculatePlanQuantityPerDay(int planMinutesInWeekday);
 
     public abstract boolean terminateIfSatisfiedStudyQuantity(int totalMinutes, LocalDate studyDate);

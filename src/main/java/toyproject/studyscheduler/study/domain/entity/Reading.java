@@ -33,8 +33,8 @@ public class Reading extends Study {
     }
 
     @Override
-    public int getTotalQuantity() {
-        return this.totalPage;
+    public int getTotalMinutes() {
+        return (int) Math.ceil(((double) totalPage / readPagePerMin));
     }
 
     @Override

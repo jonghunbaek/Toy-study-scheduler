@@ -20,7 +20,7 @@ class PeriodCalculatorTest {
         int planTimeInWeekend = 120;
         int totalRunTime = 600;
         LocalDate startDate = LocalDate.of(2023, 9, 15);
-        PeriodCalculator periodCalculator = new PeriodCalculator(planTimeInWeekDay, planTimeInWeekend, startDate);
+        PeriodCalculator periodCalculator = createPeriodCalculator(planTimeInWeekDay, planTimeInWeekend, startDate);
 
         // when
         int period = periodCalculator.calculateExpectedPeriod(600);
@@ -39,13 +39,10 @@ class PeriodCalculatorTest {
         int readPagePerMin = 2;
         LocalDate startDate = LocalDate.of(2023, 9, 11);
 
-        PeriodCalculator periodCalculator = new PeriodCalculator(
-            planTimeInWeekDay * readPagePerMin,
-            planTimeInWeekend * readPagePerMin,
-            startDate);
+        PeriodCalculator periodCalculator = createPeriodCalculator(planTimeInWeekDay, planTimeInWeekend, startDate);
 
         // when
-        int period = periodCalculator.calculateExpectedPeriod(totalPage);
+        int period = periodCalculator.calculateExpectedPeriod(totalPage / readPagePerMin);
 
         // then
         assertThat(period).isEqualTo(10);
@@ -61,15 +58,20 @@ class PeriodCalculatorTest {
         int readPagePerMin = 2;
         LocalDate startDate = LocalDate.of(2023, 9, 16);
 
-        PeriodCalculator periodCalculator = new PeriodCalculator(
-            planTimeInWeekDay * readPagePerMin,
-            planTimeInWeekend * readPagePerMin,
-            startDate);
+        PeriodCalculator periodCalculator = createPeriodCalculator(planTimeInWeekDay, planTimeInWeekend, startDate);
 
         // when
-        int period = periodCalculator.calculateExpectedPeriod(totalPage);
+        int period = periodCalculator.calculateExpectedPeriod(totalPage / readPagePerMin);
 
         // then
         assertThat(period).isEqualTo(9);
+    }
+
+    private PeriodCalculator createPeriodCalculator(int planTimeInWeekDay, int planTimeInWeekend, LocalDate startDate) {
+        return PeriodCalculator.builder()
+            .planMinutesInWeekday(planTimeInWeekDay)
+            .planMinutesInWeekend(planTimeInWeekend)
+            .startDate(startDate)
+            .build();
     }
 }

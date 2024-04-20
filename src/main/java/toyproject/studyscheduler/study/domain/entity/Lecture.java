@@ -28,7 +28,7 @@ public class Lecture extends Study {
     }
 
     @Override
-    public int getTotalQuantity() {
+    public int getTotalMinutes() {
         return this.totalRuntime;
     }
 

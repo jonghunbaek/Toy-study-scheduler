@@ -12,24 +12,28 @@ import static java.time.DayOfWeek.*;
 public class PeriodCalculator {
 
     public static final int A_DAY_LATER = 1;
-    private int planQuantityInWeekday;
-    private int planQuantityInWeekend;
+    private int planMinutesInWeekday;
+    private int planMinutesInWeekend;
     private LocalDate startDate;
 
     @Builder
-    public PeriodCalculator(int planQuantityInWeekday, int planQuantityInWeekend, LocalDate startDate) {
-        this.planQuantityInWeekday = planQuantityInWeekday;
-        this.planQuantityInWeekend = planQuantityInWeekend;
+    private PeriodCalculator(int planMinutesInWeekday, int planMinutesInWeekend, LocalDate startDate) {
+        this.planMinutesInWeekday = planMinutesInWeekday;
+        this.planMinutesInWeekend = planMinutesInWeekend;
         this.startDate = startDate;
     }
 
-    public int calculateExpectedPeriod(int studyQuantity) {
-        int remainingQuantity = studyQuantity;
+    public static PeriodCalculator from(StudyPlan studyPlan, LocalDate startDate) {
+        return new PeriodCalculator(studyPlan.getPlanMinutesInWeekday(), studyPlan.getPlanMinutesInWeekend(), startDate);
+    }
+
+    public int calculateExpectedPeriod(int totalMinutes) {
+        int remainingMinutes = totalMinutes;
         DayOfWeek studyDayOfWeek = startDate.getDayOfWeek();
         int period = 0;
 
-        while (remainingQuantity > 0) {
-            remainingQuantity = calculateRemaining(remainingQuantity, studyDayOfWeek);
+        while (remainingMinutes > 0) {
+            remainingMinutes = calculateRemaining(remainingMinutes, studyDayOfWeek);
 
             period += A_DAY_LATER;
             studyDayOfWeek = studyDayOfWeek.plus(A_DAY_LATER);
@@ -38,11 +42,11 @@ public class PeriodCalculator {
         return period;
     }
 
-    private int calculateRemaining(int remainingQuantity, DayOfWeek studyDayOfWeek) {
+    private int calculateRemaining(int remainingMinutes, DayOfWeek studyDayOfWeek) {
         if (studyDayOfWeek.getValue() <= FRIDAY.getValue()) {
-            return remainingQuantity - planQuantityInWeekday;
+            return remainingMinutes - planMinutesInWeekday;
         }
 
-        return remainingQuantity - planQuantityInWeekend;
+        return remainingMinutes - planMinutesInWeekend;
     }
 }
