@@ -4,7 +4,6 @@ import jakarta.persistence.Embeddable;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import toyproject.studyscheduler.common.response.ResponseCode;
 import toyproject.studyscheduler.study.exception.StudyException;
 
 import java.time.LocalDate;
@@ -40,5 +39,9 @@ public class StudyPeriod {
 
     public static StudyPeriod fromTerminated(LocalDate startDate, LocalDate endDate) {
         return new StudyPeriod(startDate, endDate);
+    }
+
+    public void terminate(LocalDate endDate) {
+        this.endDate = endDate;
     }
 }

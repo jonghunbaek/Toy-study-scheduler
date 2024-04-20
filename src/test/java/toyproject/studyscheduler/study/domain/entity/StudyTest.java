@@ -10,8 +10,8 @@ import toyproject.studyscheduler.study.exception.StudyException;
 
 import java.time.LocalDate;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
 import static toyproject.studyscheduler.common.exception.GlobalException.*;
 
 class StudyTest {
@@ -40,10 +40,13 @@ class StudyTest {
         Reading reading = createReading(information, period, plan, null);
 
         // when
-        boolean isTermination = reading.terminateIfSatisfiedStudyQuantity(300);
+        boolean isTermination = reading.terminateIfSatisfiedStudyQuantity(300, LocalDate.of(2024, 4, 11));
 
         // then
-        assertThat(isTermination).isEqualTo(reading.getStudyInformation().isTermination());
+        assertAll(
+            () -> assertEquals(isTermination, reading.getStudyInformation().isTermination()),
+            () -> assertEquals(LocalDate.of(2024,4,11), reading.getStudyPeriod().getEndDate())
+        );
     }
 
     @DisplayName("일일 학습 수행일이 학습 시작일 보다 빠르면 예외를 발생한다.")

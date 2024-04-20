@@ -11,6 +11,8 @@ import toyproject.studyscheduler.study.domain.StudyInformation;
 import toyproject.studyscheduler.study.domain.StudyPeriod;
 import toyproject.studyscheduler.study.domain.StudyPlan;
 
+import java.time.LocalDate;
+
 @DiscriminatorValue("reading")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
@@ -49,11 +51,11 @@ public class Reading extends Study {
     }
 
     @Override
-    public boolean terminateIfSatisfiedStudyQuantity(int totalMinutes) {
+    public boolean terminateIfSatisfiedStudyQuantity(int totalMinutes, LocalDate studyDate) {
         int pagesRead = readPagePerMin * totalMinutes;
 
         if (pagesRead >= totalPage) {
-            terminate();
+            terminate(studyDate);
             return true;
         }
 

@@ -2,14 +2,12 @@ package toyproject.studyscheduler.study.domain;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import toyproject.studyscheduler.common.exception.GlobalException;
 import toyproject.studyscheduler.study.exception.StudyException;
 
 import java.time.LocalDate;
 
 import static org.assertj.core.api.Assertions.*;
 import static toyproject.studyscheduler.common.exception.GlobalException.*;
-import static toyproject.studyscheduler.common.response.ResponseCode.*;
 
 class StudyPeriodTest {
 
@@ -30,5 +28,18 @@ class StudyPeriodTest {
         assertThatThrownBy(() -> StudyPeriod.fromTerminated(startDate, endDate))
             .isInstanceOf(StudyException.class)
             .hasMessage("종료일이 시작일보다 앞서있습니다." + DETAIL_DELIMITER + "startDate, endDate :: " + startDate +", " + endDate);
+    }
+
+    @DisplayName("학습이 종료되면 종료일을 임시 종료일에서 파라미터로 받은 종료일로 변경한다.")
+    @Test
+    void terminate() {
+        // given
+        StudyPeriod studyPeriod = StudyPeriod.fromStarting(LocalDate.of(2024,4,1));
+
+        // when
+        studyPeriod.terminate(LocalDate.of(2024,4,10));
+
+        // then
+        assertThat(studyPeriod.getEndDate()).isEqualTo(LocalDate.of(2024,4,10));
     }
 }

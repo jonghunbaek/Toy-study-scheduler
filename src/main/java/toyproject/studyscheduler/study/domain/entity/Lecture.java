@@ -7,6 +7,8 @@ import toyproject.studyscheduler.study.domain.StudyInformation;
 import toyproject.studyscheduler.study.domain.StudyPeriod;
 import toyproject.studyscheduler.study.domain.StudyPlan;
 
+import java.time.LocalDate;
+
 @DiscriminatorValue("lecture")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
@@ -43,9 +45,9 @@ public class Lecture extends Study {
     }
 
     @Override
-    public boolean terminateIfSatisfiedStudyQuantity(int totalMinutes) {
+    public boolean terminateIfSatisfiedStudyQuantity(int totalMinutes, LocalDate studyDate) {
         if (totalMinutes >= totalRuntime) {
-            terminate();
+            terminate(studyDate);
             return true;
         }
 
