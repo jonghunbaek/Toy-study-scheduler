@@ -32,11 +32,6 @@ public class Lecture extends Study {
         return this.totalRuntime;
     }
 
-    @Override
-    public int calculatePlanQuantityPerDay(int planMinutes) {
-        return planMinutes;
-    }
-
     public void updateLecture(StudyInformation information, StudyPeriod period, StudyPlan plan, String teacherName, int totalRuntime) {
         super.updateStudy(information, period, plan);
 

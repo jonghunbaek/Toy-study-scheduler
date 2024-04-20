@@ -37,11 +37,6 @@ public class Reading extends Study {
         return (int) Math.ceil(((double) totalPage / readPagePerMin));
     }
 
-    @Override
-    public int calculatePlanQuantityPerDay(int planMinutes) {
-        return readPagePerMin * planMinutes;
-    }
-
     public void updateReading(StudyInformation information, StudyPeriod period, StudyPlan plan, String authorName, int totalPage, int readPagePerMin) {
         super.updateStudy(information, period, plan);
 

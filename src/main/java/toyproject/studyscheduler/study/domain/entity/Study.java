@@ -59,8 +59,6 @@ public abstract class Study extends BaseEntity {
 
     protected abstract int getTotalMinutes();
 
-    protected abstract int calculatePlanQuantityPerDay(int planMinutesInWeekday);
-
     public abstract boolean terminateIfSatisfiedStudyQuantity(int totalMinutes, LocalDate studyDate);
 
     protected void terminate(LocalDate studyDate) {
