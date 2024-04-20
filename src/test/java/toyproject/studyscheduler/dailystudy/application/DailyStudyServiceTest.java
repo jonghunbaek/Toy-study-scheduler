@@ -13,6 +13,7 @@ import toyproject.studyscheduler.dailystudy.web.dailystudy.DailyStudyCreation;
 import toyproject.studyscheduler.study.application.StudyService;
 import toyproject.studyscheduler.study.application.dto.LectureSave;
 import toyproject.studyscheduler.study.exception.StudyException;
+import toyproject.studyscheduler.study.web.dto.StudyDetail;
 
 import java.time.LocalDate;
 
@@ -37,8 +38,8 @@ class DailyStudyServiceTest {
     void creatDailyStudyWhenSatisfiedTerminationCondition() {
         // given
         LectureSave lectureSave = createLectureSave("김영한의 Spring", false, LocalDate.of(2024, 4, 1), null);
-        studyService.createStudy(lectureSave, 1L);
-        DailyStudySave dailyStudySave = new DailyStudySave(1L, "오늘 학습한 내용", 500, LocalDate.of(2024, 4, 20));
+        StudyDetail studyDetail = studyService.createStudy(lectureSave, 1L);
+        DailyStudySave dailyStudySave = new DailyStudySave(studyDetail.getStudyId(), "오늘 학습한 내용", 500, LocalDate.of(2024, 4, 20));
 
         // when
         DailyStudyCreation dailyStudyCreation = dailyStudyService.createDailyStudy(dailyStudySave);
@@ -57,8 +58,8 @@ class DailyStudyServiceTest {
     void createDailyStudyAfterValidateTermination() {
         // given
         LectureSave lecture = createLectureSave("김영한의 Spring", true, LocalDate.of(2024, 4, 1), LocalDate.of(2024, 4, 21));
-        studyService.createStudy(lecture, 1L);
-        DailyStudySave dailyStudySave = new DailyStudySave(1L, "오늘 학습한 내용", 30, LocalDate.now());
+        StudyDetail studyDetail = studyService.createStudy(lecture, 1L);
+        DailyStudySave dailyStudySave = new DailyStudySave(studyDetail.getStudyId(), "오늘 학습한 내용", 30, LocalDate.now());
 
         // when & then
         assertThatThrownBy(() -> dailyStudyService.createDailyStudy(dailyStudySave))
@@ -71,8 +72,8 @@ class DailyStudyServiceTest {
     void createDailyStudyAfterValidateStudyDate() {
         // given
         LectureSave lecture = createLectureSave("김영한의 Spring", false, LocalDate.of(2024, 4, 1), null);
-        studyService.createStudy(lecture, 1L);
-        DailyStudySave dailyStudySave = new DailyStudySave(1L, "오늘 학습한 내용", 30, LocalDate.of(2024, 3, 31));
+        StudyDetail studyDetail = studyService.createStudy(lecture, 1L);
+        DailyStudySave dailyStudySave = new DailyStudySave(studyDetail.getStudyId(), "오늘 학습한 내용", 30, LocalDate.of(2024, 3, 31));
 
         // when & then
         assertThatThrownBy(() -> dailyStudyService.createDailyStudy(dailyStudySave))
