@@ -102,8 +102,6 @@ class DailyStudyControllerTest {
             sb.append(sb);
         }
 
-        System.out.println(sb);
-
         return sb.toString();
     }
 

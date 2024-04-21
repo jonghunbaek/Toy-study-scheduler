@@ -42,8 +42,8 @@ public class DailyStudyService {
         LocalDate studyDate = dailyStudy.getStudyDate();
         LocalDate nextStudyDate = studyDate.plusDays(1); // 다음 날 부터 예상 종료일을 계산해야함
 
-        boolean isTerminated = study.terminateIfSatisfiedStudyQuantity(totalMinutes, studyDate);
         LocalDate expectedEndDate = study.calculateExpectedDate(totalMinutes, nextStudyDate);
+        boolean isTerminated = study.terminateIfSatisfiedStudyQuantity(totalMinutes, studyDate);
 
         return DailyStudyCreation.from(dailyStudy, isTerminated, expectedEndDate);
     }
