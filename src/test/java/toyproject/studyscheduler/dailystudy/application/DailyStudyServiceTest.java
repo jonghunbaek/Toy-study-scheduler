@@ -40,7 +40,7 @@ class DailyStudyServiceTest {
         // given
         LectureSave lectureSave = createLectureSave("김영한의 Spring", false, LocalDate.of(2024, 4, 1), null);
         StudyDetail studyDetail = studyService.createStudy(lectureSave, 1L);
-        DailyStudySave dailyStudySave = new DailyStudySave(studyDetail.getStudyId(), "오늘 학습한 내용", 500, LocalDate.of(2024, 4, 20));
+        DailyStudySave dailyStudySave = createDailyStudySave(studyDetail.getStudyId(), 500, LocalDate.of(2024, 4, 20));
 
         // when
         DailyStudyCreation dailyStudyCreation = dailyStudyService.createDailyStudy(dailyStudySave);
@@ -60,7 +60,7 @@ class DailyStudyServiceTest {
         // given
         LectureSave lecture = createLectureSave("김영한의 Spring", true, LocalDate.of(2024, 4, 1), LocalDate.of(2024, 4, 21));
         StudyDetail studyDetail = studyService.createStudy(lecture, 1L);
-        DailyStudySave dailyStudySave = new DailyStudySave(studyDetail.getStudyId(), "오늘 학습한 내용", 30, LocalDate.now());
+        DailyStudySave dailyStudySave = createDailyStudySave(studyDetail.getStudyId(), 30, LocalDate.now());
 
         // when & then
         assertThatThrownBy(() -> dailyStudyService.createDailyStudy(dailyStudySave))
@@ -74,7 +74,7 @@ class DailyStudyServiceTest {
         // given
         LectureSave lecture = createLectureSave("김영한의 Spring", false, LocalDate.of(2024, 4, 1), null);
         StudyDetail studyDetail = studyService.createStudy(lecture, 1L);
-        DailyStudySave dailyStudySave = new DailyStudySave(studyDetail.getStudyId(), "오늘 학습한 내용", 30, LocalDate.of(2024, 3, 31));
+        DailyStudySave dailyStudySave = createDailyStudySave(studyDetail.getStudyId(), 30, LocalDate.of(2024, 3, 31));
 
         // when & then
         assertThatThrownBy(() -> dailyStudyService.createDailyStudy(dailyStudySave))
@@ -88,7 +88,7 @@ class DailyStudyServiceTest {
         // given
         LectureSave lecture = createLectureSave("김영한의 Spring", false, LocalDate.of(2024, 4, 1), null);
         StudyDetail studyDetail = studyService.createStudy(lecture, 1L);
-        DailyStudySave dailyStudySave = new DailyStudySave(studyDetail.getStudyId(), "오늘 학습한 내용", 60, LocalDate.of(2024, 4, 1));
+        DailyStudySave dailyStudySave = createDailyStudySave(studyDetail.getStudyId(), 60, LocalDate.of(2024, 4, 1));
 
         // when
         DailyStudyCreation dailyStudyCreation = dailyStudyService.createDailyStudy(dailyStudySave);
@@ -104,9 +104,9 @@ class DailyStudyServiceTest {
         LectureSave lecture = createLectureSave("김영한의 Spring", false, LocalDate.of(2024, 4, 1), null);
         StudyDetail studyDetail = studyService.createStudy(lecture, 1L);
 
-        DailyStudySave dailyStudySave1 = new DailyStudySave(studyDetail.getStudyId(), "오늘 학습한 내용", 30, LocalDate.of(2024, 4, 1));
-        DailyStudySave dailyStudySave2 = new DailyStudySave(studyDetail.getStudyId(), "오늘 학습한 내용", 20, LocalDate.of(2024, 4, 3));
-        DailyStudySave dailyStudySave3 = new DailyStudySave(studyDetail.getStudyId(), "오늘 학습한 내용", 50, LocalDate.of(2024, 4, 5));
+        DailyStudySave dailyStudySave1 = createDailyStudySave(studyDetail.getStudyId(), 30, LocalDate.of(2024, 4, 1));
+        DailyStudySave dailyStudySave2 = createDailyStudySave(studyDetail.getStudyId(), 20, LocalDate.of(2024, 4, 3));
+        DailyStudySave dailyStudySave3 = createDailyStudySave(studyDetail.getStudyId(), 50, LocalDate.of(2024, 4, 5));
         dailyStudyService.createDailyStudy(dailyStudySave1);
         dailyStudyService.createDailyStudy(dailyStudySave2);
         dailyStudyService.createDailyStudy(dailyStudySave3);
@@ -135,5 +135,14 @@ class DailyStudyServiceTest {
             .teacherName("김영한")
             .totalRuntime(500)
             .build();
+    }
+
+    private DailyStudySave createDailyStudySave(Long studyId, int completeMinutesToday, LocalDate studyDate) {
+        return DailyStudySave.builder()
+                .studyId(studyId)
+                .content("오늘 학습한 내용")
+                .completeMinutesToday(completeMinutesToday)
+                .studyDate(studyDate)
+                .build();
     }
 }
