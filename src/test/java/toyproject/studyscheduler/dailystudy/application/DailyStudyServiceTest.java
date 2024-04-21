@@ -82,6 +82,21 @@ class DailyStudyServiceTest {
             .hasMessage("학습 수행일이 학습 시작일 보다 빠릅니다." + DETAIL_DELIMITER + "studyDate :: " + "2024-03-31");
     }
 
+    @DisplayName("일일 학습 생성 시 학습일 기준 예상 종료일을 구한다.")
+    @Test
+    void createDailyStudyWithExpectedEndDate() {
+        // given
+        LectureSave lecture = createLectureSave("김영한의 Spring", false, LocalDate.of(2024, 4, 1), null);
+        StudyDetail studyDetail = studyService.createStudy(lecture, 1L);
+        DailyStudySave dailyStudySave = new DailyStudySave(studyDetail.getStudyId(), "오늘 학습한 내용", 60, LocalDate.of(2024, 4, 1));
+
+        // when
+        DailyStudyCreation dailyStudyCreation = dailyStudyService.createDailyStudy(dailyStudySave);
+
+        // then
+        assertThat(dailyStudyCreation.getExpectedEndDate()).isEqualTo(LocalDate.of(2024, 4, 13));
+    }
+
     @DisplayName("오늘 날짜를 기준으로 남은 학습 기간, 예상 종료일을 구한다.")
     @Test
     void calculateExpectedEndDate() {

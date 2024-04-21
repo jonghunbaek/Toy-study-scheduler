@@ -1,5 +1,6 @@
 package toyproject.studyscheduler.dailystudy.web.dto;
 
+import lombok.Builder;
 import lombok.Getter;
 import toyproject.studyscheduler.dailystudy.domain.entity.DailyStudy;
 
@@ -18,15 +19,26 @@ public class DailyStudyCreation {
 
     private boolean isTermination;
 
-    private DailyStudyCreation(Long dailyStudyId, String content, int completeMinutesToday, LocalDate studyDate, boolean isTermination) {
+    private LocalDate expectedEndDate;
+
+    @Builder
+    private DailyStudyCreation(Long dailyStudyId, String content, int completeMinutesToday, LocalDate studyDate, boolean isTermination, LocalDate expectedEndDate) {
         this.dailyStudyId = dailyStudyId;
         this.content = content;
         this.completeMinutesToday = completeMinutesToday;
         this.studyDate = studyDate;
         this.isTermination = isTermination;
+        this.expectedEndDate = expectedEndDate;
     }
 
-    public static DailyStudyCreation of(DailyStudy dailyStudy, boolean isTermination) {
-        return new DailyStudyCreation(dailyStudy.getId(), dailyStudy.getContent(), dailyStudy.getCompleteMinutesToday(), dailyStudy.getStudyDate(), isTermination);
+    public static DailyStudyCreation from(DailyStudy dailyStudy, boolean isTermination, LocalDate expectedEndDate) {
+        return DailyStudyCreation.builder()
+                .dailyStudyId(dailyStudy.getId())
+                .content(dailyStudy.getContent())
+                .completeMinutesToday(dailyStudy.getCompleteMinutesToday())
+                .studyDate(dailyStudy.getStudyDate())
+                .isTermination(isTermination)
+                .expectedEndDate(expectedEndDate)
+                .build();
     }
 }
