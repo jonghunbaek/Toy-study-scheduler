@@ -33,6 +33,9 @@ public enum ResponseCode {
     E30002("일치하는 학습을 찾을 수 없습니다.", BAD_REQUEST),
     E30003("학습 수행일이 학습 시작일 보다 빠릅니다.", BAD_REQUEST),
 
+    // dailyStduy
+    E40000("일치하는 일일 학습을 찾을 수 없습니다.", BAD_REQUEST),
+
     // input validation
     E90000("잘못된 입력 값이 존재합니다.", BAD_REQUEST),
     E90001("입력 값을 파싱할 수 없습니다.", BAD_REQUEST),

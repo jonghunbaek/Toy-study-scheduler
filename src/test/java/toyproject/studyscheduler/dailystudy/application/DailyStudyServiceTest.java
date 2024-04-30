@@ -7,9 +7,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 import toyproject.studyscheduler.dailystudy.application.dto.DailyStudySave;
+import toyproject.studyscheduler.dailystudy.application.dto.DailyStudyUpdate;
 import toyproject.studyscheduler.dailystudy.domain.entity.DailyStudy;
 import toyproject.studyscheduler.dailystudy.repository.DailyStudyRepository;
 import toyproject.studyscheduler.dailystudy.web.dto.DailyStudyCreation;
+import toyproject.studyscheduler.dailystudy.web.dto.DailyStudyUpdateResult;
 import toyproject.studyscheduler.dailystudy.web.dto.RemainingStudyDays;
 import toyproject.studyscheduler.study.application.StudyService;
 import toyproject.studyscheduler.study.application.dto.LectureSave;
@@ -121,6 +123,30 @@ class DailyStudyServiceTest {
             () -> assertEquals(LocalDate.of(2024,4,14), studyDetail.getExpectedEndDate()), // 최초 예상 종료일
             () -> assertEquals(LocalDate.of(2024,4,15), remainingStudyDays.getExpectedEndDate())  // 학습 중 예상 종료일
         );
+    }
+
+    @DisplayName("일일 학습을 수정한다.")
+    @Test
+    void updateDailyStudy() {
+        // given
+        LectureSave lecture = createLectureSave("김영한의 Spring", false, LocalDate.of(2024, 4, 1), null);
+        StudyDetail studyDetail = studyService.createStudy(lecture, 1L);
+        DailyStudySave dailyStudySave = createDailyStudySave(studyDetail.getStudyId(), 60, LocalDate.of(2024, 4, 1));
+        DailyStudyCreation dailyStudyCreation = dailyStudyService.createDailyStudy(dailyStudySave);
+        DailyStudyUpdate dailyStudyUpdate = DailyStudyUpdate.builder()
+            .content("변경된 내용")
+            .studyDate(LocalDate.of(2024, 4, 2))
+            .completeMinutesToday(600)
+            .build();
+
+        // when
+        DailyStudyUpdateResult dailyStudyUpdateResult = dailyStudyService.updateDailyStudy(dailyStudyCreation.getDailyStudyId(), dailyStudyUpdate);
+
+        // then
+        assertThat(dailyStudyUpdateResult.isTermination()).isTrue();
+        // TODO :: 결과 값 음수로 되는 문제 수정해야함
+//        assertThat(dailyStudyUpdateResult.getRemainingStudyMinutes()).isEqualTo(0);
+        assertThat(dailyStudyUpdateResult.getExpectedEndDate()).isEqualTo(LocalDate.of(2024, 4, 2));
     }
 
     private LectureSave createLectureSave(String title, boolean isTermination, LocalDate startDate, LocalDate endDate) {

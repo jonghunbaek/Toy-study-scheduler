@@ -35,4 +35,10 @@ public class DailyStudy extends BaseEntity {
         this.studyDate = studyDate;
         this.study = study;
     }
+
+    public void updateDailyStudy(String content, int completeMinutesToday, LocalDate studyDate) {
+        this.content = content;
+        this.completeMinutesToday = completeMinutesToday;
+        this.studyDate = studyDate;
+    }
 }
