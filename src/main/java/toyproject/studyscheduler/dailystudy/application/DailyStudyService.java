@@ -38,19 +38,19 @@ public class DailyStudyService {
     }
 
     private DailyStudyCreation createDailyStudyCreation(Study study, DailyStudy dailyStudy) {
-        int totalMinutes = getTotalMinutes(study);
+        int totalStudyMinutes = getTotalStudyMinutes(study);
         LocalDate studyDate = dailyStudy.getStudyDate();
         LocalDate nextStudyDate = studyDate.plusDays(1); // 다음 날 부터 예상 종료일을 계산해야함
 
-        LocalDate expectedEndDate = study.calculateExpectedDate(totalMinutes, nextStudyDate);
-        boolean isTerminated = study.terminateIfSatisfiedStudyQuantity(totalMinutes, studyDate);
+        LocalDate expectedEndDate = study.calculateExpectedDate(totalStudyMinutes, nextStudyDate);
+        boolean isTerminated = study.terminateIfSatisfiedStudyQuantity(totalStudyMinutes, studyDate);
 
-        return DailyStudyCreation.from(dailyStudy, isTerminated, expectedEndDate);
+        return DailyStudyCreation.from(dailyStudy, isTerminated, expectedEndDate, study.getTotalMinutes() - totalStudyMinutes);
     }
 
     public RemainingStudyDays calculateExpectedEndDate(Long studyId, LocalDate now) {
         Study study = findStudyNotTerminated(studyId);
-        int totalStudyMinutes = getTotalMinutes(study);
+        int totalStudyMinutes = getTotalStudyMinutes(study);
         LocalDate expectedDate = study.calculateExpectedDate(totalStudyMinutes, now);
 
         return new RemainingStudyDays(expectedDate, Period.between(now, expectedDate).getDays());
@@ -64,7 +64,7 @@ public class DailyStudyService {
         return study;
     }
 
-    private int getTotalMinutes(Study study) {
+    private int getTotalStudyMinutes(Study study) {
         DailyStudies dailyStudies = new DailyStudies(dailyStudyRepository.findAllByStudy(study));
 
         return dailyStudies.calculateTotalStudyMinutes();

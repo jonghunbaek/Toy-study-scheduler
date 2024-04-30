@@ -56,7 +56,7 @@ public abstract class Study extends BaseEntity {
         return calculationStartDate.plusDays(expectedPeriod - 1);
     }
 
-    protected abstract int getTotalMinutes();
+    public abstract int getTotalMinutes();
 
     public abstract boolean terminateIfSatisfiedStudyQuantity(int totalMinutes, LocalDate studyDate);
 
