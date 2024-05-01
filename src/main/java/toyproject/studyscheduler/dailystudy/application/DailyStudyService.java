@@ -49,7 +49,7 @@ public class DailyStudyService {
         LocalDate expectedEndDate = study.calculateExpectedDate(totalStudyMinutes, nextStudyDate);
         boolean isTerminated = study.terminateIfSatisfiedStudyQuantity(totalStudyMinutes, studyDate);
 
-        return DailyStudyCreation.from(dailyStudy, isTerminated, expectedEndDate, study.getTotalMinutes() - totalStudyMinutes);
+        return DailyStudyCreation.from(dailyStudy, isTerminated, expectedEndDate, study.calculateRemainingQuantity(totalStudyMinutes));
     }
 
     public DailyStudyUpdateResult updateDailyStudy(Long dailyStudyId, DailyStudyUpdate dailyStudyUpdate) {
@@ -70,7 +70,7 @@ public class DailyStudyService {
         LocalDate expectedDate = study.calculateExpectedDate(totalStudyMinutes, nextStudyDate);
         boolean isTermination = study.terminateIfSatisfiedStudyQuantity(totalStudyMinutes, studyDate);
 
-        return new DailyStudyUpdateResult(study.getTotalMinutes() - totalStudyMinutes, expectedDate, isTermination);
+        return new DailyStudyUpdateResult(study.calculateRemainingQuantity(totalStudyMinutes), expectedDate, isTermination);
     }
 
     private void validateStudyDateAndTermination(DailyStudyUpdate dailyStudyUpdate, Study study) {

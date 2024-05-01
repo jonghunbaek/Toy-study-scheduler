@@ -2,6 +2,8 @@ package toyproject.studyscheduler.study.domain.entity;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import toyproject.studyscheduler.member.domain.entity.Member;
 import toyproject.studyscheduler.study.domain.StudyInformation;
 import toyproject.studyscheduler.study.domain.StudyPeriod;
@@ -29,9 +31,10 @@ class ReadingTest {
         assertThat(expectedDate).isEqualTo(LocalDate.of(2024,4,8));
     }
 
-    @DisplayName("실제로 수행한 총 학습 시간을 인자로 받아 남은 학습량을 계산해서 반환한다.")
-    @Test
-    void calculateRemainingQuantity() {
+    @DisplayName("실제로 수행한 총 학습 시간을 인자로 받아 남은 학습량을 계산해서 반환한다. 남은 학습량이 0미만이면 0을 반환한다.")
+    @ParameterizedTest
+    @CsvSource({"200, 200", "400, 0"})
+    void calculateRemainingQuantity(int totalStudyMinutes, int result) {
         // given
         StudyInformation information = createInformation("클린 코드", "클린 코드 작성", false);
         StudyPeriod period = StudyPeriod.fromStarting(LocalDate.of(2024, 4, 1));
@@ -39,10 +42,10 @@ class ReadingTest {
         Reading reading = createReading(information, period, plan, null);
 
         // when
-        int remainingQuantity = reading.calculateRemainingQuantity(200);
+        int remainingQuantity = reading.calculateRemainingQuantity(totalStudyMinutes);
 
         // then
-        assertThat(remainingQuantity).isEqualTo(200);
+        assertThat(remainingQuantity).isEqualTo(result);
     }
 
     private Reading createReading(StudyInformation information, StudyPeriod period, StudyPlan plan, Member member) {

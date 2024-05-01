@@ -5,11 +5,13 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import toyproject.studyscheduler.dailystudy.domain.entity.DailyStudy;
 import toyproject.studyscheduler.study.domain.entity.Study;
 
 import java.time.LocalDate;
 
+@NoArgsConstructor
 @Getter
 public class DailyStudySave {
 
