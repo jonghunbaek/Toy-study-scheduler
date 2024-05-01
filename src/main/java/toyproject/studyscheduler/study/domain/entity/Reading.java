@@ -32,17 +32,19 @@ public class Reading extends Study {
         this.readPagePerMin = readPagePerMin;
     }
 
-    @Override
-    public int getTotalMinutes() {
-        return (int) Math.ceil(((double) totalPage / readPagePerMin));
-    }
-
     public void updateReading(StudyInformation information, StudyPeriod period, StudyPlan plan, String authorName, int totalPage, int readPagePerMin) {
         super.updateStudy(information, period, plan);
 
         this.authorName = authorName;
         this.totalPage = totalPage;
         this.readPagePerMin = readPagePerMin;
+    }
+
+    @Override
+    public int calculateRemainingQuantity(int totalStudyMinutes) {
+        int remaining = this.totalPage - (totalStudyMinutes * readPagePerMin);
+
+        return Math.max(remaining, 0);
     }
 
     @Override
@@ -55,5 +57,10 @@ public class Reading extends Study {
         }
 
         return false;
+    }
+
+    @Override
+    public int getTotalMinutes() {
+        return (int) Math.ceil(((double) totalPage / readPagePerMin));
     }
 }

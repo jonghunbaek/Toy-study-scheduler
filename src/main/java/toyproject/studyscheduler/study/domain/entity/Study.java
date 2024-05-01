@@ -47,7 +47,7 @@ public abstract class Study extends BaseEntity {
         this.member = member;
     }
 
-    public LocalDate calculateExpectedDate(int totalStudyMinutes, LocalDate calculationStartDate) {
+    public final LocalDate calculateExpectedDate(int totalStudyMinutes, LocalDate calculationStartDate) {
         studyInformation.validateTermination();
 
         PeriodCalculator calculator = PeriodCalculator.from(studyPlan, calculationStartDate);
@@ -56,24 +56,26 @@ public abstract class Study extends BaseEntity {
         return calculationStartDate.plusDays(expectedPeriod - 1);
     }
 
-    public abstract int getTotalMinutes();
-
-    public abstract boolean terminateIfSatisfiedStudyQuantity(int totalMinutes, LocalDate studyDate);
-
-    protected void terminate(LocalDate studyDate) {
+    protected final void terminate(LocalDate studyDate) {
         studyInformation.terminate();
         studyPeriod.terminate(studyDate);
     }
 
-    protected void updateStudy(StudyInformation information, StudyPeriod period, StudyPlan plan) {
+    protected final void updateStudy(StudyInformation information, StudyPeriod period, StudyPlan plan) {
         this.studyInformation = information;
         this.studyPeriod = period;
         this.studyPlan = plan;
     }
 
-    public void validateStudyDateEarlierThanStartDate(LocalDate studyDate) {
+    public final void validateStudyDateEarlierThanStartDate(LocalDate studyDate) {
         if (studyDate.isBefore(studyPeriod.getStartDate())) {
             throw new StudyException("studyDate :: " + studyDate, E30003);
         }
     }
+
+    public abstract int calculateRemainingQuantity(int totalStudyMinutes);
+
+    public abstract boolean terminateIfSatisfiedStudyQuantity(int totalMinutes, LocalDate studyDate);
+
+    protected abstract int getTotalMinutes();
 }

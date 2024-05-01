@@ -29,6 +29,22 @@ class ReadingTest {
         assertThat(expectedDate).isEqualTo(LocalDate.of(2024,4,8));
     }
 
+    @DisplayName("실제로 수행한 총 학습 시간을 인자로 받아 남은 학습량을 계산해서 반환한다.")
+    @Test
+    void calculateRemainingQuantity() {
+        // given
+        StudyInformation information = createInformation("클린 코드", "클린 코드 작성", false);
+        StudyPeriod period = StudyPeriod.fromStarting(LocalDate.of(2024, 4, 1));
+        StudyPlan plan = StudyPlan.fromStarting(30, 60);
+        Reading reading = createReading(information, period, plan, null);
+
+        // when
+        int remainingQuantity = reading.calculateRemainingQuantity(200);
+
+        // then
+        assertThat(remainingQuantity).isEqualTo(200);
+    }
+
     private Reading createReading(StudyInformation information, StudyPeriod period, StudyPlan plan, Member member) {
         return Reading.builder()
             .studyInformation(information)

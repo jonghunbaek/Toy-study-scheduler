@@ -143,10 +143,11 @@ class DailyStudyServiceTest {
         DailyStudyUpdateResult dailyStudyUpdateResult = dailyStudyService.updateDailyStudy(dailyStudyCreation.getDailyStudyId(), dailyStudyUpdate);
 
         // then
-        assertThat(dailyStudyUpdateResult.isTermination()).isTrue();
-        // TODO :: 결과 값 음수로 되는 문제 수정해야함
-//        assertThat(dailyStudyUpdateResult.getRemainingStudyMinutes()).isEqualTo(0);
-        assertThat(dailyStudyUpdateResult.getExpectedEndDate()).isEqualTo(LocalDate.of(2024, 4, 2));
+        assertAll(
+            () -> assertTrue(dailyStudyUpdateResult.isTermination()),
+            () -> assertEquals(dailyStudyUpdateResult.getRemainingStudyMinutes(), 0),
+            () -> assertEquals(dailyStudyUpdateResult.getExpectedEndDate(), LocalDate.of(2024, 4, 2))
+        );
     }
 
     private LectureSave createLectureSave(String title, boolean isTermination, LocalDate startDate, LocalDate endDate) {

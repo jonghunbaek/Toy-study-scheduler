@@ -27,16 +27,18 @@ public class Lecture extends Study {
         this.totalRuntime = totalRuntime;
     }
 
-    @Override
-    public int getTotalMinutes() {
-        return this.totalRuntime;
-    }
-
     public void updateLecture(StudyInformation information, StudyPeriod period, StudyPlan plan, String teacherName, int totalRuntime) {
         super.updateStudy(information, period, plan);
 
         this.teacherName = teacherName;
         this.totalRuntime = totalRuntime;
+    }
+
+    @Override
+    public int calculateRemainingQuantity(int totalStudyMinutes) {
+        int remaining = this.totalRuntime - totalStudyMinutes;
+
+        return Math.max(remaining, 0);
     }
 
     @Override
@@ -47,5 +49,10 @@ public class Lecture extends Study {
         }
 
         return false;
+    }
+
+    @Override
+    public int getTotalMinutes() {
+        return this.totalRuntime;
     }
 }
