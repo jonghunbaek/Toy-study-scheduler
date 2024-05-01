@@ -9,40 +9,32 @@ import java.time.LocalDate;
 @Getter
 public class DailyStudyCreation {
 
-    private Long dailyStudyId;
+    private final Long dailyStudyId;
 
-    private String content;
+    private final String content;
 
-    private int completeMinutesToday;
+    private final int completeMinutesToday;
 
-    private LocalDate studyDate;
+    private final LocalDate studyDate;
 
-    private boolean isTermination;
-
-    private LocalDate expectedEndDate;
-
-    private int remainingStudyMinutes;
+    private final StudyRemaining studyRemaining;
 
     @Builder
-    private DailyStudyCreation(Long dailyStudyId, String content, int completeMinutesToday, LocalDate studyDate, boolean isTermination, LocalDate expectedEndDate, int remainingStudyMinutes) {
+    private DailyStudyCreation(Long dailyStudyId, String content, int completeMinutesToday, LocalDate studyDate, StudyRemaining studyRemaining) {
         this.dailyStudyId = dailyStudyId;
         this.content = content;
         this.completeMinutesToday = completeMinutesToday;
         this.studyDate = studyDate;
-        this.isTermination = isTermination;
-        this.expectedEndDate = expectedEndDate;
-        this.remainingStudyMinutes = remainingStudyMinutes;
+        this.studyRemaining = studyRemaining;
     }
 
-    public static DailyStudyCreation from(DailyStudy dailyStudy, boolean isTermination, LocalDate expectedEndDate, int remainingStudyMinutes) {
+    public static DailyStudyCreation from(DailyStudy dailyStudy, StudyRemaining studyRemaining) {
         return DailyStudyCreation.builder()
                 .dailyStudyId(dailyStudy.getId())
                 .content(dailyStudy.getContent())
                 .completeMinutesToday(dailyStudy.getCompleteMinutesToday())
                 .studyDate(dailyStudy.getStudyDate())
-                .isTermination(isTermination)
-                .expectedEndDate(expectedEndDate)
-                .remainingStudyMinutes(remainingStudyMinutes)
+                .studyRemaining(studyRemaining)
                 .build();
     }
 }

@@ -6,10 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import toyproject.studyscheduler.common.domain.BaseEntity;
 import toyproject.studyscheduler.member.domain.entity.Member;
-import toyproject.studyscheduler.study.domain.PeriodCalculator;
-import toyproject.studyscheduler.study.domain.StudyInformation;
-import toyproject.studyscheduler.study.domain.StudyPeriod;
-import toyproject.studyscheduler.study.domain.StudyPlan;
+import toyproject.studyscheduler.study.domain.*;
 import toyproject.studyscheduler.study.exception.StudyException;
 
 import java.time.LocalDate;
@@ -78,4 +75,6 @@ public abstract class Study extends BaseEntity {
     public abstract boolean terminateIfSatisfiedStudyQuantity(int totalMinutes, LocalDate studyDate);
 
     protected abstract int getTotalMinutes();
+
+    public abstract StudyType getType();
 }

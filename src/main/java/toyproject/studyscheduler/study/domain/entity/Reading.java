@@ -10,6 +10,7 @@ import toyproject.studyscheduler.member.domain.entity.Member;
 import toyproject.studyscheduler.study.domain.StudyInformation;
 import toyproject.studyscheduler.study.domain.StudyPeriod;
 import toyproject.studyscheduler.study.domain.StudyPlan;
+import toyproject.studyscheduler.study.domain.StudyType;
 
 import java.time.LocalDate;
 
@@ -62,5 +63,10 @@ public class Reading extends Study {
     @Override
     public int getTotalMinutes() {
         return (int) Math.ceil(((double) totalPage / readPagePerMin));
+    }
+
+    @Override
+    public StudyType getType() {
+        return StudyType.READING;
     }
 }

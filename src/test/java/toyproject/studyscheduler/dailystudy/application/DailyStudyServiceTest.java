@@ -12,7 +12,7 @@ import toyproject.studyscheduler.dailystudy.domain.entity.DailyStudy;
 import toyproject.studyscheduler.dailystudy.repository.DailyStudyRepository;
 import toyproject.studyscheduler.dailystudy.web.dto.DailyStudyCreation;
 import toyproject.studyscheduler.dailystudy.web.dto.DailyStudyUpdateResult;
-import toyproject.studyscheduler.dailystudy.web.dto.RemainingStudyDays;
+import toyproject.studyscheduler.dailystudy.web.dto.StudyRemaining;
 import toyproject.studyscheduler.study.application.StudyService;
 import toyproject.studyscheduler.study.application.dto.LectureSave;
 import toyproject.studyscheduler.study.exception.StudyException;
@@ -51,7 +51,7 @@ class DailyStudyServiceTest {
 
         // then
         assertAll(
-            () -> assertTrue(dailyStudyCreation.isTermination()),
+            () -> assertTrue(dailyStudyCreation.getStudyRemaining().isTermination()),
             () -> assertEquals(LocalDate.of(2024, 4, 20), dailyStudy.getStudy().getStudyPeriod().getEndDate())
         );
     }
@@ -96,7 +96,7 @@ class DailyStudyServiceTest {
         DailyStudyCreation dailyStudyCreation = dailyStudyService.createDailyStudy(dailyStudySave);
 
         // then
-        assertThat(dailyStudyCreation.getExpectedEndDate()).isEqualTo(LocalDate.of(2024, 4, 13));
+        assertThat(dailyStudyCreation.getStudyRemaining().getExpectedEndDate()).isEqualTo(LocalDate.of(2024, 4, 13));
     }
 
     @DisplayName("오늘 날짜를 기준으로 남은 학습 기간, 예상 종료일을 구한다.")
@@ -116,12 +116,12 @@ class DailyStudyServiceTest {
         LocalDate now = LocalDate.of(2024, 4, 6);
 
         // when
-        RemainingStudyDays remainingStudyDays = dailyStudyService.calculateExpectedEndDate(studyDetail.getStudyId(), now);
+        StudyRemaining studyRemaining = dailyStudyService.getStudyRemainingInfo(studyDetail.getStudyId(), now);
 
         // then
         assertAll(
             () -> assertEquals(LocalDate.of(2024,4,14), studyDetail.getExpectedEndDate()), // 최초 예상 종료일
-            () -> assertEquals(LocalDate.of(2024,4,15), remainingStudyDays.getExpectedEndDate())  // 학습 중 예상 종료일
+            () -> assertEquals(LocalDate.of(2024,4,15), studyRemaining.getExpectedEndDate())  // 학습 중 예상 종료일
         );
     }
 
@@ -144,9 +144,11 @@ class DailyStudyServiceTest {
 
         // then
         assertAll(
-            () -> assertTrue(dailyStudyUpdateResult.isTermination()),
-            () -> assertEquals(dailyStudyUpdateResult.getRemainingStudyMinutes(), 0),
-            () -> assertEquals(dailyStudyUpdateResult.getExpectedEndDate(), LocalDate.of(2024, 4, 2))
+            () -> assertEquals(dailyStudyUpdateResult.getContent(), "변경된 내용"),
+            () -> assertEquals(dailyStudyUpdateResult.getStudyDate(), LocalDate.of(2024, 4, 2)),
+            () -> assertTrue(dailyStudyUpdateResult.getStudyRemaining().isTermination()),
+            () -> assertEquals(dailyStudyUpdateResult.getStudyRemaining().getRemainingQuantity(), 0),
+            () -> assertEquals(dailyStudyUpdateResult.getStudyRemaining().getExpectedEndDate(), LocalDate.of(2024, 4, 2))
         );
     }
 

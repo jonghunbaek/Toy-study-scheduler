@@ -6,6 +6,7 @@ import toyproject.studyscheduler.member.domain.entity.Member;
 import toyproject.studyscheduler.study.domain.StudyInformation;
 import toyproject.studyscheduler.study.domain.StudyPeriod;
 import toyproject.studyscheduler.study.domain.StudyPlan;
+import toyproject.studyscheduler.study.domain.StudyType;
 
 import java.time.LocalDate;
 
@@ -54,5 +55,10 @@ public class Lecture extends Study {
     @Override
     public int getTotalMinutes() {
         return this.totalRuntime;
+    }
+
+    @Override
+    public StudyType getType() {
+        return StudyType.LECTURE;
     }
 }

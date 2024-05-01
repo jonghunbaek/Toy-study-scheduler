@@ -12,12 +12,11 @@ import toyproject.studyscheduler.dailystudy.exception.DailyStudyException;
 import toyproject.studyscheduler.dailystudy.repository.DailyStudyRepository;
 import toyproject.studyscheduler.dailystudy.web.dto.DailyStudyCreation;
 import toyproject.studyscheduler.dailystudy.web.dto.DailyStudyUpdateResult;
-import toyproject.studyscheduler.dailystudy.web.dto.RemainingStudyDays;
+import toyproject.studyscheduler.dailystudy.web.dto.StudyRemaining;
 import toyproject.studyscheduler.study.application.StudyService;
 import toyproject.studyscheduler.study.domain.entity.Study;
 
 import java.time.LocalDate;
-import java.time.Period;
 
 @RequiredArgsConstructor
 @Transactional
@@ -35,62 +34,6 @@ public class DailyStudyService {
         return createDailyStudyCreation(study, dailyStudy);
     }
 
-    private DailyStudy createDailyStudyAfterValidation(DailyStudySave dailyStudySave, Study study) {
-        study.validateStudyDateEarlierThanStartDate(dailyStudySave.getStudyDate());
-
-        return dailyStudyRepository.save(dailyStudySave.toEntity(study));
-    }
-
-    private DailyStudyCreation createDailyStudyCreation(Study study, DailyStudy dailyStudy) {
-        int totalStudyMinutes = getTotalStudyMinutes(study);
-        LocalDate studyDate = dailyStudy.getStudyDate();
-        LocalDate nextStudyDate = studyDate.plusDays(1); // 다음 날 부터 예상 종료일을 계산해야함
-
-        LocalDate expectedEndDate = study.calculateExpectedDate(totalStudyMinutes, nextStudyDate);
-        boolean isTerminated = study.terminateIfSatisfiedStudyQuantity(totalStudyMinutes, studyDate);
-
-        return DailyStudyCreation.from(dailyStudy, isTerminated, expectedEndDate, study.calculateRemainingQuantity(totalStudyMinutes));
-    }
-
-    public DailyStudyUpdateResult updateDailyStudy(Long dailyStudyId, DailyStudyUpdate dailyStudyUpdate) {
-        DailyStudy dailyStudy = findDailyStudy(dailyStudyId);
-        Study study = dailyStudy.getStudy();
-
-        validateStudyDateAndTermination(dailyStudyUpdate, study);
-
-        dailyStudyUpdate.update(dailyStudy);
-        return createDailyStudyUpdateResult(dailyStudy, study);
-    }
-
-    private DailyStudyUpdateResult createDailyStudyUpdateResult(DailyStudy dailyStudy, Study study) {
-        int totalStudyMinutes = getTotalStudyMinutes(study);
-        LocalDate studyDate = dailyStudy.getStudyDate();
-        LocalDate nextStudyDate = studyDate.plusDays(1);
-
-        LocalDate expectedDate = study.calculateExpectedDate(totalStudyMinutes, nextStudyDate);
-        boolean isTermination = study.terminateIfSatisfiedStudyQuantity(totalStudyMinutes, studyDate);
-
-        return new DailyStudyUpdateResult(study.calculateRemainingQuantity(totalStudyMinutes), expectedDate, isTermination);
-    }
-
-    private void validateStudyDateAndTermination(DailyStudyUpdate dailyStudyUpdate, Study study) {
-        study.validateStudyDateEarlierThanStartDate(dailyStudyUpdate.getStudyDate());
-        study.getStudyInformation().validateTermination();
-    }
-
-    private DailyStudy findDailyStudy(Long dailyStudyId) {
-        return dailyStudyRepository.findById(dailyStudyId)
-            .orElseThrow(() -> new DailyStudyException("dailyStudyId :: " + dailyStudyId, ResponseCode.E40000));
-    }
-
-    public RemainingStudyDays calculateExpectedEndDate(Long studyId, LocalDate now) {
-        Study study = findStudyNotTerminated(studyId);
-        int totalStudyMinutes = getTotalStudyMinutes(study);
-        LocalDate expectedDate = study.calculateExpectedDate(totalStudyMinutes, now);
-
-        return new RemainingStudyDays(expectedDate, Period.between(now, expectedDate).getDays());
-    }
-
     private Study findStudyNotTerminated(Long studyId) {
         Study study = studyService.findById(studyId);
 
@@ -99,9 +42,65 @@ public class DailyStudyService {
         return study;
     }
 
+    private DailyStudy createDailyStudyAfterValidation(DailyStudySave dailyStudySave, Study study) {
+        study.validateStudyDateEarlierThanStartDate(dailyStudySave.getStudyDate());
+
+        return dailyStudyRepository.save(dailyStudySave.toEntity(study));
+    }
+
+    private DailyStudyCreation createDailyStudyCreation(Study study, DailyStudy dailyStudy) {
+        StudyRemaining studyRemaining = calculateStudyRemaining(dailyStudy.getStudyDate(), study);
+
+        return DailyStudyCreation.from(dailyStudy, studyRemaining);
+    }
+
+    public DailyStudyUpdateResult updateDailyStudy(Long dailyStudyId, DailyStudyUpdate dailyStudyUpdate) {
+        DailyStudy dailyStudy = findDailyStudy(dailyStudyId);
+        Study study = getStudyAfterValidateStudyDate(dailyStudyUpdate, dailyStudy);
+
+        dailyStudyUpdate.update(dailyStudy);
+        return createDailyStudyUpdateResult(dailyStudy, study);
+    }
+
+    private static Study getStudyAfterValidateStudyDate(DailyStudyUpdate dailyStudyUpdate, DailyStudy dailyStudy) {
+        Study study = dailyStudy.getStudy();
+
+        study.validateStudyDateEarlierThanStartDate(dailyStudyUpdate.getStudyDate());
+
+        return study;
+    }
+
+    private DailyStudyUpdateResult createDailyStudyUpdateResult(DailyStudy dailyStudy, Study study) {
+        StudyRemaining studyRemaining = calculateStudyRemaining(dailyStudy.getStudyDate(), study);
+
+        return DailyStudyUpdateResult.from(dailyStudy, studyRemaining);
+    }
+
+    public StudyRemaining getStudyRemainingInfo(Long studyId, LocalDate now) {
+        Study study = findStudyNotTerminated(studyId);
+
+        // 일일 학습을 등록한 상태가 아니기 때문에 전날을 인자로 전달해줘야 정상적으로 계산됨 
+        return calculateStudyRemaining(now.minusDays(1), study);
+    }
+
+    private StudyRemaining calculateStudyRemaining(LocalDate baseDate, Study study) {
+        int totalStudyMinutes = getTotalStudyMinutes(study);
+
+        // 기준일의 다음 날부터 계산, 오늘 학습한 내용까지 포함해야 하기 때문
+        LocalDate expectedEndDate = study.calculateExpectedDate(totalStudyMinutes, baseDate.plusDays(1));
+        boolean isTermination = study.terminateIfSatisfiedStudyQuantity(totalStudyMinutes, baseDate);
+
+        return StudyRemaining.from(study.getType(), expectedEndDate, study.calculateRemainingQuantity(totalStudyMinutes), isTermination);
+    }
+
     private int getTotalStudyMinutes(Study study) {
         DailyStudies dailyStudies = new DailyStudies(dailyStudyRepository.findAllByStudy(study));
 
         return dailyStudies.calculateTotalStudyMinutes();
+    }
+
+    private DailyStudy findDailyStudy(Long dailyStudyId) {
+        return dailyStudyRepository.findById(dailyStudyId)
+            .orElseThrow(() -> new DailyStudyException("dailyStudyId :: " + dailyStudyId, ResponseCode.E40000));
     }
 }
