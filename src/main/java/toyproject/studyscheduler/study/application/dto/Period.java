@@ -2,8 +2,8 @@ package toyproject.studyscheduler.study.application.dto;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
-import toyproject.studyscheduler.common.validator.period.EndDateLaterThanStartDate;
-import toyproject.studyscheduler.common.validator.period.EndDateLaterThanStartDateGroup;
+import toyproject.studyscheduler.common.validator.EndDateLaterThanStartDate;
+import toyproject.studyscheduler.common.validator.EndDateLaterThanStartDateGroup;
 import toyproject.studyscheduler.study.domain.StudyPeriod;
 
 import java.time.LocalDate;

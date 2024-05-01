@@ -1,4 +1,4 @@
-package toyproject.studyscheduler.common.validator.period;
+package toyproject.studyscheduler.common.validator;
 
 import jakarta.validation.GroupSequence;
 import jakarta.validation.groups.Default;

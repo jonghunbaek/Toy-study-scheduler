@@ -1,4 +1,4 @@
-package toyproject.studyscheduler.common.validator.period;
+package toyproject.studyscheduler.common.validator;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;

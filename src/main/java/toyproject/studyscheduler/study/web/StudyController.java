@@ -7,7 +7,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import toyproject.studyscheduler.common.resolver.LoginMember;
 import toyproject.studyscheduler.common.resolver.MemberInfo;
-import toyproject.studyscheduler.common.validator.period.ValidatorGroupSequence;
+import toyproject.studyscheduler.common.validator.ValidatorGroupSequence;
 import toyproject.studyscheduler.study.application.StudyService;
 import toyproject.studyscheduler.study.application.dto.Period;
 import toyproject.studyscheduler.study.application.dto.StudySave;
