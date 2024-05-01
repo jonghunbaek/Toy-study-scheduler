@@ -14,10 +14,13 @@ import org.springframework.context.annotation.FilterType;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.util.StringUtils;
 import toyproject.studyscheduler.common.jwt.JwtAuthenticationFilter;
 import toyproject.studyscheduler.common.response.ResponseForm;
 import toyproject.studyscheduler.dailystudy.application.DailyStudyService;
 import toyproject.studyscheduler.dailystudy.application.dto.DailyStudySave;
+import toyproject.studyscheduler.dailystudy.application.dto.DailyStudyUpdate;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -25,8 +28,7 @@ import java.util.Map;
 import java.util.stream.Stream;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -137,6 +139,80 @@ class DailyStudyControllerTest {
                         "TEST",
                         ResponseForm.of(E90001)
                 )
+        );
+    }
+
+    @WithMockUser
+    @DisplayName("일일 학습을 수정할 때 입력 값을 검증한다.")
+    @ParameterizedTest
+    @MethodSource("argumentsWhenDailyStudyUpdate")
+    void dailyStudyUpdate(String dailyStudyId, DailyStudyUpdate dailyStudyUpdate, ResponseForm response) throws Exception {
+        // given
+        String jsonResponse = objectMapper.writeValueAsString(response);
+
+        ResultActions resultActions = mockMvc.perform(put("/daily-studies/" + dailyStudyId)
+                .content(objectMapper.writeValueAsString(dailyStudyUpdate))
+                .contentType(MediaType.APPLICATION_JSON)
+                .with(csrf())
+            )
+            .andDo(print());
+
+
+        // TODO :: 요청 경로 잘못된 경우 테스트 케이스 수정필요. 따로 분리해서 테스트해보기
+        // when & then
+        if (StringUtils.hasText(dailyStudyId)) {
+            resultActions
+                .andExpect(status().isBadRequest())
+                .andExpect(content().json(jsonResponse));
+        } else {
+            resultActions
+                .andExpect(status().isNotFound())
+                .andExpect(content().string(jsonResponse));
+        }
+    }
+
+    private static Stream<Arguments> argumentsWhenDailyStudyUpdate() {
+        return Stream.of(
+            Arguments.of(
+                "",
+                DailyStudyUpdate.builder()
+                    .content("정상 내용")
+                    .studyDate(LocalDate.of(2024, 5, 1))
+                    .completeMinutesToday(100)
+                    .build(),
+                ResponseForm.of(E90003)
+            ),
+            Arguments.of(
+                "-1",
+                DailyStudyUpdate.builder()
+                    .content("정상 내용")
+                    .studyDate(LocalDate.of(2024, 5, 1))
+                    .completeMinutesToday(100)
+                    .build(),
+                ResponseForm.from(E90000, List.of("id 값은 양의 정수이어야 합니다."))
+            ),
+            Arguments.of(
+                "TEST",
+                DailyStudyUpdate.builder()
+                    .content("정상 내용")
+                    .studyDate(LocalDate.of(2024, 5, 1))
+                    .completeMinutesToday(100)
+                    .build(),
+                ResponseForm.of(E90001)
+            ),
+            Arguments.of(
+                "1",
+                DailyStudyUpdate.builder()
+                        .content(createStringOver1000Characters())
+                        .studyDate(null)
+                        .completeMinutesToday(0)
+                        .build(),
+                ResponseForm.from(E90000, Map.of(
+                    "content", "학습 내용은 1000자 이하이어야 합니다.",
+                    "studyDate", "학습일은 필수 입력 값입니다.",
+                    "completeMinutesToday", "최소 학습 시간은 1분입니다."
+                ))
+            )
         );
     }
 }

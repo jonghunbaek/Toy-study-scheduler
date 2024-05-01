@@ -39,7 +39,8 @@ public enum ResponseCode {
     // input validation
     E90000("잘못된 입력 값이 존재합니다.", BAD_REQUEST),
     E90001("입력 값을 파싱할 수 없습니다.", BAD_REQUEST),
-    E90002("요청 파라미터가 존재하지 않습니다.", BAD_REQUEST);
+    E90002("요청 파라미터가 존재하지 않습니다.", BAD_REQUEST),
+    E90003("잘못된 요청 경로입니다.", NOT_FOUND);
 
     private String message;
     private HttpStatus httpStatus;

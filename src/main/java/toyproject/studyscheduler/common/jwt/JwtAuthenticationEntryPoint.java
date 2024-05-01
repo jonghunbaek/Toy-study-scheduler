@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import toyproject.studyscheduler.common.response.ResponseForm;
 
 import java.io.IOException;
@@ -41,6 +42,10 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
         if (e instanceof IllegalStateException) {
             return ResponseForm.of(E00005);
+        }
+
+        if (e instanceof HttpRequestMethodNotSupportedException) {
+            return ResponseForm.of(E90003);
         }
 
         return ResponseForm.of(E00001);
