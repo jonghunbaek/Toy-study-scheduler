@@ -8,9 +8,9 @@ import java.time.LocalDate;
 @Getter
 public class ReadingDetail extends StudyDetail {
 
-    private String authorName;
-    private int totalPage;
-    private int readPagePerMin;
+    private final String authorName;
+    private final int totalPage;
+    private final int readPagePerMin;
 
     @Builder
     private ReadingDetail(Long studyId, String title, String description, boolean isTermination, LocalDate startDate, LocalDate endDate, LocalDate expectedEndDate, int planMinutesInWeekday, int planMinutesInWeekend, String authorName, int totalPage, int readPagePerMin) {

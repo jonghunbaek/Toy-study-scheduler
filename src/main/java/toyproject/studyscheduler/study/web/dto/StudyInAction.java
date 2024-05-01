@@ -7,9 +7,9 @@ import toyproject.studyscheduler.study.domain.entity.Study;
 @Getter
 public class StudyInAction {
 
-    private long studyId;
-    private String title;
-    private Period period;
+    private final long studyId;
+    private final String title;
+    private final Period period;
 
     private StudyInAction(long studyId, String title, Period period) {
         this.studyId = studyId;

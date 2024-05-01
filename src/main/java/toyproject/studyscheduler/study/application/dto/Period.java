@@ -13,10 +13,10 @@ import java.time.LocalDate;
 public class Period {
 
     @NotNull(message = "시작일은 필수 입력 값입니다.")
-    private LocalDate startDate;
+    private final LocalDate startDate;
 
     @NotNull(message = "종료일은 필수 입력 값입니다.")
-    private LocalDate endDate;
+    private final LocalDate endDate;
 
     public Period(LocalDate startDate, LocalDate endDate) {
         this.startDate = startDate;

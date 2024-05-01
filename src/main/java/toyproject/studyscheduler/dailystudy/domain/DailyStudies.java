@@ -8,7 +8,7 @@ import java.util.List;
 @Getter
 public class DailyStudies {
 
-    private List<DailyStudy> dailyStudies;
+    private final List<DailyStudy> dailyStudies;
 
     public DailyStudies(List<DailyStudy> dailyStudies) {
         this.dailyStudies = dailyStudies;

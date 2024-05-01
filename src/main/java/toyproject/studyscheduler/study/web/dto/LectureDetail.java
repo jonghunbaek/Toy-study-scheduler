@@ -8,8 +8,8 @@ import java.time.LocalDate;
 @Getter
 public class LectureDetail extends StudyDetail {
 
-    private String teacherName;
-    private int totalRuntime;
+    private final String teacherName;
+    private final int totalRuntime;
 
     @Builder
     private LectureDetail(Long studyId, String title, String description, boolean isTermination, LocalDate startDate, LocalDate endDate, LocalDate expectedEndDate, int planMinutesInWeekday, int planMinutesInWeekend, String teacherName, int totalRuntime) {

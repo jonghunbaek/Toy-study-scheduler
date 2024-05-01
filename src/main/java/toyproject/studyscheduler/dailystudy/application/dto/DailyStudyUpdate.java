@@ -12,14 +12,14 @@ import java.time.LocalDate;
 @Getter
 public class DailyStudyUpdate {
 
-    @Size(min = 0, max = 1000, message = "학습 내용은 1000자 이하이어야 합니다.")
-    private String content;
+    @Size(max = 1000, message = "학습 내용은 1000자 이하이어야 합니다.")
+    private final String content;
 
     @Min(value = 1, message = "최소 학습 시간은 1분입니다.")
-    private int completeMinutesToday;
+    private final int completeMinutesToday;
 
     @NotNull(message = "학습일은 필수 입력 값입니다.")
-    private LocalDate studyDate;
+    private final LocalDate studyDate;
 
     @Builder
     private DailyStudyUpdate(String content, int completeMinutesToday, LocalDate studyDate) {
