@@ -150,7 +150,7 @@ class DailyStudyControllerTest {
         // given
         String jsonResponse = objectMapper.writeValueAsString(response);
 
-        ResultActions resultActions = mockMvc.perform(put("/daily-studies/" + dailyStudyId)
+        ResultActions resultActions = mockMvc.perform(put("/daily-studies" + dailyStudyId)
                 .content(objectMapper.writeValueAsString(dailyStudyUpdate))
                 .contentType(MediaType.APPLICATION_JSON)
                 .with(csrf())
@@ -158,7 +158,6 @@ class DailyStudyControllerTest {
             .andDo(print());
 
 
-        // TODO :: 요청 경로 잘못된 경우 테스트 케이스 수정필요. 따로 분리해서 테스트해보기
         // when & then
         if (StringUtils.hasText(dailyStudyId)) {
             resultActions
@@ -167,7 +166,7 @@ class DailyStudyControllerTest {
         } else {
             resultActions
                 .andExpect(status().isNotFound())
-                .andExpect(content().string(jsonResponse));
+                .andExpect(content().json(jsonResponse));
         }
     }
 
@@ -183,7 +182,7 @@ class DailyStudyControllerTest {
                 ResponseForm.of(E90003)
             ),
             Arguments.of(
-                "-1",
+                "/-1",
                 DailyStudyUpdate.builder()
                     .content("정상 내용")
                     .studyDate(LocalDate.of(2024, 5, 1))
@@ -192,7 +191,7 @@ class DailyStudyControllerTest {
                 ResponseForm.from(E90000, List.of("id 값은 양의 정수이어야 합니다."))
             ),
             Arguments.of(
-                "TEST",
+                "/TEST",
                 DailyStudyUpdate.builder()
                     .content("정상 내용")
                     .studyDate(LocalDate.of(2024, 5, 1))
@@ -201,7 +200,7 @@ class DailyStudyControllerTest {
                 ResponseForm.of(E90001)
             ),
             Arguments.of(
-                "1",
+                "/1",
                 DailyStudyUpdate.builder()
                         .content(createStringOver1000Characters())
                         .studyDate(null)
