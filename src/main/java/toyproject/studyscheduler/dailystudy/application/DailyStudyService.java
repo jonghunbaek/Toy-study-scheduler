@@ -11,6 +11,7 @@ import toyproject.studyscheduler.dailystudy.domain.entity.DailyStudy;
 import toyproject.studyscheduler.dailystudy.exception.DailyStudyException;
 import toyproject.studyscheduler.dailystudy.repository.DailyStudyRepository;
 import toyproject.studyscheduler.dailystudy.web.dto.DailyStudyCreation;
+import toyproject.studyscheduler.dailystudy.web.dto.DailyStudyDetail;
 import toyproject.studyscheduler.dailystudy.web.dto.DailyStudyUpdateResult;
 import toyproject.studyscheduler.dailystudy.web.dto.StudyRemaining;
 import toyproject.studyscheduler.study.application.StudyService;
@@ -27,6 +28,9 @@ public class DailyStudyService {
 
     private final DailyStudyRepository dailyStudyRepository;
 
+    /**
+     * 일일 학습 생성
+     */
     public DailyStudyCreation createDailyStudy(DailyStudySave dailyStudySave) {
         Study study = findStudyNotTerminated(dailyStudySave.getStudyId());
         DailyStudy dailyStudy = createDailyStudyAfterValidation(dailyStudySave, study);
@@ -54,6 +58,9 @@ public class DailyStudyService {
         return DailyStudyCreation.from(dailyStudy, studyRemaining);
     }
 
+    /**
+     * 일일 학습 수정
+     */
     public DailyStudyUpdateResult updateDailyStudy(Long dailyStudyId, DailyStudyUpdate dailyStudyUpdate) {
         DailyStudy dailyStudy = findDailyStudy(dailyStudyId);
         Study study = getStudyAfterValidateStudyDate(dailyStudyUpdate, dailyStudy);
@@ -76,6 +83,9 @@ public class DailyStudyService {
         return DailyStudyUpdateResult.from(dailyStudy, studyRemaining);
     }
 
+    /**
+     * 저장된 일일 학습량을 계산해 남은 일수, 종료 여부 등을 조회
+     */
     public StudyRemaining getStudyRemainingInfo(Long studyId, LocalDate now) {
         Study study = findStudyNotTerminated(studyId);
 
@@ -97,6 +107,15 @@ public class DailyStudyService {
         DailyStudies dailyStudies = new DailyStudies(dailyStudyRepository.findAllByStudy(study));
 
         return dailyStudies.calculateTotalStudyMinutes();
+    }
+
+    /**
+     *  일일 학습 아이디별 조회
+     */
+    public DailyStudyDetail findDetailDailyStudy(Long dailyStudyId) {
+        DailyStudy dailyStudy = findDailyStudy(dailyStudyId);
+
+        return DailyStudyDetail.of(dailyStudy);
     }
 
     private DailyStudy findDailyStudy(Long dailyStudyId) {

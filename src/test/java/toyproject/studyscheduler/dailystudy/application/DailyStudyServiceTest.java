@@ -11,6 +11,7 @@ import toyproject.studyscheduler.dailystudy.application.dto.DailyStudyUpdate;
 import toyproject.studyscheduler.dailystudy.domain.entity.DailyStudy;
 import toyproject.studyscheduler.dailystudy.repository.DailyStudyRepository;
 import toyproject.studyscheduler.dailystudy.web.dto.DailyStudyCreation;
+import toyproject.studyscheduler.dailystudy.web.dto.DailyStudyDetail;
 import toyproject.studyscheduler.dailystudy.web.dto.DailyStudyUpdateResult;
 import toyproject.studyscheduler.dailystudy.web.dto.StudyRemaining;
 import toyproject.studyscheduler.study.application.StudyService;
@@ -150,6 +151,22 @@ class DailyStudyServiceTest {
             () -> assertEquals(dailyStudyUpdateResult.getStudyRemaining().getRemainingQuantity(), 0),
             () -> assertEquals(dailyStudyUpdateResult.getStudyRemaining().getExpectedEndDate(), LocalDate.of(2024, 4, 2))
         );
+    }
+
+    @DisplayName("일일 학습 아이디를 인자로 받아 해당 일일 학습의 상세 정보를 조회한다.")
+    @Test
+    void findDetailDailyStudy() {
+        // given
+        LectureSave lecture = createLectureSave("김영한의 Spring", false, LocalDate.of(2024, 4, 1), null);
+        StudyDetail studyDetail = studyService.createStudy(lecture, 1L);
+        DailyStudySave dailyStudySave = createDailyStudySave(studyDetail.getStudyId(), 60, LocalDate.of(2024, 4, 1));
+        DailyStudyCreation dailyStudyCreation = dailyStudyService.createDailyStudy(dailyStudySave);
+
+        // when
+        DailyStudyDetail detailDailyStudy = dailyStudyService.findDetailDailyStudy(dailyStudyCreation.getDailyStudyId());
+
+        // then
+        assertThat(detailDailyStudy.getStudyTitle()).isEqualTo("김영한의 Spring");
     }
 
     private LectureSave createLectureSave(String title, boolean isTermination, LocalDate startDate, LocalDate endDate) {
