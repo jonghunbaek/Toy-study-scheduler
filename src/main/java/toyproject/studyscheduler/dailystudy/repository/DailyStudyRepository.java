@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 public interface DailyStudyRepository extends JpaRepository<DailyStudy, Long> {
 
-    List<DailyStudy> findAllByStudy(Study study);
+    List<DailyStudy> findAllByStudyId(Long studyId);
 
 //    @Query("select s from DailyStudy s where s.studyDate >= :startDate and s.studyDate <= :endDate ")
 //    List<DailyStudy> findAllByPeriod(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);

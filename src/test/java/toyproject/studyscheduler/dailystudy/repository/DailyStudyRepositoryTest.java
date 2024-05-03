@@ -54,7 +54,7 @@ class DailyStudyRepositoryTest {
         dailyStudyRepository.saveAll(createDailyStudies(reading, studyDates, completeMinutesTodays));
 
         // when
-        List<DailyStudy> dailyStudies = dailyStudyRepository.findAllByStudy(reading);
+        List<DailyStudy> dailyStudies = dailyStudyRepository.findAllByStudyId(reading.getId());
 
         // then
         assertThat(dailyStudies).hasSize(5)
