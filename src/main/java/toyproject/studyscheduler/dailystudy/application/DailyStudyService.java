@@ -82,32 +82,6 @@ public class DailyStudyService {
     }
 
     /**
-     * 저장된 일일 학습량을 계산해 남은 일수, 종료 여부 등을 조회
-     */
-    public StudyRemaining getStudyRemainingInfo(Long studyId, LocalDate now) {
-        Study study = findStudyNotTerminated(studyId);
-
-        // 일일 학습을 등록한 상태가 아니기 때문에 전날을 인자로 전달해줘야 정상적으로 계산됨 
-        return calculateStudyRemaining(now.minusDays(1), study);
-    }
-
-    private StudyRemaining calculateStudyRemaining(LocalDate baseDate, Study study) {
-        int totalStudyMinutes = getTotalStudyMinutes(study);
-
-        // 기준일의 다음 날부터 계산, 오늘 학습한 내용까지 포함해야 하기 때문
-        LocalDate expectedEndDate = study.calculateExpectedDate(totalStudyMinutes, baseDate.plusDays(1));
-        boolean isTermination = study.terminateIfSatisfiedStudyQuantity(totalStudyMinutes, baseDate);
-
-        return StudyRemaining.from(study.getType(), expectedEndDate, study.calculateRemainingQuantity(totalStudyMinutes), isTermination);
-    }
-
-    private int getTotalStudyMinutes(Study study) {
-        DailyStudies dailyStudies = new DailyStudies(dailyStudyRepository.findAllByStudyId(study.getId()));
-
-        return dailyStudies.calculateTotalStudyMinutes();
-    }
-
-    /**
      *  일일 학습 아이디별 조회
      */
     public DailyStudyDetailInfo findDetailDailyStudy(Long dailyStudyId) {
@@ -125,6 +99,32 @@ public class DailyStudyService {
         return dailyStudies.stream()
             .map(DailyStudyBasicInfo::of)
             .toList();
+    }
+
+    /**
+     * 저장된 일일 학습량을 계산해 남은 일수, 종료 여부 등을 조회
+     */
+    public StudyRemaining getStudyRemainingInfo(Long studyId, LocalDate now) {
+        Study study = findStudyNotTerminated(studyId);
+
+        // 일일 학습을 등록한 상태가 아니기 때문에 전날을 인자로 전달해줘야 정상적으로 계산됨
+        return calculateStudyRemaining(now.minusDays(1), study);
+    }
+
+    private StudyRemaining calculateStudyRemaining(LocalDate baseDate, Study study) {
+        int totalStudyMinutes = getTotalStudyMinutes(study);
+
+        // 기준일의 다음 날부터 계산, 오늘 학습한 내용까지 포함해야 하기 때문
+        LocalDate expectedEndDate = study.calculateExpectedDate(totalStudyMinutes, baseDate.plusDays(1));
+        boolean isTermination = study.terminateIfSatisfiedStudyQuantity(totalStudyMinutes, baseDate);
+
+        return StudyRemaining.from(study.getType(), expectedEndDate, study.calculateRemainingQuantity(totalStudyMinutes), isTermination);
+    }
+
+    private int getTotalStudyMinutes(Study study) {
+        DailyStudies dailyStudies = new DailyStudies(dailyStudyRepository.findAllByStudyId(study.getId()));
+
+        return dailyStudies.calculateTotalStudyMinutes();
     }
 
     private DailyStudy findDailyStudy(Long dailyStudyId) {
