@@ -37,7 +37,7 @@ public class StudyService {
     }
 
     public StudyDetail findStudyById(Long studyId) {
-        Study study = findById(studyId);
+        Study study = findStudyEntityById(studyId);
 
         return StudyDetail.of(study);
     }
@@ -51,12 +51,12 @@ public class StudyService {
     }
 
     public void updateStudy(Long studyId, StudyUpdate studyUpdate) {
-        Study study = findById(studyId);
+        Study study = findStudyEntityById(studyId);
 
         studyUpdate.update(study);
     }
 
-    public Study findById(Long studyId) {
+    public Study findStudyEntityById(Long studyId) {
         return studyRepository.findById(studyId)
             .orElseThrow(() -> new StudyException("studyId :: " + studyId, E30002));
     }
