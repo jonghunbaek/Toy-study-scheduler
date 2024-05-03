@@ -1,8 +1,5 @@
 package toyproject.studyscheduler.dailystudy.web.dto;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,7 +10,7 @@ import java.time.LocalDate;
 
 @NoArgsConstructor
 @Getter
-public class DailyStudyDetail {
+public class DailyStudyDetailInfo {
 
     private Long dailyStudyId;
 
@@ -28,7 +25,7 @@ public class DailyStudyDetail {
     private String studyTitle;
 
     @Builder
-    private DailyStudyDetail(Long dailyStudyId, String content, int completeMinutesToday, LocalDate studyDate, Long studyId, String studyTitle) {
+    private DailyStudyDetailInfo(Long dailyStudyId, String content, int completeMinutesToday, LocalDate studyDate, Long studyId, String studyTitle) {
         this.dailyStudyId = dailyStudyId;
         this.content = content;
         this.completeMinutesToday = completeMinutesToday;
@@ -37,10 +34,10 @@ public class DailyStudyDetail {
         this.studyTitle = studyTitle;
     }
 
-    public static DailyStudyDetail of(DailyStudy dailyStudy) {
+    public static DailyStudyDetailInfo of(DailyStudy dailyStudy) {
         Study study = dailyStudy.getStudy();
 
-        return DailyStudyDetail.builder()
+        return DailyStudyDetailInfo.builder()
             .dailyStudyId(dailyStudy.getId())
             .content(dailyStudy.getContent())
             .completeMinutesToday(dailyStudy.getCompleteMinutesToday())

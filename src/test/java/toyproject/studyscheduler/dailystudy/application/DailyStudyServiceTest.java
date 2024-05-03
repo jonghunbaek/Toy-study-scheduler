@@ -10,16 +10,14 @@ import toyproject.studyscheduler.dailystudy.application.dto.DailyStudySave;
 import toyproject.studyscheduler.dailystudy.application.dto.DailyStudyUpdate;
 import toyproject.studyscheduler.dailystudy.domain.entity.DailyStudy;
 import toyproject.studyscheduler.dailystudy.repository.DailyStudyRepository;
-import toyproject.studyscheduler.dailystudy.web.dto.DailyStudyCreation;
-import toyproject.studyscheduler.dailystudy.web.dto.DailyStudyDetail;
-import toyproject.studyscheduler.dailystudy.web.dto.DailyStudyUpdateResult;
-import toyproject.studyscheduler.dailystudy.web.dto.StudyRemaining;
+import toyproject.studyscheduler.dailystudy.web.dto.*;
 import toyproject.studyscheduler.study.application.StudyService;
 import toyproject.studyscheduler.study.application.dto.LectureSave;
 import toyproject.studyscheduler.study.exception.StudyException;
 import toyproject.studyscheduler.study.web.dto.StudyDetail;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -163,10 +161,37 @@ class DailyStudyServiceTest {
         DailyStudyCreation dailyStudyCreation = dailyStudyService.createDailyStudy(dailyStudySave);
 
         // when
-        DailyStudyDetail detailDailyStudy = dailyStudyService.findDetailDailyStudy(dailyStudyCreation.getDailyStudyId());
+        DailyStudyDetailInfo detailDailyStudy = dailyStudyService.findDetailDailyStudy(dailyStudyCreation.getDailyStudyId());
 
         // then
         assertThat(detailDailyStudy.getStudyTitle()).isEqualTo("김영한의 Spring");
+    }
+
+    @DisplayName("학습 아이디로 해당하는 모든 일일 학습을 조회한다.")
+    @Test
+    void findAllDailyStudyByStudy() {
+        // given
+        LectureSave lecture = createLectureSave("김영한의 Spring", false, LocalDate.of(2024, 4, 1), null);
+        StudyDetail studyDetail = studyService.createStudy(lecture, 1L);
+
+        DailyStudySave dailyStudySave1 = createDailyStudySave(studyDetail.getStudyId(), 30, LocalDate.of(2024, 4, 1));
+        DailyStudySave dailyStudySave2 = createDailyStudySave(studyDetail.getStudyId(), 20, LocalDate.of(2024, 4, 3));
+        DailyStudySave dailyStudySave3 = createDailyStudySave(studyDetail.getStudyId(), 50, LocalDate.of(2024, 4, 5));
+        dailyStudyService.createDailyStudy(dailyStudySave1);
+        dailyStudyService.createDailyStudy(dailyStudySave2);
+        dailyStudyService.createDailyStudy(dailyStudySave3);
+
+        // when
+        List<DailyStudyBasicInfo> dailyStudies = dailyStudyService.findAllDailyStudyByStudy(studyDetail.getStudyId());
+
+        // then
+        assertThat(dailyStudies).hasSize(3)
+            .extracting("completeMinutesToday", "studyDate")
+            .containsExactlyInAnyOrder(
+                tuple(30, LocalDate.of(2024, 4, 1)),
+                tuple(20, LocalDate.of(2024, 4, 3)),
+                tuple(50, LocalDate.of(2024, 4, 5))
+            );
     }
 
     private LectureSave createLectureSave(String title, boolean isTermination, LocalDate startDate, LocalDate endDate) {

@@ -10,14 +10,12 @@ import toyproject.studyscheduler.dailystudy.domain.DailyStudies;
 import toyproject.studyscheduler.dailystudy.domain.entity.DailyStudy;
 import toyproject.studyscheduler.dailystudy.exception.DailyStudyException;
 import toyproject.studyscheduler.dailystudy.repository.DailyStudyRepository;
-import toyproject.studyscheduler.dailystudy.web.dto.DailyStudyCreation;
-import toyproject.studyscheduler.dailystudy.web.dto.DailyStudyDetail;
-import toyproject.studyscheduler.dailystudy.web.dto.DailyStudyUpdateResult;
-import toyproject.studyscheduler.dailystudy.web.dto.StudyRemaining;
+import toyproject.studyscheduler.dailystudy.web.dto.*;
 import toyproject.studyscheduler.study.application.StudyService;
 import toyproject.studyscheduler.study.domain.entity.Study;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Transactional
@@ -39,7 +37,7 @@ public class DailyStudyService {
     }
 
     private Study findStudyNotTerminated(Long studyId) {
-        Study study = studyService.findById(studyId);
+        Study study = studyService.findStudyEntityById(studyId);
 
         study.getStudyInformation().validateTermination();
 
@@ -104,7 +102,7 @@ public class DailyStudyService {
     }
 
     private int getTotalStudyMinutes(Study study) {
-        DailyStudies dailyStudies = new DailyStudies(dailyStudyRepository.findAllByStudy(study));
+        DailyStudies dailyStudies = new DailyStudies(dailyStudyRepository.findAllByStudyId(study.getId()));
 
         return dailyStudies.calculateTotalStudyMinutes();
     }
@@ -112,10 +110,21 @@ public class DailyStudyService {
     /**
      *  일일 학습 아이디별 조회
      */
-    public DailyStudyDetail findDetailDailyStudy(Long dailyStudyId) {
+    public DailyStudyDetailInfo findDetailDailyStudy(Long dailyStudyId) {
         DailyStudy dailyStudy = findDailyStudy(dailyStudyId);
 
-        return DailyStudyDetail.of(dailyStudy);
+        return DailyStudyDetailInfo.of(dailyStudy);
+    }
+
+    /**
+     *  학습 별 일일 학습 조회
+     */
+    public List<DailyStudyBasicInfo> findAllDailyStudyByStudy(Long studyId) {
+        List<DailyStudy> dailyStudies = dailyStudyRepository.findAllByStudyId(studyId);
+
+        return dailyStudies.stream()
+            .map(DailyStudyBasicInfo::of)
+            .toList();
     }
 
     private DailyStudy findDailyStudy(Long dailyStudyId) {
