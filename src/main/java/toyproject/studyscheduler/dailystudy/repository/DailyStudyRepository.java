@@ -2,14 +2,12 @@ package toyproject.studyscheduler.dailystudy.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import toyproject.studyscheduler.study.domain.entity.Study;
 import toyproject.studyscheduler.dailystudy.domain.entity.DailyStudy;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Repository
-public interface DailyStudyRepository extends JpaRepository<DailyStudy, Long> {
+public interface DailyStudyRepository extends JpaRepository<DailyStudy, Long>, DailyStudyQuerydslRepository {
 
     List<DailyStudy> findAllByStudyId(Long studyId);
 

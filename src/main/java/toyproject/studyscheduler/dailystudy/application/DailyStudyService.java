@@ -114,7 +114,7 @@ public class DailyStudyService {
     private StudyRemaining calculateStudyRemaining(LocalDate baseDate, Study study) {
         int totalStudyMinutes = getTotalStudyMinutes(study);
 
-        // 기준일의 다음 날부터 계산, 오늘 학습한 내용까지 포함해야 하기 때문
+        // 오늘 학습한 내용까지 포함해야 하기 때문에 기준일의 다음 날부터 계산
         LocalDate expectedEndDate = study.calculateExpectedDate(totalStudyMinutes, baseDate.plusDays(1));
         boolean isTermination = study.terminateIfSatisfiedStudyQuantity(totalStudyMinutes, baseDate);
 
