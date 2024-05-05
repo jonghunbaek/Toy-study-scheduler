@@ -116,7 +116,7 @@ class DailyStudyControllerTest {
         String jsonResponse = objectMapper.writeValueAsString(response);
 
         // when & then
-        mockMvc.perform(get("/daily-studies/remaining-days")
+        mockMvc.perform(get("/daily-studies/remaining")
                         .queryParam("studyId", studyId)
                         .with(csrf())
                 )

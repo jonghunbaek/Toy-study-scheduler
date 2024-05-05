@@ -7,6 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 import toyproject.studyscheduler.dailystudy.application.dto.DailyStudySave;
+import toyproject.studyscheduler.dailystudy.application.dto.DailyStudySelectCondition;
 import toyproject.studyscheduler.dailystudy.application.dto.DailyStudyUpdate;
 import toyproject.studyscheduler.dailystudy.domain.entity.DailyStudy;
 import toyproject.studyscheduler.dailystudy.repository.DailyStudyRepository;
@@ -181,8 +182,10 @@ class DailyStudyServiceTest {
         dailyStudyService.createDailyStudy(dailyStudySave2);
         dailyStudyService.createDailyStudy(dailyStudySave3);
 
+        DailyStudySelectCondition conditions = new DailyStudySelectCondition(studyDetail.getStudyId(), null);
+
         // when
-        List<DailyStudyBasicInfo> dailyStudies = dailyStudyService.findAllDailyStudyByStudy(studyDetail.getStudyId());
+        List<DailyStudyBasicInfo> dailyStudies = dailyStudyService.findAllDailyStudyByStudy(conditions);
 
         // then
         assertThat(dailyStudies).hasSize(3)

@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import toyproject.studyscheduler.common.response.ResponseCode;
 import toyproject.studyscheduler.dailystudy.application.dto.DailyStudySave;
+import toyproject.studyscheduler.dailystudy.application.dto.DailyStudySelectCondition;
 import toyproject.studyscheduler.dailystudy.application.dto.DailyStudyUpdate;
 import toyproject.studyscheduler.dailystudy.domain.DailyStudies;
 import toyproject.studyscheduler.dailystudy.domain.entity.DailyStudy;
@@ -91,14 +92,14 @@ public class DailyStudyService {
     }
 
     /**
-     *  학습 별 일일 학습 조회
+     *  학습 별, 기간 별 일일 학습 조회
      */
-    public List<DailyStudyBasicInfo> findAllDailyStudyByStudy(Long studyId) {
-        List<DailyStudy> dailyStudies = dailyStudyRepository.findAllByStudyId(studyId);
+    public List<DailyStudyBasicInfo> findAllDailyStudyByStudy(DailyStudySelectCondition conditions) {
+        List<DailyStudy> dailyStudies = dailyStudyRepository.findDailyStudyByStudyAndPeriod(conditions.getStudyId(), conditions.getPeriod());
 
         return dailyStudies.stream()
-            .map(DailyStudyBasicInfo::of)
-            .toList();
+                .map(DailyStudyBasicInfo::of)
+                .toList();
     }
 
     /**
@@ -122,7 +123,7 @@ public class DailyStudyService {
     }
 
     private int getTotalStudyMinutes(Study study) {
-        DailyStudies dailyStudies = new DailyStudies(dailyStudyRepository.findAllByStudyId(study.getId()));
+        DailyStudies dailyStudies = new DailyStudies(dailyStudyRepository.findDailyStudyByStudyAndPeriod(study.getId(), null));
 
         return dailyStudies.calculateTotalStudyMinutes();
     }
