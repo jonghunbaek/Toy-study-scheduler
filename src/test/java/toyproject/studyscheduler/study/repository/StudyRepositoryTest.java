@@ -1,11 +1,15 @@
 package toyproject.studyscheduler.study.repository;
 
+import com.querydsl.jpa.impl.JPAQueryFactory;
+import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
+import toyproject.studyscheduler.common.config.querydsl.QuerydslConfig;
 import toyproject.studyscheduler.study.domain.StudyInformation;
 import toyproject.studyscheduler.study.domain.StudyPeriod;
 import toyproject.studyscheduler.study.domain.StudyPlan;
@@ -20,12 +24,14 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
 
+@Import(QuerydslConfig.class)
 @ActiveProfiles("test")
 @DataJpaTest
 class StudyRepositoryTest {
 
     @Autowired
     StudyRepository studyRepository;
+
     @Autowired
     MemberRepository memberRepository;
 
