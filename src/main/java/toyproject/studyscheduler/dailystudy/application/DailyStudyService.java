@@ -95,7 +95,7 @@ public class DailyStudyService {
      *  학습 별, 기간 별 일일 학습 조회
      */
     public List<DailyStudyBasicInfo> findAllDailyStudyByStudy(DailyStudySelectCondition conditions) {
-        List<DailyStudy> dailyStudies = dailyStudyRepository.findDailyStudyByStudyAndPeriod(conditions.getStudyId(), conditions.getPeriod());
+        List<DailyStudy> dailyStudies = dailyStudyRepository.findDailyStudyByConditions(conditions.getStudyId(), conditions.getPeriod());
 
         return dailyStudies.stream()
                 .map(DailyStudyBasicInfo::of)
@@ -123,7 +123,7 @@ public class DailyStudyService {
     }
 
     private int getTotalStudyMinutes(Study study) {
-        DailyStudies dailyStudies = new DailyStudies(dailyStudyRepository.findDailyStudyByStudyAndPeriod(study.getId(), null));
+        DailyStudies dailyStudies = new DailyStudies(dailyStudyRepository.findDailyStudyByConditions(study.getId(), null));
 
         return dailyStudies.calculateTotalStudyMinutes();
     }

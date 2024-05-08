@@ -16,7 +16,7 @@ public class DailyStudyQuerydslRepositoryImpl implements DailyStudyQuerydslRepos
     private final JPAQueryFactory query;
 
     @Override
-    public List<DailyStudy> findDailyStudyByStudyAndPeriod(Long studyId, Period period) {
+    public List<DailyStudy> findDailyStudyByConditions(Long studyId, Period period) {
         return query.selectFrom(dailyStudy)
                 .where(dailyStudy.study.id.eq(studyId), studyDateBetween(period))
                 .fetch();

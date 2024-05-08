@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface DailyStudyQuerydslRepository {
 
-    List<DailyStudy> findDailyStudyByStudyAndPeriod(Long studyId, Period period);
+    List<DailyStudy> findDailyStudyByConditions(Long studyId, Period period);
 }

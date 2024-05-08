@@ -1,8 +1,6 @@
 package toyproject.studyscheduler.dailystudy.repository;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -29,7 +27,6 @@ import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.*;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.tuple;
 
 @Import(QuerydslConfig.class)
 @ActiveProfiles("test")
@@ -65,7 +62,7 @@ class DailyStudyRepositoryTest {
         dailyStudyRepository.saveAll(createDailyStudies(reading, studyDates, completeMinutesTodays));
 
         // when
-        List<DailyStudy> dailyStudies = dailyStudyRepository.findDailyStudyByStudyAndPeriod(reading.getId(), period);
+        List<DailyStudy> dailyStudies = dailyStudyRepository.findDailyStudyByConditions(reading.getId(), period);
 
         // then
         assertThat(dailyStudies.size()).isEqualTo(size);
