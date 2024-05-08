@@ -5,10 +5,10 @@ import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import toyproject.studyscheduler.common.domain.Period;
 import toyproject.studyscheduler.common.validator.ValidatorGroupSequence;
 import toyproject.studyscheduler.dailystudy.application.DailyStudyService;
 import toyproject.studyscheduler.dailystudy.application.dto.DailyStudySave;
-import toyproject.studyscheduler.dailystudy.application.dto.DailyStudySelectCondition;
 import toyproject.studyscheduler.dailystudy.application.dto.DailyStudyUpdate;
 import toyproject.studyscheduler.dailystudy.web.dto.*;
 
@@ -42,8 +42,10 @@ public class DailyStudyController {
 
     // TODO :: 관련 테스트 수정 필요
     @GetMapping("/study")
-    public List<DailyStudyBasicInfo> dailyStudyBasicInfos(@Validated(ValidatorGroupSequence.class) DailyStudySelectCondition conditions) {
-        return dailyStudyService.findAllDailyStudyByStudy(conditions);
+    public List<DailyStudyBasicInfo> dailyStudyBasicInfos(
+            @RequestParam @Min(value = 1, message = "id 값은 양의 정수이어야 합니다.") Long studyId,
+            @Validated(ValidatorGroupSequence.class) Period period) {
+        return dailyStudyService.findAllDailyStudyByStudy(studyId, period);
     }
 
     @GetMapping("/remaining")

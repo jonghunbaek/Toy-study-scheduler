@@ -214,4 +214,37 @@ class DailyStudyControllerTest {
             )
         );
     }
+
+    @WithMockUser
+    @DisplayName("학습 ID와 기간을 조건으로 일일 학습을 조회할 때 입력 값을 검증한다.")
+    @ParameterizedTest
+    @MethodSource("argumentsWhenDailyStudyBasicInfos")
+    void dailyStudyBasicInfos(String studyId, String startDate, String endDate, ResponseForm response) throws Exception {
+        // given
+        String jsonResponse = objectMapper.writeValueAsString(response);
+
+        // when & then
+        mockMvc.perform(get("/daily-studies/study")
+                        .queryParam("studyId", studyId)
+                        .queryParam("startDate", startDate)
+                        .queryParam("endDate", endDate)
+                        .with(csrf())
+                )
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(content().json(jsonResponse));
+    }
+
+    private static Stream<Arguments> argumentsWhenDailyStudyBasicInfos() {
+        return Stream.of(
+                Arguments.of(
+                        "1",
+                        "2024-04-01",
+                        "2024-03-31",
+                        ResponseForm.from(E90000, Map.of(
+                                "period", "종료일은 시작일보다 나중이어야 합니다."
+                        ))
+                )
+        );
+    }
 }
