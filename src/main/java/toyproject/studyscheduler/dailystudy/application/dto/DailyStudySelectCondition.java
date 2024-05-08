@@ -4,7 +4,7 @@ package toyproject.studyscheduler.dailystudy.application.dto;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
-import toyproject.studyscheduler.study.application.dto.Period;
+import toyproject.studyscheduler.common.domain.Period;
 
 @Getter
 public class DailyStudySelectCondition {

@@ -9,7 +9,7 @@ import toyproject.studyscheduler.common.resolver.LoginMember;
 import toyproject.studyscheduler.common.resolver.MemberInfo;
 import toyproject.studyscheduler.common.validator.ValidatorGroupSequence;
 import toyproject.studyscheduler.study.application.StudyService;
-import toyproject.studyscheduler.study.application.dto.Period;
+import toyproject.studyscheduler.common.domain.Period;
 import toyproject.studyscheduler.study.application.dto.StudySave;
 import toyproject.studyscheduler.study.application.dto.StudyUpdate;
 import toyproject.studyscheduler.study.web.dto.StudyDetail;

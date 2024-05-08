@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import toyproject.studyscheduler.member.application.MemberService;
 import toyproject.studyscheduler.member.domain.entity.Member;
-import toyproject.studyscheduler.study.application.dto.Period;
+import toyproject.studyscheduler.common.domain.Period;
 import toyproject.studyscheduler.study.application.dto.StudySave;
 import toyproject.studyscheduler.study.application.dto.StudyUpdate;
 import toyproject.studyscheduler.study.domain.entity.Study;

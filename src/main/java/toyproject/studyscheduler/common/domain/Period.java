@@ -1,4 +1,4 @@
-package toyproject.studyscheduler.study.application.dto;
+package toyproject.studyscheduler.common.domain;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;

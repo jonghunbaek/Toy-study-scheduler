@@ -4,7 +4,7 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import toyproject.studyscheduler.dailystudy.domain.entity.DailyStudy;
-import toyproject.studyscheduler.study.application.dto.Period;
+import toyproject.studyscheduler.common.domain.Period;
 
 import java.util.List;
 

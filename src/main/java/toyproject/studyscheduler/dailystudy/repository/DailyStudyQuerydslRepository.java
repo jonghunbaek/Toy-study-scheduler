@@ -1,7 +1,7 @@
 package toyproject.studyscheduler.dailystudy.repository;
 
 import toyproject.studyscheduler.dailystudy.domain.entity.DailyStudy;
-import toyproject.studyscheduler.study.application.dto.Period;
+import toyproject.studyscheduler.common.domain.Period;
 
 import java.util.List;
 

@@ -2,7 +2,7 @@ package toyproject.studyscheduler.common.validator;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
-import toyproject.studyscheduler.study.application.dto.Period;
+import toyproject.studyscheduler.common.domain.Period;
 
 public class PeriodValidator implements ConstraintValidator<EndDateLaterThanStartDate, Period> {
 

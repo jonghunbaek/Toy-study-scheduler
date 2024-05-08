@@ -11,7 +11,7 @@ import org.springframework.test.context.ActiveProfiles;
 import toyproject.studyscheduler.common.config.querydsl.QuerydslConfig;
 import toyproject.studyscheduler.member.domain.entity.Member;
 import toyproject.studyscheduler.member.repository.MemberRepository;
-import toyproject.studyscheduler.study.application.dto.Period;
+import toyproject.studyscheduler.common.domain.Period;
 import toyproject.studyscheduler.study.domain.StudyInformation;
 import toyproject.studyscheduler.study.domain.StudyPeriod;
 import toyproject.studyscheduler.study.domain.StudyPlan;

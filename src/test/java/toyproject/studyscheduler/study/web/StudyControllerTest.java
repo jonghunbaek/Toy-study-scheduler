@@ -1,13 +1,11 @@
 package toyproject.studyscheduler.study.web;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -21,7 +19,6 @@ import toyproject.studyscheduler.common.response.ResponseForm;
 import toyproject.studyscheduler.study.application.StudyService;
 import toyproject.studyscheduler.study.application.dto.LectureSave;
 import toyproject.studyscheduler.study.application.dto.LectureUpdate;
-import toyproject.studyscheduler.study.application.dto.Period;
 
 import java.time.LocalDate;
 import java.util.List;

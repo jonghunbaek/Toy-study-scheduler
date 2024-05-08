@@ -8,7 +8,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 import toyproject.studyscheduler.study.application.dto.LectureSave;
 import toyproject.studyscheduler.study.application.dto.LectureUpdate;
-import toyproject.studyscheduler.study.application.dto.Period;
+import toyproject.studyscheduler.common.domain.Period;
 import toyproject.studyscheduler.study.application.dto.ReadingSave;
 import toyproject.studyscheduler.study.exception.StudyException;
 import toyproject.studyscheduler.study.web.dto.LectureDetail;

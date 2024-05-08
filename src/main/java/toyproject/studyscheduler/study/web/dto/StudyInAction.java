@@ -1,7 +1,7 @@
 package toyproject.studyscheduler.study.web.dto;
 
 import lombok.Getter;
-import toyproject.studyscheduler.study.application.dto.Period;
+import toyproject.studyscheduler.common.domain.Period;
 import toyproject.studyscheduler.study.domain.entity.Study;
 
 @Getter
