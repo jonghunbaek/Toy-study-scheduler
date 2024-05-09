@@ -9,6 +9,9 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 import toyproject.studyscheduler.common.config.querydsl.QuerydslConfig;
 import toyproject.studyscheduler.member.domain.entity.Member;
+import toyproject.studyscheduler.member.exception.MemberException;
+
+import static org.assertj.core.api.Assertions.*;
 
 @Import(QuerydslConfig.class)
 @ActiveProfiles("test")
@@ -30,7 +33,7 @@ class MemberRepositoryTest {
             .orElseThrow(() -> new IllegalArgumentException("잘못된 아이디 입니다."));
 
         // then
-        Assertions.assertThat(result.getName()).isEqualTo("hong");
+        assertThat(result.getName()).isEqualTo("hong");
     }
 
     @DisplayName("이메일을 전달 받아 회원정보를 조회한다.")
@@ -45,10 +48,14 @@ class MemberRepositoryTest {
             .orElseThrow(() -> new IllegalArgumentException("해당 이메일을 가진 회원이 존재하지 않습니다."));
 
         // then
-        Assertions.assertThat(result.getName()).isEqualTo("hong");
+        assertThat(result.getName()).isEqualTo("hong");
     }
-    
-    // TODO :: existsEmail 테스트 작성 필요
+
+    @DisplayName("중복 이메일이 존재하는 지 검증한다.")
+    @Test
+    void existsEmail() {
+        assertThat(memberRepository.existsByEmail("iphone@gmail.com")).isTrue();
+    }
 
     private Member createMember() {
         return Member.builder()

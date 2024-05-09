@@ -40,7 +40,6 @@ public class DailyStudyController {
         return dailyStudyService.findDetailDailyStudy(dailyStudyId);
     }
 
-    // TODO :: 관련 테스트 수정 필요
     @GetMapping("/study")
     public List<DailyStudyBasicInfo> dailyStudyBasicInfos(
             @RequestParam @Min(value = 1, message = "id 값은 양의 정수이어야 합니다.") Long studyId,

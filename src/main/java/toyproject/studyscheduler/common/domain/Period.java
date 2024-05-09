@@ -12,7 +12,6 @@ import java.time.LocalDate;
 @Getter
 public class Period {
 
-    // TODO :: 공통 도메인으로 옮기면서 Not Null검증 불필요해짐. 추후 StudyController변경하면서 같이 변경
     @NotNull(message = "시작일은 필수 입력 값입니다.")
     private final LocalDate startDate;
 
