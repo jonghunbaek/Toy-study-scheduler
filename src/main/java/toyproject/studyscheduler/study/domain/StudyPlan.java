@@ -17,7 +17,14 @@ import static java.time.DayOfWeek.FRIDAY;
 @Embeddable
 public class StudyPlan {
 
+    /**
+     * 평일 학습 계획 시간
+     */
     private int planMinutesInWeekday;
+
+    /**
+     * 주말 학습 계획 시간
+     */
     private int planMinutesInWeekend;
 
     private StudyPlan(int planMinutesInWeekday, int planMinutesInWeekend) {

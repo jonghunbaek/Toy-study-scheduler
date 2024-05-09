@@ -19,10 +19,19 @@ public class DailyStudy extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    /**
+     * 일일 학습 내용
+     */
     private String content;
 
+    /**
+     * 일일 학습 시간
+     */
     private int completeMinutesToday;
 
+    /**
+     * 일일 학습일
+     */
     private LocalDate studyDate;
 
     @ManyToOne(fetch = FetchType.LAZY)

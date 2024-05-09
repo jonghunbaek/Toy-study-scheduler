@@ -49,8 +49,8 @@ public class Reading extends Study {
     }
 
     @Override
-    public boolean terminateIfSatisfiedStudyQuantity(int totalMinutes, LocalDate studyDate) {
-        int pagesRead = readPagePerMin * totalMinutes;
+    public boolean terminateIfSatisfiedStudyQuantity(int totalStudyMinutes, LocalDate studyDate) {
+        int pagesRead = readPagePerMin * totalStudyMinutes;
 
         if (pagesRead >= totalPage) {
             terminate(studyDate);

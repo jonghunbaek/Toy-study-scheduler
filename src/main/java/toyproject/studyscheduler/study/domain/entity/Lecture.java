@@ -43,8 +43,8 @@ public class Lecture extends Study {
     }
 
     @Override
-    public boolean terminateIfSatisfiedStudyQuantity(int totalMinutes, LocalDate studyDate) {
-        if (totalMinutes >= totalRuntime) {
+    public boolean terminateIfSatisfiedStudyQuantity(int totalStudyMinutes, LocalDate studyDate) {
+        if (totalStudyMinutes >= totalRuntime) {
             terminate(studyDate);
             return true;
         }

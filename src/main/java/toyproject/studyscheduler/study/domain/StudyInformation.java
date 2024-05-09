@@ -14,8 +14,19 @@ import static toyproject.studyscheduler.common.response.ResponseCode.*;
 @Embeddable
 public class StudyInformation {
 
+    /**
+     * 학습 제목
+     */
     private String title;
+
+    /**
+     * 학습 내용
+     */
     private String description;
+
+    /**
+     * 학습 종료 여부
+     */
     private boolean isTermination;
 
     @Builder

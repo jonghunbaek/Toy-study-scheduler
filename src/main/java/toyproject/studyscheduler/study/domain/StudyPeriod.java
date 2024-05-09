@@ -17,7 +17,14 @@ public class StudyPeriod {
 
     public static final LocalDate TEMP_END_DATE = LocalDate.parse("9999-12-31");
 
+    /**
+     * 학습 시작일
+     */
     private LocalDate startDate;
+
+    /**
+     * 학습 종료일. 새로 시작한 학습은 임시 종료일로 설정
+     */
     private LocalDate endDate;
 
     private StudyPeriod(LocalDate startDate, LocalDate endDate) {
@@ -43,5 +50,11 @@ public class StudyPeriod {
 
     public void terminate(LocalDate endDate) {
         this.endDate = endDate;
+    }
+
+    public void validateStudyDateEalierThanStartDate(LocalDate studyDate) {
+        if (studyDate.isBefore(startDate)) {
+            throw new StudyException("studyDate :: " + studyDate, E30003);
+        }
     }
 }
